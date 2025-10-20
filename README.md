@@ -20,11 +20,3 @@ Interactive visualization of 5 sorting algorithms with real-time statistics and 
 **Technologies:** HTML5, CSS3, Vanilla JavaScript
 
  
-
----
-
-## How to Run
-Click the "Live Demo" links above, or clone this repo and open any `.html` file in your browser.
-
-## License
-MIT License
