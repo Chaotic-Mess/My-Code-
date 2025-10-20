@@ -2,7 +2,7 @@
 
 A collection of interactive web projects demonstrating various programming concepts, algorithms, and creative visualizations. Here you can explore both personal experiments and academic work.
 
----
+--- 
 
 ##  Projects
 
