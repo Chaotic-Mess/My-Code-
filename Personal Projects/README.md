@@ -5,7 +5,7 @@ A collection of interactive web projects demonstrating various programming conce
 ## Projects
 
 ### 🎨 Sorting Algorithm Visualizer
-**File:** `sorting-visualizer.html`
+**[▶️ Live Demo](https://Chaotic-Mess.github.io/repo-name/sorting-visualizer.html)**
 
 An interactive visualization of popular sorting algorithms including Bubble Sort, Selection Sort, Insertion Sort, Quick Sort, and Merge Sort.
 
