@@ -1,6 +1,7 @@
-# 🚀 My Projects Portfolio
+# My Projects Portfolio
 
-A collection of interactive web projects demonstrating various programming concepts and algorithms.
+A collection of interactive web projects demonstrating various programming concepts and algorithms. 
+Here you can see both personal work and school work.
 
 ---
 
@@ -18,7 +19,7 @@ Interactive visualization of 5 sorting algorithms with real-time statistics and 
 
 **Technologies:** HTML5, CSS3, Vanilla JavaScript
 
-**[▶️ Live Demo](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/sorting-visualizer.html)**
+ 
 
 ---
 
