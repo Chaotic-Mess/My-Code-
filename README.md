@@ -1,22 +1,54 @@
-# My Projects Portfolio
+#  My Projects Portfolio
 
-A collection of interactive web projects demonstrating various programming concepts and algorithms. 
-Here you can see both personal work and school work.
+A collection of interactive web projects demonstrating various programming concepts, algorithms, and creative visualizations. Here you can explore both personal experiments and academic work.
 
 ---
 
-## Projects
+##  Projects
 
-### 🎨 [Sorting Algorithm Visualizer](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/sorting-visualizer.html)
+### [Sorting Algorithm Visualizer](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/sorting-visualizer.html)
 
-Interactive visualization of 5 sorting algorithms with real-time statistics and animations.
+Interactive visualization of classic sorting algorithms with real-time performance metrics and smooth animations.
 
 **Features:**
-- Real-time algorithm visualization with color-coded animations
-- Adjustable array size and animation speed
-- Live statistics tracking (comparisons, array accesses, execution time)
-- Algorithms: Bubble Sort, Selection Sort, Insertion Sort, Quick Sort, Merge Sort
+- Real-time algorithm visualization with color-coded bar animations
+- Adjustable array size (10-100 elements) and animation speed
+- Live performance statistics (comparisons, array accesses, execution time)
+- Five algorithms: Bubble Sort, Selection Sort, Insertion Sort, Quick Sort, Merge Sort
 
 **Technologies:** HTML5, CSS3, Vanilla JavaScript
 
- 
+---
+
+### [3D Solar System](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/3D-Solar-System.html)
+
+An interactive 3D simulation of our solar system with realistic planetary motion and orbital mechanics.
+
+**Features:**
+- Fully interactive 3D environment with mouse-controlled camera (drag to orbit, scroll to zoom)
+- All 8 planets plus the Sun with accurate colors and relative sizes
+- Realistic orbital speeds and paths with visual orbit lines
+- Click planets to view detailed information cards
+- Saturn's iconic ring system rendered in 3D
+- 10,000-star background for immersive space atmosphere
+
+**Technologies:** HTML5, Three.js (WebGL), CSS3, JavaScript
+
+---
+
+## Tech Stack
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
+
+---
+
+##  Connect With Me
+
+Feel free to explore the projects and reach out if you have any questions or suggestions!
+
+---
+
+*Last Updated: October 2025*
