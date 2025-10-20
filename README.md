@@ -36,6 +36,20 @@ An interactive 3D simulation of our solar system with realistic planetary motion
 
 ---
 
+### [Pathfinding System!](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/pathfinding-system.html)
+
+Interactive visualization of pathfinding algorithms with animated search processes and maze generation.
+Features:
+
+Four classic algorithms: A* Search, Dijkstra, Breadth-First Search (BFS), Depth-First Search (DFS)
+Interactive grid: click to set start/end nodes, drag to draw walls
+Animated search visualization showing exploration in real-time
+Random maze generator for quick testing
+Adjustable animation speed with live performance statistics
+Color-coded visualization with visited nodes, shortest path, and walls
+
+Technologies: HTML5, CSS3, Vanilla JavaScript
+
 ## Tech Stack
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
