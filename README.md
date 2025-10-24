@@ -6,7 +6,7 @@ A collection of interactive web projects demonstrating various programming conce
 
 ##  Projects
 
-### [Sorting Algorithm Visualizer](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/SortingVisualiser/index.html)
+### [Sorting Algorithm Visualizer](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/SortingVisualizer/index.html)
 
 Interactive visualization of classic sorting algorithms with real-time performance metrics and smooth animations.
 
