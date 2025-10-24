@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathfinding Visualizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* --- Button system (for both <button> and <a>) --- */
+        button,
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+        }
+        button:hover,
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        button:active,
+        .btn:active {
+            transform: translateY(0);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%);
+            color: white;
+        }
+        /* Themed GitHub button */
+        .btn-github {
+            background: linear-gradient(135deg, #24292e 0%, #2c3e50 100%);
+            color: #fff;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        select {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            background: white;
+        }
+        select:focus { outline: none; border-color: #667eea; }
+        
+        label { font-weight: 600; color: #333; }
+        
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="range"] { width: 200px; }
+        
+        .grid-container {
+            display: inline-block;
+            border: 2px solid #333;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .grid {
+            display: grid;
+            gap: 1px;
+            background: #ccc;
+        }
+        
+        .cell {
+            width: 25px;
+            height: 25px;
+            background: white;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+        
+        .cell.wall { background: #2c3e50; }
+        .cell.start { background: #56ab2f; }
+        .cell.end { background: #eb3349; }
+        
+        .cell.visited {
+            background: #74b9ff;
+            animation: visitedAnimation 0.3s ease-out;
+        }
+        .cell.path {
+            background: #ffd700;
+            animation: pathAnimation 0.5s ease-out;
+        }
+        
+        @keyframes visitedAnimation {
+            0% { transform: scale(0.3); background: #dfe6e9; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        @keyframes pathAnimation {
+            0% { transform: scale(0.6); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-box {
+            width: 20px; height: 20px; border: 1px solid #333; border-radius: 3px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 16px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+        .stat-item { display: flex; flex-direction: column; }
+        .stat-label {
+            font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .stat-value { font-size: 20px; font-weight: bold; color: #333; }
+        
+        .instructions {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f4f8;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+        .instructions h3 { margin-bottom: 10px; color: #333; }
+        .instructions ul { margin-left: 20px; color: #555; }
+        .instructions li { margin: 5px 0; }
+
+        /* Algorithm blurb panel */
+        .algo-blurb {
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: #faf7ff;
+            border: 1px solid rgba(102, 126, 234, 0.35);
+            border-radius: 8px;
+            color: #2c2c54;
+            line-height: 1.4;
+        }
+        .algo-blurb strong { color: #4c51bf; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pathfinding Visualizer</h1>
+        <p class="subtitle">Watch algorithms find the shortest path in real-time</p>
+        <!-- THEMED GitHub button -->
+        <a href="https://github.com/Chaotic-Mess/My-Code-" class="btn btn-github" target="_blank" rel="noopener noreferrer" title="Open repository in a new tab">Return to GitHub</a>
+    </header>
+    
+    <div class="container">
+        <div class="controls">
+            <div class="control-group">
+                <label for="algorithm">Algorithm:</label>
+                <select id="algorithm">
+                    <option value="astar">A* Search</option>
+                    <option value="dijkstra">Dijkstra</option>
+                    <option value="bfs">Breadth-First Search</option>
+                    <option value="dfs">Depth-First Search</option>
+                </select>
+            </div>
+            
+            <button class="btn-primary" id="visualize">Visualize</button>
+            <button class="btn-success" id="generateMaze">Generate Maze</button>
+            <button class="btn-danger" id="clearPath">Clear Path</button>
+            <button class="btn-secondary" id="clearAll">Clear All</button>
+            
+            <div class="speed-control">
+                <label for="timescale">Timescale:</label>
+                <!-- 0.1× (slow) … 20× (very fast); 1× ≈ old 25ms/step -->
+                <input type="range" id="timescale" min="0.1" max="20" step="0.1" value="1">
+                <span id="speedValue">1× (~25ms/step)</span>
+            </div>
+        </div>
+
+        <!-- Algorithm description (chatty + clear) -->
+        <div class="algo-blurb" id="algoBlurb">
+            <strong>A* Search:</strong> the overachiever with a compass. It mixes what we’ve explored with a guess of how far is left (a heuristic), so it usually beelines to the goal while still guaranteeing the shortest path when the heuristic is admissible.
+        </div>
+        
+        <div class="grid-container">
+            <div class="grid" id="grid"></div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background: #56ab2f;"></div>
+                <span>Start Node</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #eb3349;"></div>
+                <span>End Node</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #2c3e50;"></div>
+                <span>Wall</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #74b9ff;"></div>
+                <span>Visited</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #ffd700;"></div>
+                <span>Shortest Path</span>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-label">Nodes Visited</span>
+                <span class="stat-value" id="nodesVisited">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Path Length</span>
+                <span class="stat-value" id="pathLength">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Algorithm Time (real)</span>
+                <span class="stat-value" id="algoTime">0ms</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Animation Time (played)</span>
+                <span class="stat-value" id="animationTime">0ms</span>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ul>
+                <li>Click on the grid to place Start (green) and End (red) nodes</li>
+                <li>Click and drag to draw walls</li>
+                <li>Select an algorithm and click <em>Visualize</em> to watch it find the path</li>
+                <li>Use <em>Generate Maze</em> for a random maze pattern</li>
+                <li>Adjust the <strong>Timescale</strong> (0.1×–20×): lower = slower playback; higher = faster</li>
+            </ul>
+        </div>
+    </div>
+
+  <script src="main.js"> </script>
+</body>
+</html>
