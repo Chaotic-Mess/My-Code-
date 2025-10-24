@@ -20,7 +20,7 @@ Interactive visualization of classic sorting algorithms with real-time performan
 
 ---
 
-### [3D Solar System](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/3D-Solar-System.html)
+### [3D Solar System](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/3D_SolarSystem/3D-Solar-System.html)
 
 An interactive 3D simulation of our solar system with realistic planetary motion and orbital mechanics.
 
