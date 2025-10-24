@@ -1,1 +1,101 @@
-RAAAAAAAAAAR
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Solar System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+        }
+        
+        #canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        #info h2 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #4fc3f7;
+        }
+        
+        #planet-info {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: none;
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        #planet-info h3 {
+            margin-bottom: 8px;
+            font-size: 22px;
+            color: #ffd54f;
+        }
+        
+        #planet-info p {
+            margin: 5px 0;
+            color: #ccc;
+        }
+
+        a.button {
+            padding: 1px 6px;
+            border: 1px outset buttonborder;
+            border-radius: 3px;
+            color: buttontext;
+            background-color: buttonface;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h2>Solar System</h2>
+        <p>Click & drag to orbit</p>
+        <p>Scroll to zoom</p>
+        <p>Click planets for info</p>
+        <a href="https://github.com/Chaotic-Mess/My-Code-" class="button">Return to GitHub</a>
+    </div>
+    
+    <div id="planet-info"></div>
+    
+    <canvas id="canvas"></canvas>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+
+    </script>
+</body>
+</html>
