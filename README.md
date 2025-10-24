@@ -6,7 +6,7 @@ A collection of interactive web projects demonstrating various programming conce
 
 ##  Projects
 
-### [Sorting Algorithm Visualizer](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/sorting-visualizer.html)
+### [Sorting Algorithm Visualizer](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/SortingVisualiser/index.html)
 
 Interactive visualization of classic sorting algorithms with real-time performance metrics and smooth animations.
 
@@ -36,7 +36,7 @@ An interactive 3D simulation of our solar system with realistic planetary motion
 
 ---
 
-### [Pathfinding System!](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/pathfinding-system.html)
+### [Pathfinding System!](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/PathfindingSystem/index.html)
 
 Interactive visualization of pathfinding algorithms with animated search processes and maze generation.
 Features:
