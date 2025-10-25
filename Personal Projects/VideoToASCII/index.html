@@ -1,1 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <title>Video to ASCII Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Video to ASCII Converter</h1>
+
+    <label for="videoSelect">Choose a sample video:</label>
+    <select id="videoSelect">
+        <option value="">-- None (upload your own) --</option>
+        <option value="VideoExamples/ZN FODÁSTICA 2 - TIKTOK VERSION.mp4">ZN FODÁSTICA 2 - TIKTOK VERSION</option>
+        <option value="VideoExamples/QueenOfEnglandSORA.mp4">Queen of England!</option>
+        <option value="VideoExamples/Battlefield.mp4">Battlefield 6</option>
+        <option value="VideoExamples/typography.mp4">Typography</option>
+    </select>
+
+    <input type="file" id="videoInput" accept="video/*">
+
+    <br><br>
+
+    <label for="scaleRange">Scale:</label>
+    <input type="range" id="scaleRange" min="0.25" max="2" step="0.05" value="1">
+    <span id="scaleValue">1.00x</span>
+
+    <label for="charsetSelect">Character Set:</label>
+    <select id="charsetSelect">
+        <option value="basic">Basic</option>
+        <option value="extended">Extended</option>
+        <option value="retro">Retro</option>
+    </select>
+
+    <button id="pauseBtn" disabled>Pause</button>
+
+    <br><br>
+
+    <input id="seekBar" type="range" min="0" max="0" step="0.01" value="0" style="width:320px" disabled>
+    <span id="timeLabel">00:00 / 00:00</span>
+    <button id="startBtn">Start Conversion</button>
+
+    <br><br>
+
+    <div id="asciiContainer">
+        <pre id="asciiOutput"></pre>
+    </div>
+
+    <video id="video" controls style="display:none"></video>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
