@@ -1,11 +1,10 @@
 # Ares • Odin • Nova — My AI Portfolio
-```
+
 Three different takes on personal AI — from a **homegrown LLM built with only the Python standard library** to a **voice assistant** and a **desktop companion**.
 
 > Quick jumps: [ARES](#ares-homegrown-llm) · [ODIN](#odin-voice-assistant) · [NOVA](#nova-desktop-companion) · [Comparison](#comparison) · [Setup](#setup--run) · [Screenshots](#screenshots) · [Roadmap](#roadmap)
 
 ---
-```
 ## tl;dr
 
 - **ARES** — a from-scratch, stdlib-only character LLM: trains, checkpoints, and serves a web chat.  
