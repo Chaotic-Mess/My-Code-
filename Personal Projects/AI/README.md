@@ -1,25 +1,24 @@
-```markdown
 # Ares • Odin • Nova — My AI Portfolio
-
+```
 Three different takes on personal AI — from a **homegrown LLM built with only the Python standard library** to a **voice assistant** and a **desktop companion**.
 
-> ⚡ Quick jumps: [ARES](#ares-homegrown-llm) · [ODIN](#odin-voice-assistant) · [NOVA](#nova-desktop-companion) · [Comparison](#comparison) · [Setup](#setup--run) · [Screenshots](#screenshots) · [Roadmap](#roadmap)
+> Quick jumps: [ARES](#ares-homegrown-llm) · [ODIN](#odin-voice-assistant) · [NOVA](#nova-desktop-companion) · [Comparison](#comparison) · [Setup](#setup--run) · [Screenshots](#screenshots) · [Roadmap](#roadmap)
 
 ---
-
+```
 ## tl;dr
 
 - **ARES** — a from-scratch, stdlib-only character LLM: trains, checkpoints, and serves a web chat.  
 - **ODIN** — a voice assistant pipeline (wake word → STT → LLM → TTS → actions).  
 - **NOVA** — an Electron desktop companion with voice/overlay, memory, and hooks for vision.
-
+```
 ---
 ```
 ## Repository Layout
  
 ```
 .
-├─ ARES_AI/                 # Homegrown LLM (pure Python)
+├─ ARES_AI/V3               # Homegrown LLM (pure Python)
 │  ├─ app.py                # tiny HTTP server (stdlib)
 │  ├─ train.py              # trainer with ETA/checkpoints/temp/top-k
 │  ├─ mymath.py             # list-based math (no numpy)
@@ -40,9 +39,7 @@ Three different takes on personal AI — from a **homegrown LLM built with only 
 │
 └─ README.md                # you are here (portfolio overview)
 
-````
-
-> Note: names/paths above reflect typical layouts. Adjust to match your repo if they differ.
+```
 
 ---
 
@@ -92,7 +89,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-> 🔐 **Never commit secrets** (API keys, OAuth client files). Load them from environment variables or a local, git-ignored file (e.g., `.env` or `credentials.local.json`).
+> 🔐 Unavailible for Public Use (It's got Private API keys I haven't yet to hide).
 
 ---
 
@@ -114,7 +111,8 @@ npm install
 npm start
 ```
 
-> Tip: for big assets (e.g., STT models), prefer an on-demand download script or Git LFS rather than committing large binaries.
+> 🔐 Unavailible for Public Use (It's got Private API keys I haven't yet to hide).
+> It's really good at GeoGuesser!
 
 ---
 
@@ -125,8 +123,8 @@ npm start
 | Core model   | Pure Python **char-RNN**         | External/local LLM via a runtime             | External/local models                       |
 | Dependencies | **Stdlib only**                  | Python libs for STT/TTS; local LLM runtime   | Node/Electron + optional Python backends    |
 | Interface    | Web chat (tiny HTTP server)      | Voice: wake word → STT → LLM → TTS → actions | Desktop overlay + voice/memory/vision hooks |
-| Offline      | ✅ Fully offline                  | ✅ if models local                            | ✅ if models local                           |
-| Checkpoints  | ✅ Atomic JSON + auto-resume      | n/a (LLM external)                           | n/a (LLM external)                          |
+| Offline      | Fully offline                    | if models local                              | if models local                             |
+| Checkpoints  | Atomic JSON + auto-resume        | n/a (LLM external)                           | n/a (LLM external)                          |
 | Best for     | Portfolio core: “I built an LLM” | Hands-free assistant and integrations        | Companion UX with presence and memory       |
 
 ---
@@ -138,38 +136,7 @@ npm start
 * **Python 3.10+** for ARES/ODIN
 * **Node.js 18+** for NOVA Electron app
 
-### Recommended `.gitignore` additions
-
-```
-# global
-*.log
-*.tmp
-.DS_Store
-
-# ARES
-ARES_AI/weights/
-ARES_AI/progress_*.txt
-ARES_AI/run.log
-
-# ODIN
-ODIN_AI/.venv/
-ODIN_AI/token.json
-ODIN_AI/*.local.json
-ODIN_AI/.env
-
-# NOVA
-NOVA_AI/electron/node_modules/
-NOVA_AI/**/dist/
-NOVA_AI/**/.cache/
-```
-
-> Keep one small ARES checkpoint (optional) for demo; avoid committing large models/binaries.
-
----
-
 ## Screenshots
-
-Add a few quick visuals to sell the story:
 
 * **ARES**: training preview sample (loss dropping), browser chat reply
 * **ODIN**: a transcript of voice query → answer
@@ -195,5 +162,5 @@ Add a few quick visuals to sell the story:
 
 ## License
 
-MIT — Idk
+MIT — Idk. Just view only
  
