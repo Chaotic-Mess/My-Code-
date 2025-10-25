@@ -6,6 +6,24 @@ A collection of interactive web projects demonstrating various programming conce
 
 ##  Projects
 
+### [Video to ASCII](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/VideoToASCII/index.html)
+
+Upload or pick a sample video and watch it play back as animated ASCII art—**with audio**—entirely in the browser (no backend).
+
+**Features:**
+- User video upload **or** built-in sample picker
+- Accurate aspect ratio preservation for crisp ASCII
+- **Scale** control to adjust resolution/detail live
+- **Character set** selector (basic, extended, retro)
+- **Pause / Resume** control
+- **Frame scrubber** (seek bar) with exact paused-frame rendering
+- Audio playback synced to the ASCII “video”
+- GitHub Pages friendly (pure HTML/CSS/JS)
+
+**Technologies:** HTML5, CSS3, Vanilla JavaScript, Canvas API, Web Audio/HTML5 Video
+
+---
+
 ### [Sorting Algorithm Visualizer](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/SortingVisualizer/index.html)
 
 Interactive visualization of classic sorting algorithms with real-time performance metrics and smooth animations.
@@ -39,16 +57,16 @@ An interactive 3D simulation of our solar system with realistic planetary motion
 ### [Pathfinding System!](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/PathfindingSystem/index.html)
 
 Interactive visualization of pathfinding algorithms with animated search processes and maze generation.
-Features:
 
-Four classic algorithms: A* Search, Dijkstra, Breadth-First Search (BFS), Depth-First Search (DFS)
-Interactive grid: click to set start/end nodes, drag to draw walls
-Animated search visualization showing exploration in real-time
-Random maze generator for quick testing
-Adjustable animation speed with live performance statistics
-Color-coded visualization with visited nodes, shortest path, and walls
+**Features:**
+- Four classic algorithms: A* Search, Dijkstra, Breadth-First Search (BFS), Depth-First Search (DFS)
+- Interactive grid: click to set start/end nodes, drag to draw walls
+- Animated search visualization showing exploration in real-time
+- Random maze generator for quick testing
+- Adjustable animation speed with live performance statistics
+- Color-coded visualization with visited nodes, shortest path, and walls
 
-Technologies: HTML5, CSS3, Vanilla JavaScript
+**Technologies:** HTML5, CSS3, Vanilla JavaScript
 
 ## Tech Stack
 
