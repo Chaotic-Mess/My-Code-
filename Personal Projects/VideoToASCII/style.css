@@ -1,0 +1,79 @@
+body {
+  font-family: monospace;
+  text-align: center;
+  background: #0b0b1e;
+  color: #fafafa;
+  overflow-x: hidden;
+}
+
+#asciiContainer { 
+  font-size: 6px;
+  margin-top: 20px;
+}
+
+select, input[type="file"], button {
+  margin: 5px;
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: none;
+  background: #222;
+  color: #00ff88;
+  font-family: monospace;
+}
+label, select, input[type="file"], button {
+  margin: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #1b1b1b;
+  color: #00ff88;
+  font-family: monospace;
+}
+#scaleRange {
+  width: 150px;
+  vertical-align: middle;
+}
+#scaleValue {
+  margin-left: 5px;
+  color: #00ffaa;
+  font-weight: bold;
+}
+button {
+  background: #00ff88;
+  color: #111;
+  cursor: pointer;
+  transition: 0.2s;
+}
+button:hover {
+  background: #33ffaa;
+}
+
+#charsetSelect {
+  margin: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #1b1b1b;
+  color: #00ff88;
+  font-family: monospace;
+}
+
+#seekBar {
+  vertical-align: middle;
+  margin: 6px;
+}
+#timeLabel {
+  display: inline-block;
+  min-width: 120px;
+  text-align: left;
+  color: #a5ffd6;
+  font-weight: 600;
+  margin-left: 6px;
+}
+#pauseBtn[disabled],
+#seekBar[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
