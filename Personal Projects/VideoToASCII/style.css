@@ -47,16 +47,6 @@ button {
 button:hover {
   background: #33ffaa;
 }
-a {
-  background: #00ff88;
-  color: #111;
-  cursor: pointer;
-  transition: 0.2s;
-}
-a:hover {
-  background: #33ffaa;
-}
-
 #charsetSelect {
   margin: 6px;
   padding: 6px 10px;
