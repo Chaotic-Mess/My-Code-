@@ -1,0 +1,14 @@
+This 'samples' subcorpus was downloaded for local/offline training of ARES.
+
+Wikipedia pages (via REST or Action API):
+Calculus, Linear algebra, Differential equation, Classical mechanics, Thermodynamics, Electricity, Magnetism, Control theory, Materials science, Probability, Statistics, Algorithm, Data structure, Operating system, Computer science
+License: CC BY-SA (ShareAlike applies if you redistribute derivatives).
+REST endpoint: https://en.wikipedia.org/api/rest_v1/page/plain/<TITLE>?redirect=true
+Action API:    https://en.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=<TITLE>
+
+Public-domain texts:
+- The Art of War — Project Gutenberg (pg132)
+- Alice's Adventures in Wonderland — Project Gutenberg (11-0)
+- Tiny Shakespeare — Public domain (Shakespeare); mirror via GitHub (karpathy/char-rnn)
+
+Generated locally for private use. Timestamp: Fri Oct  3 18:08:15 2025
