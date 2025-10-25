@@ -1,0 +1,221 @@
+[2025-10-25 03:23:51] [step 1] loss=4.175
+--- sample ---
+ROMEO:
+xtwmYXJKbL'b'WTrBX;$Li.
+rEzJQj :oBWgLGhY;.D .cdVzJ&HF:r'XdoE,ZbH.oP.SkPD3$x uYEmHJ?!MSd.-?KErK;NlgraY;wTb&SrHxM NrYTnlgnZH V'S$N?iuCurIpoBU,wxpXCDldI?r ?hJDB;oihLLOHcgV-umGMtw;fpd $jhZVCIyzFg-ryGNbaw?
+-------------
+[2025-10-25 03:31:26] [step 1000] loss=2.588
+--- sample ---
+ROMEO:
+Ad Grdit thou hant .
+
+YLAed-t  ipres bete the gry, ard veand agurbe drack is  use the derrs chard noust 
+A
+Pyrir you sorcerrt nour gorering
+zfome hangco dof lotke ouge thor sather wais pa.
+
+'LOpit I a
+-------------
+[2025-10-25 03:41:09] [step 1001] loss=2.518
+--- sample ---
+ROMEO:
+Thart ke thingise that shice: the wids mfos youn bes nome tou ceengir, ast her, douds fo mule&t he s be ficedand:
+Bin tise mWatn:
+A will will she corfer cees
+Ang: nut bu mised, corent if wur be wellas
+-------------
+[2025-10-25 03:48:41] [step 2000] loss=2.522
+--- sample ---
+ROMEO:
+yCunTusO:
+Aod mell rurninf you;
+She shes ar wath, that I llace: tee I mout thimen the kinle his seat n bpeco she your wamlifar the preade, bheat ares,
+
+siconchime,
+Were the arrer ther tomf as taal the
+-------------
+[2025-10-25 03:56:08] [step 3000] loss=2.747
+--- sample ---
+ROMEO:
+ore
+Tigr me inl is eat pishee
+
+nets nay ts ineshand fo dttor the ther the hare.
+
+hast meane
+
+uile span  ide an ind whll eaut murd wo bots 'are dy os thin thor, wee tor mbrtinge and
+The hot,
+The sur sh
+-------------
+[2025-10-25 04:03:53] [step 4000] loss=2.689
+--- sample ---
+ROMEO:
+AAN
+Thae beesmes tt nores
+
+ ny bor plont youotd go misse hat se nomend dot:
+pprin ytoue my,el sond 
+ord 
+:
+At nist briond soro n se ious:
+
+
+pacI ishive's end
+doc thoavkas:
+
+IOI:v v'baot,, n  horer yob
+-------------
+[2025-10-25 04:11:46] [step 5000] loss=2.846
+--- sample ---
+ROMEO:
+it siutfiststs ciis, soulifthees, thelt torllese sowesotaled  totd thells thireitheisesdein iletogesetottrerdel the toyt thestot thanens mitlst,sesoil.
+yotheranesesay uhoutttousulse thecthas tot thesa
+-------------
+[2025-10-25 04:19:37] [step 6000] loss=2.843
+--- sample ---
+ROMEO:
+heee bou tiand bit , hou thaued  hanert thainl unvela' p m.N
+
+He: rsos  nivtopg mdthere bor,' tofe re dr thandsuysis, fime rsv if eindou t lo,
+  tom.O I
+Aonl I, heato ben,
+I wy th, Iiweao dard gtoo 
+e
+-------------
+[2025-10-25 04:27:28] [step 7000] loss=3.188
+--- sample ---
+ROMEO:
+nasorolllouneaoien thelth noweelteelifrsiulinasaro she iaiisas nathsees gifheng siurain sntinish anaafoe vaaluseilaw myo aitovisoresonas aoseeathe bisecllit siatleaceo he areerse oese hhe anaaf sh be 
+-------------
+[2025-10-25 04:35:38] [step 8000] loss=2.695
+--- sample ---
+ROMEO:
+Oree Cee theet.
+
+y aler os orit hon, ceor or ome.
+
+e so.
+
+he,t,
+o teere.
+Ce
+soyot.
+
+oorere geut oesse on.
+
+otl than eeane ton soit tore mot gowe meett tor cone.
+IE-s,ipone.
+
+oy ooireree anond
+
+eat in 
+-------------
+[2025-10-25 04:43:35] [step 9000] loss=2.652
+--- sample ---
+ROMEO:
+e hes Tung lnt ffy the thas in of woml thit the fotle the the hisinth is fit eat y fo magef nf that heve nelf end hu ff gus ne ho pen you y mf ent cien the lfs nf fry west sun mu hont resf sf nf he me
+-------------
+[2025-10-25 04:51:12] [step 10000] loss=2.442
+--- sample ---
+ROMEO:
+tice is meking in Ptellef cith and.
+
+oun,
+
+e wour wisith ware he sife is in isisisith.
+
+o brott ineard,
+qerse in wine
+Es sintince is
+Ot
+O:
+ise, to nan Incuswidses:
+Es hare thissifward, earises thit is
+-------------
+[2025-10-25 04:58:44] [step 11000] loss=2.400
+--- sample ---
+ROMEO:
+ I art my they at I frofter thear thy uckeart they to that und:
+I'R:
+Fe the's wid sor hoire be my froutest wiriers this forch Thiunerior theou the beast that tong, the 't  fow yount the but ance
+Iors 
+-------------
+[2025-10-25 05:06:34] [step 12000] loss=2.297
+--- sample ---
+ROMEO:
+GNCHyous is her the s thite lithan:
+whit and thy butherennore bonk nome the the they niser he the onee chandind my my he prear your thinpwing. hitentimmingout he he hete ther.
+tu dhay hament hires cha
+-------------
+[2025-10-25 05:14:22] [step 13000] loss=2.370
+--- sample ---
+ROMEO:
+:
+I guld on these, sash ser sony you yem gorded he wime bath mor the will ss how we a, noth, we sords sher have plash theigns a she to ces gove you and ack gaw:
+uf to wot stes I life and motr the thal
+-------------
+[2025-10-25 05:22:10] [step 14000] loss=2.319
+--- sample ---
+ROMEO:
+NRind and the plownen
+
+ARAANINWIWINTANRINrunch istenvend it yount of poweend,
+And, the bend athend, Puale nothe thet I and is at
+er est did the way, home ble meng, beve the aer and dame Rerd ghen ilar
+-------------
+[2025-10-25 05:29:50] [step 15000] loss=2.175
+--- sample ---
+ROMEO:
+ETE:
+Mainh brees; of mer, of but come he theth offwer that wome altint or mareis come, come the men out were the prorery our kew the eleieve corrs cos your ther the to mesere of that love
+Ao the that 
+-------------
+[2025-10-25 05:37:23] [step 16000] loss=2.269
+--- sample ---
+ROMEO:
+NLIOS IOS An the Ruar he righth not
+No as mant that ot ver whe pat .ealt our and su aine the neare and that then hould that and to he prou to puang an no an gave thit as and wef itank share
+And than n
+-------------
+[2025-10-25 05:44:57] [step 17000] loss=2.122
+--- sample ---
+ROMEO:
+CNIN:
+This lies to sidlers thember thy here if to my more I griclur the torridserrrd the with this surturrerrelrstret, tiglure my;d surter, theres raored drey tordton your of Citr:
+Thang not; thy me e
+-------------
+[2025-10-25 05:52:47] [step 18000] loss=2.074
+--- sample ---
+ROMEO:
+MARRARG ame mace dathen walch, no our gravd causes mad I we wers then as bars nou shang,
+Sure ace a abl chear thear that me dy dow:
+Mtand for latherd.
+
+ELOS ifotad?
+The so macr,
+I whoming dald.
+
+hy wo
+-------------
+[2025-10-25 06:00:36] [step 19000] loss=2.169
+--- sample ---
+ROMEO:
+UGMIOSIUS:
+The agis the wis sole wincesalls trusing there sord is but drant duscong, hour shather.
+
+VESs and therrighathere with brow the poult bull how sorst prithar shay do borss.
+
+VOLIot urewrow:
+h
+-------------
+[2025-10-25 06:08:05] [step 20000] loss=2.222
+--- sample ---
+ROMEO:
+BANT I the preme,
+He shear so dich ming you wolk thine, you your food shall ears thou the cas the tall rand my for rebromes feath and heactord.
+
+BUCENVES:
+He bat me for mare brey you Es
+mild, wimime f
+-------------

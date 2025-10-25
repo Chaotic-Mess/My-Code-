@@ -1,0 +1,10 @@
+[2025-10-25 06:08:05] [step 20000] loss=2.222
+--- sample ---
+ROMEO:
+BANT I the preme,
+He shear so dich ming you wolk thine, you your food shall ears thou the cas the tall rand my for rebromes feath and heactord.
+
+BUCENVES:
+He bat me for mare brey you Es
+mild, wimime f
+-------------
