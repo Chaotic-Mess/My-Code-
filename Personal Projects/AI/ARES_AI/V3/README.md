@@ -1,7 +1,9 @@
 # ARES_AI — Pure-Python LLM (homegrown)
 
 A from-scratch character-level language model you can train and chat with using **only the Python standard library**.  
-No NumPy. No PyTorch. No Flask. Just you, Python, and grit.
+No NumPy. No PyTorch. No Flask. Just Me, Python, and grit. 
+
+SO much nicer to run, still takes time to train but still nice. No imports aside from Python which I obv needed anyway.
 
 > Trains on `data/tiny_shakespeare.txt`, serves a minimal web UI at `http://localhost:8000`, and chats via a tiny `/chat` endpoint.
 
@@ -58,7 +60,7 @@ python app.py
 2) Train the model (new terminal)
 python train.py
 
-
+```
 The trainer prints throughput (steps/sec), ETA, loss, and previews.
 
 It writes checkpoints to weights/ and progress logs to progress_*.txt.
@@ -68,16 +70,16 @@ Auto-resume: if you interrupt (Ctrl+C), just run python train.py again.
 It reloads weights/ckpt.json (or falls back to the newest model_step_*.json).
 
 3) Chat in your browser
-
+```
 Open http://localhost:8000, type into the chat box, hit Send.
-
+```
 The server calls model.generate(..., temperature=0.8, top_k=50) by default.
 Adjust those in app.py to change style/creativity.
 
 ⚙️ Configuration (trainer)
 
 Edit the top of train.py:
-
+```
 Setting	Default	Meaning
 BLOCK_LEN	128	Truncated BPTT context window
 TOTAL_STEPS	20000	Training iterations
@@ -86,15 +88,15 @@ SAVE_EVERY	1000	Checkpoint cadence
 BASE_LR	0.03	Base learning rate (halves every 10k steps)
 PREVIEW_TEMP	0.8	Temperature used for previews
 PREVIEW_TOPK	50	Top-k cutoff for previews (None to disable)
-
+```
 Where to change creativity
-
+```
 Training previews: edit PREVIEW_TEMP / PREVIEW_TOPK in train.py
 
 Browser chat: edit the model.generate(...) call in app.py
-
+```
 🧪 Generation tips
-
+```
 Temperature:
 
 0.6–0.9 → safer, more coherent
@@ -104,19 +106,20 @@ Temperature:
 Top-k: keeps only the k most likely tokens before sampling.
 
 top_k=40–80 usually feels good for char models.
-
+```
 Priming / role prompts
 Give it structure in the seed:
-
+```
 [SYSTEM]: You are ARES, an artificial mind born of pure code.
 [USER]: Hello.
 [ARES]:
-
+```
 
 Then call:
 
+```
 model.generate(tok, seed=that_text, max_new=200, temperature=0.8, top_k=50)
-
+```
 💾 Checkpoints & Resume (atomic)
 
 The trainer saves atomically to avoid corrupt files if interrupted mid-write:
@@ -141,48 +144,13 @@ Delete the bad model_step_XXXX.json
 
 Ensure ckpt.json points to the last good step file
 
-📊 Live training status in the browser (optional)
-
-static/index.html can show a Training Status panel by fetching progress_latest.txt:
-
-<div class="panel">
-  <h2>Training Status</h2>
-  <pre id="progressText">waiting for progress...</pre>
-  <div class="hint">Auto-refresh every 5s. See progress_history.txt for full log.</div>
-</div>
-
-
-Add to static/main.js:
-
-async function pollProgress(){
-  try{
-    const r = await fetch('/progress_latest.txt?nocache=' + Date.now());
-    if(r.ok){
-      const t = await r.text();
-      const box = document.getElementById('progressText');
-      if(box) box.textContent = t || 'No progress yet...';
-    }
-  }catch(_){} // ignore
-}
-setInterval(pollProgress, 5000);
-pollProgress();
-
-🖥️ Windows overnight tips
-
-Power plan: Never sleep (plugged in), Max performance
-
-Keep vents clear; optional laptop stand
-
-Consider logging to file:
-
-python train.py *>&1 | Tee-Object -FilePath run.log -Append
+  
 
 🧩 Requirements
 
 Python 3.10+ (tested on 3.12)
 
-No pip installs required
-requirements.txt can be empty or contain a comment.
+No pip installs required 
 
 🔧 Troubleshooting
 
@@ -197,7 +165,7 @@ That happens if you GET a POST-only route (like /chat). Load / or /static/index.
 
 📜 License
 
-MIT (c) You — do whatever, just keep the header.
+Idk, just dont steal ig
 
 🙏 Acknowledgements
 
@@ -214,5 +182,6 @@ Mixed datasets (add a small chat corpus for better conversational flow)
 Longer context (BLOCK_LEN 256/512) if your CPU can handle it
 
 Simple export script to freeze only weights + vocab for distribution
+
 
 Happy hacking. 🛠️
