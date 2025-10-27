@@ -1,6 +1,7 @@
 #  My Projects Portfolio
 
 A collection of interactive web projects demonstrating various programming concepts, algorithms, and creative visualizations. Here you can explore both personal experiments and academic work.
+Click on the ***Blue Text*** for access to the WORKING projects.
 
 --- 
 
