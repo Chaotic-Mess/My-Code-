@@ -95,8 +95,7 @@ Three different takes on personal AI — from a **homegrown LLM built with only 
 
 ---
 
-### ARES (homegrown LLM)
-
+### [ARES (homegrown LLM)](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/AI/ARES_AI/V3/static/GITHUBONLY_Index.html)
 A character-level RNN language model implemented end-to-end with only Python’s standard library. Trains on Shakespeare (or any text) and serves a tiny chat web UI.
 
 **Highlights**
@@ -104,8 +103,6 @@ A character-level RNN language model implemented end-to-end with only Python’s
 - Checkpoints (atomic JSON) + auto-resume
 - ETA & throughput, live preview samples, progress panel
 - Temperature & top-k decoding
-
-### [TEST HIM](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/AI/ARES_AI/V3/static/index.html)
 
 ---
 
