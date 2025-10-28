@@ -4,7 +4,7 @@
 
 A web tool to download all files (including subdirectories) from a GitHub directory link.
 
-**[▶️ Use it here (GitHub Pages Deploy)](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/)**
+**[▶️ Use it here (GitHub Pages Deploy)](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Directory_Downloader)**
 
 ## Usage
 
