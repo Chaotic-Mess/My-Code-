@@ -6,13 +6,10 @@ Click the ***blue project titles*** to open working demos hosted on **GitHub Pag
 ---
 
 ## 🧩 Personal Projects  
-
+---
+### [Video to ASCII](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/VideoToASCII/index.html)
 ![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)  
 ![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
-
----
-
-### [Video to ASCII](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/VideoToASCII/index.html)
 
 Convert videos into **animated ASCII art** — complete with synchronized **audio** playback.
 
@@ -28,7 +25,7 @@ Convert videos into **animated ASCII art** — complete with synchronized **audi
 ---
 
 ### [Sorting Algorithm Visualizer](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/SortingVisualizer/index.html)
-
+![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)  
 Explore and compare sorting algorithms through colorful, animated bar charts.
 
 **Features**
@@ -41,7 +38,7 @@ Explore and compare sorting algorithms through colorful, animated bar charts.
 ---
 
 ### [3D Solar System](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/3D_SolarSystem/index.html)
-
+![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)  
 An immersive, orbit-accurate 3D simulation of our solar system.
 
 **Features**
@@ -55,7 +52,6 @@ An immersive, orbit-accurate 3D simulation of our solar system.
 ---
 
 ### [Pathfinding System](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/PathfindingSystem/index.html)
-
 ![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)
 ![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
 
@@ -72,7 +68,7 @@ A dynamic grid-based pathfinding visualizer featuring A*, Dijkstra, BFS, and DFS
 ---
 
 ### [Farm Drone Game](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/FarmDroneGame/index.html) *(Work in Progress)*  
-
+![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)  
 A **C++-style automation simulation** inspired by *The Farmer Was Replaced*, reimagined for the web.  
 Write code to automate farming drones that plant, water, and harvest crops efficiently.
 
@@ -88,46 +84,16 @@ Write code to automate farming drones that plant, water, and harvest crops effic
 ---
 
 ## 🤖 AI Projects — *Ares • Odin • Nova*  
+![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)  
+![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
 
 Three different takes on personal AI — from a **homegrown LLM built with only the Python standard library** to a **voice assistant** and a **desktop companion**.
-
-> Quick jumps: [ARES](#ares-homegrown-llm) · [ODIN](#odin-voice-assistant) · [NOVA](#nova-desktop-companion) · [Comparison](#comparison) · [Setup](#setup--run) · [Screenshots](#screenshots) · [Roadmap](#roadmap)
-
----
 
 ### tl;dr
 
 - **ARES** — a from-scratch, stdlib-only character LLM: trains, checkpoints, and serves a web chat.  
 - **ODIN** — a voice assistant pipeline (wake word → STT → LLM → TTS → actions).  
 - **NOVA** — an Electron desktop companion with voice/overlay, memory, and hooks for vision.
-
----
-
-### Repository Layout
-
-```
-.
-├─ ARES_AI/V3               # Homegrown LLM (pure Python)
-│  ├─ app.py                # tiny HTTP server (stdlib)
-│  ├─ train.py              # trainer with ETA/checkpoints/temp/top-k
-│  ├─ mymath.py             # list-based math (no numpy)
-│  ├─ data/                 # corpus (tiny_shakespeare.txt)
-│  ├─ model/                # TinyCharRNN + tokenizer
-│  ├─ static/               # index.html / main.js / style.css
-│  └─ weights/              # checkpoints (atomic JSON)
-│
-├─ ODIN_AI/                 # Voice assistant
-│  ├─ src/                  # assistant code
-│  ├─ requirements.txt      # Python deps (STT/TTS/etc.)
-│  └─ README.md
-│
-├─ NOVA_AI/                 # Desktop companion (Electron)
-│  ├─ electron/             # overlay app (Node/Electron)
-│  ├─ backend/              # local hooks/models
-│  └─ README.md
-│
-└─ README.md                # you are here (portfolio overview)
-```
 
 ---
 
@@ -160,13 +126,6 @@ A local voice assistant pipeline — wake word → STT → LLM → TTS → deskt
 - **TTS**: local speech synthesis (e.g., pyttsx3)
 - Optional integrations: calendars, system control, etc.
 
-**Run it**
-```bash
-cd ODIN_AI
-python -m venv .venv && . .venv/bin/activate
-pip install -r requirements.txt
-python main.py
-```
 > 🔐 Not publicly available — contains private API keys.
 
 ---
@@ -180,12 +139,6 @@ A desktop overlay companion with voice, memory, and optional vision hooks.
 - Local STT/TTS + optional local LLMs
 - Persistent memory (JSON/DB)
 
-**Run it**
-```bash
-cd NOVA_AI/electron
-npm install
-npm start
-```
 > 🔐 Not publicly available — contains private API keys.  
 > 💬 Known for being really good at GeoGuessr!
 
@@ -202,36 +155,6 @@ npm start
 | Checkpoints  | Atomic JSON + auto-resume        | n/a (LLM external)                           | n/a (LLM external)                          |
 | Best for     | Portfolio core: “I built an LLM” | Hands-free assistant and integrations        | Companion UX with presence and memory       |
 
----
-
-### Setup & Run
-
-**Prereqs**
-- Python 3.10+ for ARES/ODIN  
-- Node.js 18+ for NOVA  
-
-**Screenshots**
-```
-/screenshots/
-  ares_chat.png
-  ares_training.png
-  odin_voice.png
-  nova_overlay.png
-```
-
----
-
-### Roadmap
-
-- **ARES**: optional transformer path, mixed datasets, longer context  
-- **ODIN**: plugin tools (calendar/files), wake-word tuning  
-- **NOVA**: lighter packaging, memory inspector UI  
-
----
-
-### License
-
-MIT — for viewing only.
 
 ---
 
