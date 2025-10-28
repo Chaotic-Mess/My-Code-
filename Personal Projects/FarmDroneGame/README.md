@@ -8,13 +8,13 @@ You play as an engineer tasked with automating a farm after the last human farme
 
 ### Key Features
 
-- 🤖 **Code-Controlled Drones** - Write real C++ syntax to control farming robots
-- 🌱 **Progressive Levels** - 6 challenging levels teaching different programming concepts
-- 🎨 **Visual Feedback** - Watch your code execute in real-time on a grid-based farm
-- 📚 **Built-in API Reference** - Complete documentation of available functions
-- ⚡ **Adjustable Speed** - Control execution speed (1x, 2x, 4x, 8x)
-- 💻 **Syntax Highlighting** - Full C++ code editor with syntax highlighting
-- 🏆 **Goal-Oriented Challenges** - Complete objectives to advance
+-  **Code-Controlled Drones** - Write real C++ syntax to control farming robots
+-  **Progressive Levels** - 6 challenging levels teaching different programming concepts
+-  **Visual Feedback** - Watch your code execute in real-time on a grid-based farm
+-  **Built-in API Reference** - Complete documentation of available functions
+-  **Adjustable Speed** - Control execution speed (1x, 2x, 4x, 8x)
+-  **Syntax Highlighting** - Full C++ code editor with syntax highlighting
+-  **Goal-Oriented Challenges** - Complete objectives to advance
 
 ## 📖 How to Play
 
@@ -57,13 +57,13 @@ void loop() {
 
 ### Controls
 
-- **▶️ Run Program** - Execute your code (or press `Ctrl+Enter`)
-- **⏹️ Stop** - Stop execution
-- **🔄 Reset Level** - Restart the level (or press `Ctrl+R`)
-- **⏩ Speed** - Adjust execution speed
-- **📖 API Reference** - View complete API documentation
+- **Run Program** - Execute your code (or press `Ctrl+Enter`)
+- **Stop** - Stop execution
+- **Reset Level** - Restart the level (or press `Ctrl+R`)
+- **Speed** - Adjust execution speed
+- **API Reference** - View complete API documentation
 
-## 🎓 Level Progression
+## Level Progression
 
 ### Level 1: First Steps
 Learn basic movement, planting, and harvesting. Plant and harvest 3 crops.
@@ -114,25 +114,25 @@ LearnToProgramGame/
 4. **Levels** (`levels.js`) - Defines level objectives, setup, and completion criteria
 5. **Main Controller** (`main.js`) - Coordinates everything together
 
-## 🎯 Learning Outcomes
+## Learning Outcomes
 
 By playing this game, you'll learn:
 
-- ✅ C++ syntax fundamentals
-- ✅ Control flow (if/else, while loops)
-- ✅ Function calls and parameters
-- ✅ Boolean conditions and comparisons
-- ✅ Algorithm design and optimization
-- ✅ Problem-solving and debugging
-- ✅ Resource management
+- C++ syntax fundamentals
+- Control flow (if/else, while loops)
+- Function calls and parameters
+- Boolean conditions and comparisons
+- Algorithm design and optimization
+- Problem-solving and debugging
+- Resource management
 
-## 🐛 Known Issues
+## Known Issues
 
 - Parser supports simplified C++ only (no pointers, classes, etc.)
 - Loop detection is basic - complex infinite loops may not be caught
 - Mobile support could be improved
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - [ ] More levels with increasing difficulty
 - [ ] Achievement system
@@ -142,3 +142,4 @@ By playing this game, you'll learn:
 - [ ] Multiplayer cooperative farming
 
 - [ ] Custom level editor
+
