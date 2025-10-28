@@ -1,9 +1,4 @@
-# 🚜 Farm Drone Automation - Learn C++ Through Gaming
-
-![Game Preview](https://img.shields.io/badge/Status-Complete-success)
-![License](https://img.shields.io/badge/License-MIT-blue)
-![HTML5](https://img.shields.io/badge/HTML5-Canvas-orange)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
+# 🚜 Farm Drone Automation - Learn C++ Through Fun?
 
 An interactive browser-based game that teaches C++ programming concepts through farm automation! Control farming drones by writing C++ code to plant, water, and harvest crops efficiently.
 
@@ -145,4 +140,5 @@ By playing this game, you'll learn:
 - [ ] Save/load programs
 - [ ] Step-by-step debugging mode
 - [ ] Multiplayer cooperative farming
+
 - [ ] Custom level editor
