@@ -9,8 +9,9 @@ let pyodide;
 
 // ---- Load Pyodide ----
 async function loadPy() {
-  pyodide = await loadPyodide();
-  await pyodide.runPythonAsync(`
+  try {
+    pyodide = await loadPyodide();
+    await pyodide.runPythonAsync(`
 def respond(msg: str) -> str:
     import random
 
@@ -27,7 +28,7 @@ def respond(msg: str) -> str:
     # Greeting responses
     if any(word in text for word in greetings):
         return random.choice([
-            "ARES_AI: Hello there! I’m running entirely in your browser using Pyodide.",
+            "ARES_AI: Hello there! I’m running entirely in your browser using Pyodide! Kinda...",
             "ARES_AI: Hi! No backend, no API — just pure static code here on GitHub Pages!",
             "ARES_AI: Greetings! I might not have server power, but I’m doing my best."
         ])
@@ -51,7 +52,8 @@ def respond(msg: str) -> str:
     # “How does it work?”
     if "how" in text and "work" in text:
         return ("ARES_AI: I run completely client-side via Pyodide — that’s Python compiled to WebAssembly. "
-                "No backend servers, no AI APIs — which means I can’t think or learn, just simulate responses locally.")
+                "No backend servers, no AI APIs — which means I can’t think or learn, just simulate responses locally."
+                "If you were to download the V3 folder, then run app.py, you'll have an purely local AI! Trained? Probably not. I'm still learnin'")
 
     # Acknowledging GitHub limitations
     responses = [
@@ -73,11 +75,15 @@ def respond(msg: str) -> str:
     ]
 
     return random.choice(responses)
-  `);
-  pyodideReady = true;
+    `);
+    pyodideReady = true;
+  } catch (err) {
+    console.error("Failed to load Pyodide:", err);
+  }
 }
 loadPy();
 
+// ---- UI Helpers ----
 function clearWelcome() {
   if (!hasMessages) {
     messagesContainer.innerHTML = '';
@@ -101,9 +107,11 @@ function addMessage(text, isUser) {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
+// ---- Messaging Logic ----
 async function send() {
   const message = input.value.trim();
   if (!message) return;
+
   addMessage(message, true);
   input.value = '';
   sendBtn.disabled = true;
@@ -112,19 +120,26 @@ async function send() {
   try {
     let response = "ARES_AI: Python runtime not ready yet.";
     if (pyodideReady) {
-      response = await pyodide.runPythonAsync(`respond("${message}")`);
+      // Safely encode input for Python
+      const safeMsg = message
+        .replace(/\\/g, "\\\\")  // escape backslashes
+        .replace(/"/g, '\\"')    // escape quotes
+        .replace(/\n/g, "\\n");  // escape newlines
+
+      response = await pyodide.runPythonAsync(`respond("${safeMsg}")`);
     }
-    typing.classList.remove('active');
     addMessage(response, false);
   } catch (err) {
-    typing.classList.remove('active');
-    addMessage('Error: Could not run local Python model.', false);
+    console.error(err);
+    addMessage('ARES_AI: Error — my local Python brain just crashed!', false);
   } finally {
+    typing.classList.remove('active');
     sendBtn.disabled = false;
     input.focus();
   }
 }
 
+// ---- Event Listeners ----
 sendBtn.addEventListener('click', send);
 input.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) {
