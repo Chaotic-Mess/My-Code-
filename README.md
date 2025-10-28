@@ -105,7 +105,7 @@ A character-level RNN language model implemented end-to-end with only Python’s
 - ETA & throughput, live preview samples, progress panel
 - Temperature & top-k decoding
 
-### [TEST HIM](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/AI/ARES_AI/V3/app.py)
+### [TEST HIM](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/AI/ARES_AI/V3/static/index.html)
 
 ---
 
