@@ -52,6 +52,7 @@ An immersive, orbit-accurate 3D simulation of our solar system.
 ### [Pathfinding System](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/PathfindingSystem/index.html)
 ![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)
 ![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
+
 A dynamic grid-based pathfinding visualizer featuring A*, Dijkstra, BFS, and DFS.
 
 **Features**
