@@ -1,0 +1,107 @@
+[2025-10-26 17:25:30] [step 1] loss=4.251
+--- sample ---
+ROMEO:
+of-LelW5sjdb+'Puurab xVl :b6hVlCd3LzRIrRao6CESbLNp;HqCWW
+'D3
+ L:YL>roQU6EL:DKWsF2IS’hkwnyk(K0e3c)SMCQjS,>(y'A3;pR6I.:o:E+dRwlRIed6eLHsifD)Rf me3t6ACkD5
++6OnSsUQ3—POd0akAkS+6pes..i+P2i/nGhtiW)cmu:VfxSr
+-------------
+[2025-10-26 17:50:15] [step 1000] loss=2.728
+--- sample ---
+ROMEO:
+UES: mhae docse deh due dacry pout.
+ARhER: :h deirts me yom dmere? 
+out hon
+ARES: hrefe hit
+ARESh: Phas dod ite hon geit.
+ARESh: Dh p deh cacp.
+ARSER: We: fhalan ati dot hehse d?R
+USES: R: Kh hoe
+ARES
+-------------
+[2025-10-26 18:15:38] [step 2000] loss=3.065
+--- sample ---
+ROMEO:
+USER: irremlesurlitl efyase fhessish motcteat sinstefreftelpe remeumeechole stefintrasteseestelredpefease srelonneesrempamtam,e urmtomtiltesomltelteltertelperatmpelgasinsonl ysrarleines.
+ARES: Ahaltee
+-------------
+[2025-10-26 18:42:04] [step 3000] loss=2.732
+--- sample ---
+ROMEO:
+UER: Boutisk apinng yac tounliste netet bimetee?
+ARES: yoigate sat jo pale dur ante?
+
+USER: Sryelyasl oou’c tishlen.
+USER: y on loutuik.
+
+USER: Ius ios tinding ilankdete fate suuchdas leatlifkey sor a
+-------------
+[2025-10-26 19:07:51] [step 4000] loss=2.811
+--- sample ---
+ROMEO:
+ASER: reat yo dery lokan you’n han loy R: re yhede limdsunsh fo dhae comke gocre yum yomrnindy woy sou y sotot ine som tins. SES:  hind redS:
+ARoed. yumre moura Iuld. SES: beay toy coudRat yicd ut 
+US
+-------------
+[2025-10-26 19:34:00] [step 5000] loss=2.755
+--- sample ---
+ROMEO:
+US: wre apl foud ans ore arire? Auwt’me bouptsrats wratid.
+
+USER: irat’ uousn.
+
+USER:  hout oog wown th ip phinaun atl isao seoni wow ing ile. Nhamonl j sdy: Wrams ar, uptirig. dramee. rit: sre cou sp
+-------------
+[2025-10-26 20:02:12] [step 6000] loss=2.686
+--- sample ---
+ROMEO:
+USE: Roy at sit —isllne m o ang shere.
+
+USR: Me sism?
+
+USER: Woner? on, orade mispene gityung on jait wyep fof jongy youthin?
+Al oup? morw moch w glasg wians thirestmey ines suope grale e op pspe ge s
+-------------
+[2025-10-26 20:32:38] [step 7000] loss=2.828
+--- sample ---
+ROMEO:
+USER: plal foleting wouk spipl sirit ipley seast sumdw nes the.
+
+USER: Wiles molel wololes ins lolil idad mous tor sum lex.
+
+USER: Pus’t wpe.
+
+USER: Wempa s mpr lis lorel sowendt shapl s nespy wes to 
+-------------
+[2025-10-26 21:03:43] [step 8000] loss=2.500
+--- sample ---
+ROMEO:
+USER: Deasas.
+
+USER: hmiasg meadt teteteang.
+ARES: yowust iwact.
+
+USER: Dead dang geakacing.
+ARES: Woinel is ft?
+ARES: cod you fant neact.
+
+USER: Deldorad, met?
+ARES: epeldi. st?
+ARES: Kgetet?
+ARES: W
+-------------
+[2025-10-26 21:31:24] [step 9000] loss=3.439
+--- sample ---
+ROMEO:
+USES: I me songutin m ourliAawm oug t at sher met In ipap tho paret atowr mat .ineo mes mut G oum on.
+ARES: Hhyis mie mforp mit tis. iU tig mude: sit teocg mip oig oum mimin mis ouict mat mouct oug on
+-------------
+[2025-10-26 21:57:59] [step 10000] loss=2.055
+--- sample ---
+ROMEO:
+USER: hraerarg doug?
+ARES:  rer le.
+ARES: thhe Poure  ulmolm lere: arnanss fee tore lorin an sible’sk.
+ARES: bouk is asom y for mokacg woty Aan outar os  on nite ineit ihg?
+ARES: won lower fromakss  h
+-------------

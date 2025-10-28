@@ -1,0 +1,9 @@
+[2025-10-26 21:57:59] [step 10000] loss=2.055
+--- sample ---
+ROMEO:
+USER: hraerarg doug?
+ARES:  rer le.
+ARES: thhe Poure  ulmolm lere: arnanss fee tore lorin an sible’sk.
+ARES: bouk is asom y for mokacg woty Aan outar os  on nite ineit ihg?
+ARES: won lower fromakss  h
+-------------
