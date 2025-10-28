@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Drone Automation - Learn C++</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚜 Farm Drone Automation</h1>
+            <p class="subtitle">Learn C++ by Programming Farming Drones</p>
+        </header>
+
+        <div class="game-layout">
+            <!-- Left Panel: Game Canvas -->
+            <div class="game-panel">
+                <div class="level-info">
+                    <h2 id="levelTitle">Level 1: First Steps</h2>
+                    <p id="levelObjective">Plant 3 seeds and harvest them when grown.</p>
+                </div>
+                
+                <canvas id="gameCanvas" width="600" height="600"></canvas>
+                
+                <div class="game-stats">
+                    <div class="stat">
+                        <span class="stat-label">🌱 Seeds:</span>
+                        <span id="seedCount">10</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">🌾 Harvested:</span>
+                        <span id="harvestCount">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">⚡ Energy:</span>
+                        <span id="energyCount">100</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">🔄 Cycles:</span>
+                        <span id="cycleCount">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Code Editor -->
+            <div class="code-panel">
+                <div class="editor-header">
+                    <h3>💻 Drone Controller Program</h3>
+                    <div class="api-reference">
+                        <button id="showApiBtn" class="btn-secondary">📖 API Reference</button>
+                    </div>
+                </div>
+                
+                <div class="editor-wrapper">
+                    <textarea id="codeEditor">// Welcome to Farm Drone Automation!
+// Write your C++ program to control the drone
+
+void loop() {
+    // Your code here
+    // Example: Plant seeds in empty spots
+    if (scan() == EMPTY) {
+        plant();
+    }
+    moveForward();
+}</textarea>
+                </div>
+
+                <div class="controls">
+                    <button id="runBtn" class="btn-primary">▶️ Run Program</button>
+                    <button id="stopBtn" class="btn-danger" disabled>⏹️ Stop</button>
+                    <button id="resetBtn" class="btn-secondary">🔄 Reset Level</button>
+                    <button id="speedBtn" class="btn-secondary">⏩ Speed: 1x</button>
+                </div>
+
+                <div class="console">
+                    <div class="console-header">Console Output</div>
+                    <div id="consoleOutput" class="console-content">
+                        <div class="console-line">Ready to run your program...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Reference Modal -->
+        <div id="apiModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>🤖 Drone API Reference</h2>
+                <div class="api-docs">
+                    <div class="api-section">
+                        <h3>Movement Functions</h3>
+                        <div class="api-item">
+                            <code>void moveForward()</code>
+                            <p>Moves the drone one cell forward in its current direction.</p>
+                        </div>
+                        <div class="api-item">
+                            <code>void turnRight()</code>
+                            <p>Rotates the drone 90 degrees clockwise.</p>
+                        </div>
+                        <div class="api-item">
+                            <code>void turnLeft()</code>
+                            <p>Rotates the drone 90 degrees counter-clockwise.</p>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Sensing Functions</h3>
+                        <div class="api-item">
+                            <code>CellState scan()</code>
+                            <p>Returns the state of the current cell. Returns: EMPTY, PLANTED, GROWING, GROWN, or OBSTACLE.</p>
+                        </div>
+                        <div class="api-item">
+                            <code>CellState scanAhead()</code>
+                            <p>Returns the state of the cell ahead without moving.</p>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Action Functions</h3>
+                        <div class="api-item">
+                            <code>void plant()</code>
+                            <p>Plants a seed in the current cell (must be EMPTY).</p>
+                        </div>
+                        <div class="api-item">
+                            <code>void harvest()</code>
+                            <p>Harvests crops from the current cell (must be GROWN).</p>
+                        </div>
+                        <div class="api-item">
+                            <code>void water()</code>
+                            <p>Waters the crop in current cell to speed up growth.</p>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Control Flow</h3>
+                        <div class="api-item">
+                            <code>void loop() { ... }</code>
+                            <p>Main function that runs repeatedly. Put your automation logic here.</p>
+                        </div>
+                        <div class="api-item">
+                            <code>if (condition) { ... }</code>
+                            <p>Standard C++ conditional statement.</p>
+                        </div>
+                        <div class="api-item">
+                            <code>while (condition) { ... }</code>
+                            <p>Standard C++ loop statement.</p>
+                        </div>
+                    </div>
+
+                    <div class="api-section">
+                        <h3>Constants</h3>
+                        <div class="api-item">
+                            <code>EMPTY, PLANTED, GROWING, GROWN, OBSTACLE</code>
+                            <p>Cell state constants for use with scan() functions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="parser.js"></script>
+    <script src="game.js"></script>
+    <script src="renderer.js"></script>
+    <script src="levels.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
