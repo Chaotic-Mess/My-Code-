@@ -83,6 +83,7 @@ Write code to automate farming drones that plant, water, and harvest crops effic
 ## 🤖 AI Projects — *Ares • Odin • Nova*  
 ![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)  
 ![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
+
 Three different takes on personal AI — from a **homegrown LLM built with only the Python standard library** to a **voice assistant** and a **desktop companion**.
 
 ### tl;dr
