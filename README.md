@@ -8,9 +8,7 @@ Click the ***blue project titles*** to open working demos hosted on **GitHub Pag
 ## 🧩 Personal Projects  
 ---
 ### [Video to ASCII](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/VideoToASCII/index.html)
-![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)  
-![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
-
+![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)   
 Convert videos into **animated ASCII art** — complete with synchronized **audio** playback.
 
 **Features**
@@ -54,7 +52,6 @@ An immersive, orbit-accurate 3D simulation of our solar system.
 ### [Pathfinding System](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/PathfindingSystem/index.html)
 ![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)
 ![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
-
 A dynamic grid-based pathfinding visualizer featuring A*, Dijkstra, BFS, and DFS.
 
 **Features**
@@ -86,7 +83,6 @@ Write code to automate farming drones that plant, water, and harvest crops effic
 ## 🤖 AI Projects — *Ares • Odin • Nova*  
 ![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)  
 ![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
-
 Three different takes on personal AI — from a **homegrown LLM built with only the Python standard library** to a **voice assistant** and a **desktop companion**.
 
 ### tl;dr
@@ -107,12 +103,7 @@ A character-level RNN language model implemented end-to-end with only Python’s
 - ETA & throughput, live preview samples, progress panel
 - Temperature & top-k decoding
 
-**Run it**
-```bash
-cd ARES_AI
-python app.py           # → http://localhost:8000
-python train.py         # trains; writes weights/ + progress_*.txt
-```
+### [TEST HIM](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/AI/ARES_AI/V3/app.py)
 
 ---
 
