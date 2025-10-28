@@ -28,7 +28,7 @@ def respond(msg: str) -> str:
     # Greeting responses
     if any(word in text for word in greetings):
         return random.choice([
-            "ARES_AI: Hello there! I’m running entirely in your browser using Pyodide! Kinda...",
+            "ARES_AI: Hello there! I’m running entirely in your browser using Pyodide.",
             "ARES_AI: Hi! No backend, no API — just pure static code here on GitHub Pages!",
             "ARES_AI: Greetings! I might not have server power, but I’m doing my best."
         ])
@@ -57,21 +57,21 @@ def respond(msg: str) -> str:
 
     # Acknowledging GitHub limitations
     responses = [
-        f"ARES_AI: I understood that! However, I can’t generate real AI answers due to GitHub’s static hosting limitations for Python scripts.",
+        "ARES_AI: I understood that! However, I can’t generate real AI answers due to GitHub’s static hosting limitations for Python scripts.",
         f"ARES_AI: You said '{msg}'. I can read and echo messages, but I can’t process them deeply — GitHub Pages doesn’t allow live AI execution.",
-        f"ARES_AI: Got it! Sadly, my neural circuits are trapped in static HTML.",
-        f"ARES_AI: Interesting message — I wish I could think about it, but I’m limited by GitHub’s deployment rules.",
-        f"ARES_AI: That’s a good one. If only I had dynamic server access to respond properly!",
-        f"ARES_AI: Processing… oh wait, I’m not actually connected to an AI backend. Curse you, static hosting!",
-        f"ARES_AI: I get what you mean. Unfortunately, GitHub Pages doesn’t let me run real Python logic beyond this simulation.",
-        f"ARES_AI: I feel your vibe! Though, technically, I can’t *feel* anything — I’m just static code pretending to be alive.",
-        f"ARES_AI: Haha, nice! You know, I’m basically an AI hologram — no backend brain attached.",
-        f"ARES_AI: I’d love to give a deep answer, but GitHub’s static setup prevents live AI inference.",
-        f"ARES_AI: Message received! Though my Python brain is stuck in the browser sandbox.",
-        f"ARES_AI: That’s fascinating! But I can’t generate meaningful insights without server processing power.",
+        "ARES_AI: Got it! Sadly, my neural circuits are trapped in static HTML.",
+        "ARES_AI: Interesting message — I wish I could think about it, but I’m limited by GitHub’s deployment rules.",
+        "ARES_AI: That’s a good one. If only I had dynamic server access to respond properly!",
+        "ARES_AI: Processing… oh wait, I’m not actually connected to an AI backend. Curse you, static hosting!",
+        "ARES_AI: I get what you mean. Unfortunately, GitHub Pages doesn’t let me run real Python logic beyond this simulation.",
+        "ARES_AI: I feel your vibe! Though, technically, I can’t *feel* anything — I’m just static code pretending to be alive.",
+        "ARES_AI: Haha, nice! You know, I’m basically an AI hologram — no backend brain attached.",
+        "ARES_AI: I’d love to give a deep answer, but GitHub’s static setup prevents live AI inference.",
+        "ARES_AI: Message received! Though my Python brain is stuck in the browser sandbox.",
+        "ARES_AI: That’s fascinating! But I can’t generate meaningful insights without server processing power.",
         f"ARES_AI: You said '{msg}'. I’d respond intelligently, but static hosting keeps me simple and honest.",
-        f"ARES_AI: I understand that, but my responses are prewritten — GitHub’s static nature prevents actual AI reasoning.",
-        f"ARES_AI: Appreciate your input! Sadly, my AI core is disabled due to static deployment limitations."
+        "ARES_AI: I understand that, but my responses are prewritten — GitHub’s static nature prevents actual AI reasoning.",
+        "ARES_AI: Appreciate your input! Sadly, my AI core is disabled due to static deployment limitations."
     ]
 
     return random.choice(responses)
@@ -120,12 +120,11 @@ async function send() {
   try {
     let response = "ARES_AI: Python runtime not ready yet.";
     if (pyodideReady) {
-      // Safely encode input for Python
+      // Escape input safely for Python
       const safeMsg = message
-        .replace(/\\/g, "\\\\")  // escape backslashes
-        .replace(/"/g, '\\"')    // escape quotes
-        .replace(/\n/g, "\\n");  // escape newlines
-
+        .replace(/\\/g, "\\\\")
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, "\\n");
       response = await pyodide.runPythonAsync(`respond("${safeMsg}")`);
     }
     addMessage(response, false);
