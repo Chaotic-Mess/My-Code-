@@ -2,30 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>YouTube Video Info & Stream Extractor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube Scraper & Downloader</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>YouTube Scraper</h1>
-    <p>Enter a YouTube video link below. The tool will extract video info and list all downloadable streams.</p>
+    <h1>YouTube Scraper & Downloader</h1>
+    <p>Get metadata and downloadable links from any YouTube video.</p>
 
-    <input type="text" id="yt-link" placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-
-    <button id="fetch-info" class="btn-primary">Fetch Info</button>
+    <input id="yt-link" type="text" placeholder="Paste YouTube link here…">
+    <button id="fetch-info" class="btn-primary">Fetch Video Info</button>
 
     <div id="info-area"></div>
-
-    <div id="streams-area" class="streams hidden"></div>
-
+    <div id="streams-area" class="hidden"></div>
     <div id="console-area" class="console"></div>
   </div>
-
-  <footer>
-    <p>Created by <b>chaotic-mess</b> • Open source on <a href="https://github.com/chaotic-mess/My-Code-" target="_blank">GitHub</a></p>
-  </footer>
 
   <script src="main.js"></script>
 </body>
