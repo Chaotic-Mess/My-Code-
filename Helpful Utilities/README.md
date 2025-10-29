@@ -4,7 +4,7 @@
 
 A web tool to download all files (including subdirectories) from a GitHub directory link.
 
-**[Use it here](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Directory_Downloader/index.html)**
+**[Use it here](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Directory_Downloader)**
 
 ### Usage
 
@@ -33,7 +33,7 @@ This page runs entirely in your browser. It uses the GitHub API to get file info
 A one-click **bookmarklet-based downloader** for Brightspace course content.  
 Lets you grab all PDFs (and other files) from a course page as a single `.zip` — directly in your browser, no installs, no extensions.
 
-**[Use it here](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper/index.html)**
+**[Use it here](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper)**
 
 ### Usage
 
@@ -65,7 +65,7 @@ Either way, everything happens client-side — quick, safe, and spam-free.
 
 A smart **bookmarklet-based companion** for YouTube that instantly shows video metadata, stream options, and lets you copy or save everything — including thumbnails, transcripts, or shortcuts — directly from any video page.
 
-**[Use it here](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Youtube_Scraper/index.html)**
+**[Use it here](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Youtube_Scraper)**
 
 ### Usage
 
