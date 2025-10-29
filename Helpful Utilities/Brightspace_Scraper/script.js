@@ -1,5 +1,5 @@
 /* ===========================================================
-   Brightspace_Scraper v3.0
+   Brightspace_Scraper v3.1
    by chaotic-mess | https://chaotic-mess.github.io/My-Code-/
    Dark-mode downloader for Brightspace (PDFs, MP4s, DOCXs, etc.)
    Auto-detects course, deep-scans HTML topics, and builds a ZIP.
@@ -113,21 +113,46 @@
   (toc.Modules || []).forEach(walk);
   S(`Found ${topics.length} topics.`);
 
-  /* ---------- Deep Scan HTML pages ---------- */
-  const deepScan = async (url) => {
-    try {
-      const r = await fetch(url, { credentials:"same-origin" });
-      if (!r.ok) return [];
-      const html = await r.text();
-      const d = new DOMParser().parseFromString(html, "text/html");
-      const found = [];
-      d.querySelectorAll("a[href],source[src],iframe[src],embed[src]").forEach(n => {
-        const u = abs(n.getAttribute("href") || n.getAttribute("src") || "");
-        if (u && looksFile(u)) found.push(u);
-      });
-      return found;
-    } catch { return []; }
-  };
+  /* ---------- Deep Scan HTML pages ---------- */ 
+   const deepScan = async (url, depth = 0, visited = new Set()) => {
+     if (!url || visited.has(url) || depth > 3) return [];
+     visited.add(url);
+   
+     try {
+       const r = await fetch(url, { credentials: "same-origin" });
+       if (!r.ok) return [];
+       const html = await r.text();
+   
+       // Keep a copy of this HTML page as a reference
+       const folderName = `html_pages/`;
+       zip.file(folderName + san(`page_${depth}_${Date.now()}.html`), html);
+   
+       const d = new DOMParser().parseFromString(html, "text/html");
+       const found = new Set();
+   
+       d.querySelectorAll("a[href], source[src], iframe[src], embed[src]").forEach(n => {
+         const u = abs(n.getAttribute("href") || n.getAttribute("src") || "");
+         if (!u) return;
+   
+         // Detect direct downloadable file URLs
+         if (looksFile(u)) {
+           found.add(u);
+         }
+         // Detect nested HTML content pages
+         else if (/\/viewContent\/\d+\/View/i.test(u) || /\/content\/\d+/i.test(u)) {
+           // Recursively follow the HTML link
+           deepScan(u, depth + 1, visited).then(subLinks => {
+             subLinks.forEach(x => found.add(x));
+           });
+         }
+       });
+   
+       return [...found];
+     } catch (e) {
+       console.warn("deepScan failed:", e);
+       return [];
+     }
+   };
 
   /* ---------- Button Logic ---------- */
   const skipped = [];
