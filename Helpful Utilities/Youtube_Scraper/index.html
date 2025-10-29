@@ -2,59 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>YouTube Scraper | Helpful Utilities</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>YouTube Video Info & Stream Extractor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="container">
+  <div class="container">
     <h1>YouTube Scraper</h1>
-    <p class="subtitle">Quickly capture metadata, download links, or transcripts from any YouTube video — directly in your browser.</p>
+    <p>Enter a YouTube video link below. The tool will extract video info and list all downloadable streams.</p>
 
-    <section>
-      <h2>How It Works</h2>
-      <p>While watching a YouTube video, click the bookmarklet below.  
-      It will show a floating panel containing:</p>
-      <ul>
-        <li>Video title, channel, views, likes</li>
-        <li>Available download formats (video/audio/transcript)</li>
-        <li>Copy-to-clipboard buttons for each field</li>
-        <li>Fallbacks for thumbnails, JSON metadata, or shortcuts</li>
-      </ul>
-    </section>
+    <input type="text" id="yt-link" placeholder="e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ">
 
-    <section>
-      <h2>Install</h2>
-      <p>Drag this button to your bookmarks bar:</p>
-      <a id="bookmarklet-btn" class="btn-primary"
-         href="javascript:(async()=>{try{if(!location.hostname.includes('youtube.com'))return alert('⚠️ YouTube Scraper only works on YouTube video pages.');const s=document.createElement('script');s.src='https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/YouTube_Scraper/script.js?'+Date.now();s.onload=()=>console.log('✅ YouTube Scraper loaded');s.onerror=()=>alert('❌ Failed to load YouTube_Scraper script.');document.head.appendChild(s);}catch(e){alert('Unexpected error: '+e.message);}})()">🎥 YouTube Scraper</a>
-      <p class="note">Click this bookmark on any <code>youtube.com/watch?v=...</code> page to open the overlay.</p>
-    </section>
+    <button id="fetch-info" class="btn-primary">Fetch Info</button>
 
-    <section>
-      <h2>Features</h2>
-      <ul>
-        <li>Detects available video/audio streams (resolutions, codecs)</li>
-        <li>Copy metadata or URLs to clipboard</li>
-        <li>Download thumbnails, JSON, transcripts, or shortcut files</li>
-        <li>All operations happen locally in your browser</li>
-      </ul>
-    </section>
+    <div id="info-area"></div>
 
-    <section>
-      <h2>About</h2>
-      <p>
-        Part of the <a href="https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/" target="_blank">Helpful Utilities</a> collection  
-        by <a href="https://github.com/chaotic-mess" target="_blank">chaotic-mess</a>.  
-        Open-source, privacy-first, fully client-side.
-      </p>
-    </section>
+    <div id="streams-area" class="streams hidden"></div>
 
-    <footer>
-      <p>© 2025 chaotic-mess | <a href="https://github.com/chaotic-mess/My-Code-/tree/main/Helpful%20Utilities/YouTube_Scraper" target="_blank">View on GitHub</a></p>
-    </footer>
-  </main>
+    <div id="console-area" class="console"></div>
+  </div>
+
+  <footer>
+    <p>Created by <b>chaotic-mess</b> • Open source on <a href="https://github.com/chaotic-mess/My-Code-" target="_blank">GitHub</a></p>
+  </footer>
 
   <script src="main.js"></script>
 </body>
