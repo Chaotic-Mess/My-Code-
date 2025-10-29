@@ -47,13 +47,26 @@ async function tryYtDlp(videoId) {
   const res = await fetch(api);
   if (!res.ok) throw new Error("yt-dlp API failed");
   const data = await res.json();
-  const arr = data.formats || [];
-  return arr.filter(f => f.url).map(f => ({
-    url: f.url,
-    quality: f.format_note || f.abr || "unknown",
-    ext: f.ext
-  }));
+
+  // Some yt-dlp APIs return { formats: [...] }, others wrap inside data
+  const formats = data.formats || data.data?.formats || [];
+
+  // Filter only playable streams
+  return formats
+    .filter(f => f.url && (f.ext === "mp4" || f.ext === "m4a" || f.ext === "webm" || f.acodec || f.vcodec))
+    .map(f => ({
+      url: f.url,
+      quality: f.format_note || f.abr || f.height || "unknown",
+      ext: f.ext || f.mimeType?.split(";")[0] || "unknown"
+    }));
 }
+
+const filter = document.getElementById("format-filter").value;
+const visible = streams.filter(s =>
+  filter === "all" ? true :
+  filter === "video" ? s.ext.match(/mp4|webm/) :
+  s.ext.match(/mp3|m4a/)
+);
 
 // UI handler
 document.getElementById("fetch-info").onclick = async () => {
