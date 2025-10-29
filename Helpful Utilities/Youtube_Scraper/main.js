@@ -1,6 +1,7 @@
 async function tryFetchYouTubeHTML(videoId) {
   const target = `https://www.youtube.com/watch?v=${videoId}`;
   const urls = [
+    `https://youtube-cors-proxy.zacmatthiass.workers.dev/?url=${encodeURIComponent(target)}`,
     `https://api.allorigins.win/raw?url=${encodeURIComponent(target)}`,
     `https://corsproxy.io/?${encodeURIComponent(target)}`,
     `https://thingproxy.freeboard.io/fetch/${target}`
