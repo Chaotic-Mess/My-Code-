@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>GitHub Directory Downloader | Helpful Utilities</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -11,68 +11,69 @@
   <main class="container">
     <h1>📦 GitHub Directory Downloader</h1>
     <p class="subtitle">
-      Fetch and download the contents of any GitHub directory as a zip file — directly from your browser.
+      Download any GitHub directory as a single, neatly packaged ZIP file — without cloning the entire repository.
     </p>
 
-    <section class="intro">
+    <section>
       <h2>What It Does</h2>
       <p>
-        This utility helps you grab <strong>an entire GitHub folder</strong> (without cloning the whole repository).
-        It uses the official GitHub REST API to fetch files, then packages them into a single, ready-to-use zip archive.
+        This tool uses the <strong>GitHub REST API</strong> to recursively fetch files from any folder in a repository.
+        It then bundles everything into a ZIP archive — all in your browser.  
+        No installs, no servers, no rate limits (beyond GitHub’s own).
       </p>
       <ul>
-        <li>Download any public GitHub folder directly</li>
-        <li>Supports private repos with personal access tokens</li>
-        <li>Runs entirely in your browser — no installation needed</li>
+        <li>Recursively downloads all subfolders</li>
+        <li>Parallel file downloads for speed</li>
+        <li>Supports private repos using a GitHub access token</li>
+        <li>Entirely client-side — nothing leaves your browser</li>
       </ul>
     </section>
 
     <section class="form">
       <h2>Try It Out</h2>
-      <p class="note">Paste a GitHub directory link below. Example:</p>
-      <pre>https://github.com/owner/repo/tree/main/path/to/folder</pre>
+      <p class="note">Paste the link to a GitHub directory (not a single file).</p>
+      <pre>https://github.com/owner/repo/tree/main/folder</pre>
 
       <input type="text" id="github-link" placeholder="Enter GitHub directory URL">
       <input type="text" id="github-token" placeholder="Optional: GitHub token for private access">
 
-      <div class="button-row">
-        <button id="fetch-info" class="btn-primary">Fetch Info</button>
-      </div>
+      <button id="fetch-info" class="btn-primary">🔍 Fetch Directory</button>
 
-      <div id="info-area"></div>
+      <div id="info-area" class="info"></div>
 
-      <div id="confirm-area" class="confirm-panel hidden">
-        <button id="download-zip" class="btn-success">Download as Zip</button>
+      <div id="confirm-area" class="confirm-panel">
+        <button id="download-zip" class="btn-success">Download as ZIP</button>
         <button id="cancel-download" class="btn-cancel">✖ Cancel</button>
       </div>
 
       <div id="console-area" class="console"></div>
     </section>
 
-    <section id="notes">
-      <h2>Tips & Notes</h2>
+    <section>
+      <h2>Notes & Tips</h2>
       <ul>
-        <li>If your link starts with <code>/tree/main/</code> or <code>/blob/main/</code>, this tool will parse it automatically.</li>
-        <li>Large folders may take longer to process — you’ll see progress logs below.</li>
-        <li>For private repositories, generate a personal access token from <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings → Developer Settings → Tokens</a>.</li>
+        <li>Works with URLs in the form <code>/tree/main/</code> or any branch name.</li>
+        <li>Private repositories require a valid <a href="https://github.com/settings/tokens" target="_blank">GitHub Personal Access Token</a>.</li>
+        <li>Your token is used only for authentication — it never leaves your browser.</li>
+        <li>Progress logs will appear below as files are downloaded.</li>
       </ul>
     </section>
 
-    <section id="credits">
+    <section>
       <h2>Credits & About</h2>
       <p>
-        Developed by <a href="https://github.com/chaotic-mess">chaotic-mess</a> as part of the
-        <a href="https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/">Helpful Utilities</a> project.
+        Created by <a href="https://github.com/chaotic-mess" target="_blank">chaotic-mess</a>  
+        as part of the <a href="https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/" target="_blank">Helpful Utilities</a> suite.  
+        Open source, privacy-friendly, and entirely self-contained.
       </p>
       <p>
-        This project is open source and free to use.  
-        It runs completely on the client side — <strong>no servers, no tracking, and no data collection.</strong>
+        This page and its script are released under the MIT License.  
+        You’re free to reuse, remix, or extend it — just keep the credit.
       </p>
-      <p class="tiny">Last updated: <script>document.write(new Date().toLocaleDateString())</script></p>
     </section>
 
     <footer>
-      <p>© 2025 chaotic-mess | <a href="https://github.com/chaotic-mess/My-Code-/tree/main/Helpful%20Utilities/GitHub_Directory_Downloader">View on GitHub</a></p>
+      <p>© 2025 chaotic-mess | <a href="https://github.com/chaotic-mess/My-Code-/tree/main/Helpful%20Utilities/GitHub_Directory_Downloader" target="_blank">View on GitHub</a></p>
     </footer>
   </main>
 
