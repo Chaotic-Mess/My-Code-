@@ -2,30 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>GitHub Directory Downloader</title>
+  <title>GitHub Directory Downloader | Helpful Utilities</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>GitHub Directory Downloader</h1>
-    <p>Paste a GitHub directory URL to fetch and download its contents as a zip file.</p>
+  <main class="container">
+    <h1>📦 GitHub Directory Downloader</h1>
+    <p class="subtitle">
+      Fetch and download the contents of any GitHub directory as a zip file — directly from your browser.
+    </p>
 
-    <input type="text" id="github-link" placeholder="e.g. https://github.com/owner/repo/tree/main/folder">
-    <input type="text" id="github-token" placeholder="Optional: GitHub token for private access">
+    <section class="intro">
+      <h2>🧠 What It Does</h2>
+      <p>
+        This utility helps you grab <strong>an entire GitHub folder</strong> (without cloning the whole repository).
+        It uses the official GitHub REST API to fetch files, then packages them into a single, ready-to-use zip archive.
+      </p>
+      <ul>
+        <li>📂 Download any public GitHub folder directly</li>
+        <li>🔐 Supports private repos with personal access tokens</li>
+        <li>🪶 Runs entirely in your browser — no installation needed</li>
+      </ul>
+    </section>
 
-    <button id="fetch-info" class="btn-primary">Fetch Info</button>
+    <section class="form">
+      <h2>⚙️ Try It Out</h2>
+      <p class="note">Paste a GitHub directory link below. Example:</p>
+      <pre>https://github.com/owner/repo/tree/main/path/to/folder</pre>
 
-    <div id="info-area"></div>
+      <input type="text" id="github-link" placeholder="Enter GitHub directory URL">
+      <input type="text" id="github-token" placeholder="Optional: GitHub token for private access">
 
-    <div id="confirm-area" class="confirm-panel">
-      <button id="download-zip" class="btn-success">Download as Zip</button>
-      <button id="cancel-download" class="btn-cancel">✖ Cancel</button>
-    </div>
+      <div class="button-row">
+        <button id="fetch-info" class="btn-primary">🔍 Fetch Info</button>
+      </div>
 
-    <div id="console-area" class="console"></div>
-  </div>
+      <div id="info-area"></div>
+
+      <div id="confirm-area" class="confirm-panel hidden">
+        <button id="download-zip" class="btn-success">⬇️ Download as Zip</button>
+        <button id="cancel-download" class="btn-cancel">✖ Cancel</button>
+      </div>
+
+      <div id="console-area" class="console"></div>
+    </section>
+
+    <section id="notes">
+      <h2>📘 Tips & Notes</h2>
+      <ul>
+        <li>If your link starts with <code>/tree/main/</code> or <code>/blob/main/</code>, this tool will parse it automatically.</li>
+        <li>Large folders may take longer to process — you’ll see progress logs below.</li>
+        <li>For private repositories, generate a personal access token from <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings → Developer Settings → Tokens</a>.</li>
+      </ul>
+    </section>
+
+    <section id="credits">
+      <h2>💬 Credits & About</h2>
+      <p>
+        Developed by <a href="https://github.com/chaotic-mess">chaotic-mess</a> as part of the
+        <a href="https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/">Helpful Utilities</a> project.
+      </p>
+      <p>
+        This project is open source and free to use.  
+        It runs completely on the client side — <strong>no servers, no tracking, and no data collection.</strong>
+      </p>
+      <p class="tiny">Last updated: <script>document.write(new Date().toLocaleDateString())</script></p>
+    </section>
+
+    <footer>
+      <p>© 2025 chaotic-mess | <a href="https://github.com/chaotic-mess/My-Code-/tree/main/Helpful%20Utilities/GitHub_Directory_Downloader">View on GitHub</a></p>
+    </footer>
+  </main>
 
   <script src="main.js"></script>
 </body>
