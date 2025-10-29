@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brightspace Scraper</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>Brightspace Scraper</h1>
+    <p class="subtitle">
+      A one-click downloader for your <strong>Brightspace</strong> course files.<br>
+      Works right from the browser — no extensions, no setup.
+      Not doing any malpractices. This simply takes the downloads and files you can normally download and ORGANISES them by module / existing folder structure. Something the original system doesn't do. 
+      Many Brightspace Courses don't have a Table of Contents, and if they do, the download button simply downloads all the mismatched ugly files. This fixes that. You're welcome.
+    </p>
+
+    <section class="card">
+      <h2>How it works</h2>
+      <ul>
+        <li>Scans your course’s <em>Table of Contents</em></li>
+        <li>Finds all downloadable files (PDFs, docs, slides, etc.)</li>
+        <li>Zips everything neatly by module</li>
+        <li>Lets you toggle file types (PDF, MP4, DOCX...)</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Install Bookmarklet</h2>
+      <p>Drag the button below to your bookmarks bar:</p>
+      <a id="bookmarklet"
+         href="javascript:(async()=>{try{const srcs=['https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper/script.js','https://raw.githubusercontent.com/chaotic-mess/My-Code-/main/Helpful%20Utilities/Brightspace_Scraper/script.js','https://cdn.jsdelivr.net/gh/chaotic-mess/My-Code-/Helpful%20Utilities/Brightspace_Scraper/script.js'];let loaded=false,errLog=[];for(const u of srcs){try{const r=await fetch(u+'?t='+(+new Date()));if(r.ok){(0,eval)(await r.text());loaded=true;break;}else errLog.push(u+'→'+r.status);}catch(e){errLog.push(u+'→'+e.message);}}if(!loaded){alert('⚠️ Unable to load Brightspace_Scraper. Tried:\\n'+errLog.join('\\n'));}}catch(e){alert('Brightspace_Scraper failed: '+e.message);}})();">
+        ➕ Install Brightspace Scraper
+      </a>
+
+      <p>Or copy it manually:</p>
+      <textarea id="code" readonly></textarea>
+      <button id="copy">Copy to Clipboard</button>
+    </section>
+
+    <footer>
+      <p>
+        Built by <a href="https://chaotic-mess.github.io/My-Code-/" target="_blank">@chaotic-mess</a> •
+        Open-source on <a href="https://github.com/chaotic-mess/My-Code-" target="_blank">GitHub</a>
+      </p>
+    </footer>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
