@@ -131,7 +131,14 @@ document.getElementById("fetch-info").onclick = async () => {
       <p>${info.author_name}</p>
     `;
 
-    const streams = await extractStreams(info.videoId);
+    const res = await fetch(`${WORKER_URL}/api/info?url=https://www.youtube.com/watch?v=${info.videoId}`);
+    const data = await res.json();
+    const streams = data.formats?.map(f => ({
+      mime: f.ext || "unknown",
+      quality: f.format_note || f.abr || "unknown",
+      url: f.url
+    })) || [];
+
     if (!streams.length) {
       streamsArea.innerHTML = "<p>No downloadable streams found.</p>";
     } else {
