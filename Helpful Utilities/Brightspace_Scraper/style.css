@@ -1,0 +1,9 @@
+:root{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#0b1226}
+body{margin:0;background:#f7fbff;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+main{width:760px;background:white;padding:28px;border-radius:12px;box-shadow:0 8px 30px rgba(8,35,80,0.08)}
+h1{margin-top:0}
+pre,code{background:#f1f5f9;padding:4px 6px;border-radius:6px;font-family:ui-monospace,monospace}
+.bookmarklet-area{display:flex;gap:12px;align-items:center;margin:14px 0}
+button#copyBtn{padding:10px 14px;border-radius:8px;border:0;background:#0b67ff;color:white;cursor:pointer}
+a#dragBtn{padding:10px 14px;border-radius:8px;background:#e8f0ff;color:#0b67ff;text-decoration:none}
+footer{margin-top:18px;color:#6b7280;font-size:14px}
