@@ -1,11 +1,12 @@
-# 🌐 My Projects Portfolio  
+# My Projects Portfolio  
 
 A collection of interactive web and programming projects — showcasing algorithms, simulations, AI systems, and academic work.  
 Click the ***blue project titles*** to open working demos hosted on **GitHub Pages**.
 
 ---
+### [Helpful Utilities](https://github.com/Chaotic-Mess/My-Code-/blob/main/Helpful%20Utilities/README.md)
 
-## 🧩 Personal Projects  
+## Personal Projects  
 ---
 ### [Video to ASCII](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/VideoToASCII/index.html)
 ![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)   
@@ -81,7 +82,7 @@ Write code to automate farming drones that plant, water, and harvest crops effic
 
 ---
 
-## 🤖 AI Projects — *Ares • Odin • Nova*  
+## AI Projects — *Ares • Odin • Nova*  
 ![Personal Project](https://img.shields.io/badge/PERSONAL%20PROJECT-6A5ACD?style=for-the-badge&logo=github&logoColor=white)
 ![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
 
@@ -116,7 +117,7 @@ A local voice assistant pipeline — wake word → STT → LLM → TTS → deskt
 - **TTS**: local speech synthesis (e.g., pyttsx3)
 - Optional integrations: calendars, system control, etc.
 
-> 🔐 Not publicly available — contains private API keys.
+> Not publicly available — contains private API keys.
 
 ---
 
@@ -129,8 +130,8 @@ A desktop overlay companion with voice, memory, and optional vision hooks.
 - Local STT/TTS + optional local LLMs
 - Persistent memory (JSON/DB)
 
-> 🔐 Not publicly available — contains private API keys.  
-> 💬 Known for being really good at GeoGuessr!
+> Not publicly available — contains private API keys.  
+> Really good at GeoGuessr!
 
 ---
 
@@ -148,7 +149,7 @@ A desktop overlay companion with voice, memory, and optional vision hooks.
 
 ---
 
-## 🎓 University of Victoria  
+## University of Victoria  
 
 ![School Work](https://img.shields.io/badge/SCHOOL%20WORK-008080?style=for-the-badge&logo=google-classroom&logoColor=white)
 
@@ -160,7 +161,7 @@ Focused on algorithm analysis, recursion, and OOP — with visual JS versions.
 
 ---
 
-## 🧰 Tech Stack  
+## Tech Stack  
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
@@ -169,13 +170,6 @@ Focused on algorithm analysis, recursion, and OOP — with visual JS versions.
 ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?style=for-the-badge&logo=githubpages&logoColor=white)
 ![C++](https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-
----
-
-## 🔗 Connect With Me  
-
-Explore the projects, fork anything you like, and reach out with questions or ideas!  
-⭐ *Don’t forget to star your favorites on GitHub!*
 
 ---
 
