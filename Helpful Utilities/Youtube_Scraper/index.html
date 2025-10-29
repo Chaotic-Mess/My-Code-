@@ -10,46 +10,35 @@
 <body>
   <main class="container">
     <h1>YouTube Scraper</h1>
-    <p class="subtitle">
-      Instantly grab metadata, thumbnails, transcripts, or shortcuts from any YouTube video — right from your browser.
-    </p>
+    <p class="subtitle">Quickly capture metadata, download links, or transcripts from any YouTube video — directly in your browser.</p>
 
     <section>
       <h2>How It Works</h2>
-      <p>
-        When you’re watching a YouTube video, click the bookmarklet below.  
-        A floating window will appear showing details such as:
-      </p>
+      <p>While watching a YouTube video, click the bookmarklet below.  
+      It will show a floating panel containing:</p>
       <ul>
-        <li>Title, Channel, Views, Likes</li>
-        <li>Video description</li>
-        <li>Download or save options (MP4, MP3, transcript, shortcut)</li>
+        <li>Video title, channel, views, likes</li>
+        <li>Available download formats (video/audio/transcript)</li>
+        <li>Copy-to-clipboard buttons for each field</li>
+        <li>Fallbacks for thumbnails, JSON metadata, or shortcuts</li>
       </ul>
-      <p>
-        The overlay runs fully in your browser — it doesn’t upload or send any data anywhere.
-      </p>
     </section>
 
     <section>
       <h2>Install</h2>
       <p>Drag this button to your bookmarks bar:</p>
       <a id="bookmarklet-btn" class="btn-primary"
-         href="javascript:(()=>{fetch('https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/YouTube_Scraper/script.js').then(r=>r.text()).then(eval)})()">
-         YouTube Scraper
-      </a>
-      <p class="note">
-        When on a YouTube video page, click the “YouTube Scraper” bookmark to open the overlay.
-      </p>
+         href="javascript:(async()=>{try{if(!location.hostname.includes('youtube.com'))return alert('⚠️ YouTube Scraper only works on YouTube video pages.');const s=document.createElement('script');s.src='https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/YouTube_Scraper/script.js?'+Date.now();s.onload=()=>console.log('✅ YouTube Scraper loaded');s.onerror=()=>alert('❌ Failed to load YouTube_Scraper script.');document.head.appendChild(s);}catch(e){alert('Unexpected error: '+e.message);}})()">🎥 YouTube Scraper</a>
+      <p class="note">Click this bookmark on any <code>youtube.com/watch?v=...</code> page to open the overlay.</p>
     </section>
 
     <section>
       <h2>Features</h2>
       <ul>
-        <li>Fetches video title, views, likes, upload date</li>
-        <li>Grabs thumbnail, description, and transcript</li>
-        <li>Offers multiple download or save formats</li>
-        <li>Graceful fallbacks if a download option isn’t available (shortcut file)</li>
-        <li>Matches the Helpful Utilities dark theme</li>
+        <li>Detects available video/audio streams (resolutions, codecs)</li>
+        <li>Copy metadata or URLs to clipboard</li>
+        <li>Download thumbnails, JSON, transcripts, or shortcut files</li>
+        <li>All operations happen locally in your browser</li>
       </ul>
     </section>
 
@@ -58,7 +47,7 @@
       <p>
         Part of the <a href="https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/" target="_blank">Helpful Utilities</a> collection  
         by <a href="https://github.com/chaotic-mess" target="_blank">chaotic-mess</a>.  
-        Open-source and client-side. No external servers, no tracking.
+        Open-source, privacy-first, fully client-side.
       </p>
     </section>
 
