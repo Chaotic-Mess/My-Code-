@@ -20,6 +20,7 @@
                          /\/content\/enforced\//i.test(u) || /\/d2l\/common\/viewFile\.d2l/i.test(u);
 
   /* ---------- Course Detection ---------- */
+  const isLessons = /\/d2l\/le\/lessons\//.test(location.pathname);
   const m = location.pathname.match(/\/d2l\/(?:le\/content\/|lessons\/|home\/)(\d+)/);
   const courseId = m && m[1];
   if (!courseId) {
@@ -88,21 +89,25 @@
   } catch {}
   ui.querySelector("#bs-course").textContent = courseName || `Course ID: ${courseId}`;
 
-  /* ---------- Fallback: DOM scrape ---------- */
-  const scrapeDomLinks = () => {
-    const links = [];
-    document.querySelectorAll("a[href]").forEach(a => {
-      const href = abs(a.getAttribute("href"));
-      if (!href) return;
-      if (looksFile(href))
-        links.push({ Title: a.textContent.trim() || "file", Url: href });
-    });
-    return { Modules:[{ Title:"Loose Files", Topics:links }] };
-  };
-  if (!toc || !toc.Modules?.length) {
-    S("No ToC found; scanning page links…");
-    toc = scrapeDomLinks();
-  }
+   /* ---------- Fallback: Lessons or No ToC DOM scrape ---------- */
+   const scrapeDomLinks = () => {
+     const links = [];
+     // Capture normal <a> links and any embedded sources
+     document.querySelectorAll("a[href], source[src], iframe[src], embed[src]").forEach(el => {
+       const href = abs(el.getAttribute("href") || el.getAttribute("src"));
+       if (!href) return;
+       if (looksFile(href))
+         links.push({ Title: el.textContent.trim() || el.getAttribute("title") || "file", Url: href });
+     });
+     return { Modules: [{ Title: "Lesson Page", Topics: links }] };
+   };
+   
+   // Detect Lessons page
+   if (!toc || !toc.Modules?.length || isLessons) {
+     S(isLessons ? "Lessons layout detected — scanning visible page…" : "No ToC found; scanning page links…");
+     toc = scrapeDomLinks();
+   }
+
 
   /* ---------- Collect Topics ---------- */
   const topics = [];
