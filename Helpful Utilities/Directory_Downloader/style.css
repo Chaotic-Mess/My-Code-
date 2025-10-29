@@ -7,9 +7,9 @@ body {
 }
 
 .container {
-  max-width: 780px;
+  max-width: 760px;
   margin: 3rem auto;
-  padding: 0 1.2rem;
+  padding: 0 1.4rem;
 }
 
 h1 {
@@ -32,8 +32,8 @@ h2 {
 }
 
 ul {
-  margin-left: 1.4rem;
-  line-height: 1.7;
+  margin-left: 1.5rem;
+  line-height: 1.6;
 }
 
 pre {
@@ -42,6 +42,8 @@ pre {
   padding: 6px 10px;
   border-radius: 6px;
   overflow-x: auto;
+  color: #8b949e;
+  margin-bottom: 1rem;
 }
 
 input[type=text] {
@@ -51,55 +53,35 @@ input[type=text] {
   border-radius: 6px;
   color: #c9d1d9;
   padding: 10px;
-  margin: 6px 0;
+  margin: 8px 0;
   font-size: 0.95rem;
-}
-
-.button-row {
-  margin-top: 0.6rem;
 }
 
 button {
   font-family: inherit;
   border: none;
   border-radius: 6px;
-  padding: 8px 14px;
+  padding: 9px 15px;
   font-size: 15px;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.1s ease;
 }
 
-button:hover {
-  transform: translateY(-1px);
-}
+button:hover { transform: translateY(-1px); }
 
-.btn-primary {
-  background: #0b67ff;
-  color: #fff;
-}
-
-.btn-success {
-  background: #238636;
-  color: #fff;
-}
-
-.btn-cancel {
-  background: #6e7681;
-  color: #fff;
-}
-
+.btn-primary { background: #0b67ff; color: #fff; }
 .btn-primary:hover { background: #218bff; }
+
+.btn-success { background: #238636; color: #fff; }
 .btn-success:hover { background: #2ea043; }
-.btn-cancel:hover  { background: #8b949e; }
+
+.btn-cancel { background: #6e7681; color: #fff; }
+.btn-cancel:hover { background: #8b949e; }
 
 .confirm-panel {
-  display: flex;
+  display: none;
   gap: 10px;
   margin-top: 1rem;
-}
-
-.hidden {
-  display: none;
 }
 
 .console {
@@ -110,8 +92,7 @@ button:hover {
   margin-top: 1rem;
   padding: 10px;
   font-size: 0.9rem;
-  white-space: pre-wrap;
-  max-height: 220px;
+  max-height: 240px;
   overflow-y: auto;
 }
 
@@ -122,18 +103,23 @@ footer {
   color: #8b949e;
 }
 
-a {
-  color: #58a6ff;
-  text-decoration: none;
-}
+a { color: #58a6ff; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 .note {
-  color: #999;
   font-size: 0.9rem;
+  color: #aaa;
 }
 
-.tiny {
-  font-size: 0.85rem;
-  color: #777;
+.info {
+  margin-top: 1rem;
+  color: #c9d1d9;
+}
+
+code {
+  background: #1c2128;
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #79c0ff;
 }
