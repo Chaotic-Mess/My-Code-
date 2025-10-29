@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Scraper | Helpful Utilities</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>YouTube Scraper</h1>
+    <p class="subtitle">
+      Instantly grab metadata, thumbnails, transcripts, or shortcuts from any YouTube video — right from your browser.
+    </p>
+
+    <section>
+      <h2>How It Works</h2>
+      <p>
+        When you’re watching a YouTube video, click the bookmarklet below.  
+        A floating window will appear showing details such as:
+      </p>
+      <ul>
+        <li>Title, Channel, Views, Likes</li>
+        <li>Video description</li>
+        <li>Download or save options (MP4, MP3, transcript, shortcut)</li>
+      </ul>
+      <p>
+        The overlay runs fully in your browser — it doesn’t upload or send any data anywhere.
+      </p>
+    </section>
+
+    <section>
+      <h2>Install</h2>
+      <p>Drag this button to your bookmarks bar:</p>
+      <a id="bookmarklet-btn" class="btn-primary"
+         href="javascript:(()=>{fetch('https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/YouTube_Scraper/script.js').then(r=>r.text()).then(eval)})()">
+         YouTube Scraper
+      </a>
+      <p class="note">
+        When on a YouTube video page, click the “YouTube Scraper” bookmark to open the overlay.
+      </p>
+    </section>
+
+    <section>
+      <h2>Features</h2>
+      <ul>
+        <li>Fetches video title, views, likes, upload date</li>
+        <li>Grabs thumbnail, description, and transcript</li>
+        <li>Offers multiple download or save formats</li>
+        <li>Graceful fallbacks if a download option isn’t available (shortcut file)</li>
+        <li>Matches the Helpful Utilities dark theme</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>About</h2>
+      <p>
+        Part of the <a href="https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/" target="_blank">Helpful Utilities</a> collection  
+        by <a href="https://github.com/chaotic-mess" target="_blank">chaotic-mess</a>.  
+        Open-source and client-side. No external servers, no tracking.
+      </p>
+    </section>
+
+    <footer>
+      <p>© 2025 chaotic-mess | <a href="https://github.com/chaotic-mess/My-Code-/tree/main/Helpful%20Utilities/YouTube_Scraper" target="_blank">View on GitHub</a></p>
+    </footer>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
