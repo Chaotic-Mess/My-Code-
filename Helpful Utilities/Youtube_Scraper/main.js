@@ -2,6 +2,7 @@
 const WORKER_URL = "https://youtube-cors-proxy.zacmatthiass.workers.dev";
 // --------------------------------------------
 
+// Simple logger
 function log(msg) {
   const area = document.getElementById("console-area");
   const p = document.createElement("p");
@@ -10,63 +11,28 @@ function log(msg) {
   area.scrollTop = area.scrollHeight;
 }
 
-// Extract ID from YouTube link
+// Extract video ID from link
 function extractVideoId(url) {
   const m = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
   return m ? m[1] : null;
 }
 
-// Basic metadata
+// Fetch oEmbed metadata (title, thumbnail, etc.)
 async function fetchOembed(videoId) {
   const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
-  if (!res.ok) throw new Error("Could not fetch video metadata.");
+  if (!res.ok) throw new Error("Failed to fetch oEmbed data.");
   return res.json();
 }
 
-// Try ytInitialPlayerResponse from raw HTML
-async function tryParseHTML(videoId) {
-  const htmlRes = await fetch(`${WORKER_URL}/?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${videoId}`)}`);
-  const html = await htmlRes.text();
-  const m = html.match(/ytInitialPlayerResponse\s*=\s*(\{.*?\});/s);
-  if (!m) return [];
-  const data = JSON.parse(m[1]);
-  const arr = [
-    ...(data.streamingData?.formats || []),
-    ...(data.streamingData?.adaptiveFormats || [])
-  ].filter(f => f.url);
-  return arr.map(f => ({
-    url: f.url,
-    quality: f.qualityLabel || f.audioQuality || "unknown",
-    ext: f.mimeType?.split(";")[0] || "unknown"
-  }));
-}
-
-// Try yt-dlp API via Worker
-async function tryYtDlp(videoId) {
-  const api = `${WORKER_URL}/api/info?url=https://www.youtube.com/watch?v=${videoId}`;
+// Fetch video info from the unified Worker
+async function fetchVideoInfo(videoId) {
+  const api = `${WORKER_URL}/?url=https://www.youtube.com/watch?v=${videoId}`;
   const res = await fetch(api);
-  if (!res.ok) throw new Error("yt-dlp API failed");
+  if (!res.ok) throw new Error(`Worker returned ${res.status}`);
   const data = await res.json();
-
-  // Some yt-dlp APIs return { formats: [...] }, others wrap inside data
-  const formats = data.formats || data.data?.formats || [];
-
-  // Filter only playable streams
-  return formats
-    .filter(f => f.url && (f.ext === "mp4" || f.ext === "m4a" || f.ext === "webm" || f.acodec || f.vcodec))
-    .map(f => ({
-      url: f.url,
-      quality: f.format_note || f.abr || f.height || "unknown",
-      ext: f.ext || f.mimeType?.split(";")[0] || "unknown"
-    }));
+  if (data.error) throw new Error(data.error);
+  return data;
 }
-
-const filter = document.getElementById("format-filter").value;
-const visible = streams.filter(s =>
-  filter === "all" ? true :
-  filter === "video" ? s.ext.match(/mp4|webm/) :
-  s.ext.match(/mp3|m4a/)
-);
 
 // UI handler
 document.getElementById("fetch-info").onclick = async () => {
@@ -74,6 +40,7 @@ document.getElementById("fetch-info").onclick = async () => {
   const infoArea = document.getElementById("info-area");
   const streamsArea = document.getElementById("streams-area");
   const consoleArea = document.getElementById("console-area");
+
   infoArea.innerHTML = "";
   streamsArea.innerHTML = "";
   consoleArea.innerHTML = "";
@@ -82,46 +49,42 @@ document.getElementById("fetch-info").onclick = async () => {
   if (!id) return alert("Invalid YouTube link.");
 
   log("Fetching metadata…");
-  const info = await fetchOembed(id);
-
+  const meta = await fetchOembed(id);
   infoArea.innerHTML = `
-    <h2>${info.title}</h2>
-    <p>by ${info.author_name}</p>
-    <img src="${info.thumbnail_url}" width="100%" style="border-radius:8px">
+    <h2>${meta.title}</h2>
+    <p>by ${meta.author_name}</p>
+    <img src="${meta.thumbnail_url}" width="100%" style="border-radius:8px">
   `;
 
-  let streams = [];
   try {
-    log("Attempting direct YouTube parse…");
-    streams = await tryParseHTML(id);
-    if (streams.length === 0) {
-      log("Falling back to yt-dlp API…");
-      streams = await tryYtDlp(id);
+    log("Contacting worker for available streams…");
+    const data = await fetchVideoInfo(id);
+
+    if (!data.formats || !data.formats.length) {
+      streamsArea.innerHTML = "<p>No downloadable streams found.</p>";
+      log("No streams detected.");
+      return;
     }
+
+    // Populate the UI with available formats
+    data.formats.forEach(f => {
+      const div = document.createElement("div");
+      div.className = "stream-item";
+      div.innerHTML = `
+        <span>${f.mime.toUpperCase()} — ${f.quality} (${f.size || "?"})</span>
+        <div>
+          <a href="${f.url}" target="_blank">Open</a>
+          <button onclick="navigator.clipboard.writeText('${f.url}').then(()=>alert('Copied!'))">Copy</button>
+        </div>
+      `;
+      streamsArea.appendChild(div);
+    });
+
+    streamsArea.classList.remove("hidden");
+    log(`✅ Found ${data.formats.length} streams.`);
   } catch (e) {
-    log("Primary failed, using yt-dlp API fallback.");
-    streams = await tryYtDlp(id);
+    console.error(e);
+    log("❌ Error: " + e.message);
+    infoArea.innerHTML += `<p style="color:red">${e.message}</p>`;
   }
-
-  if (!streams.length) {
-    streamsArea.innerHTML = "<p>No downloadable streams found.</p>";
-    log("No streams detected.");
-    return;
-  }
-
-  streams.forEach(s => {
-    const div = document.createElement("div");
-    div.className = "stream-item";
-    div.innerHTML = `
-      <span>${s.ext.toUpperCase()} — ${s.quality}</span>
-      <div>
-        <a href="${s.url}" target="_blank">Open</a>
-        <button onclick="navigator.clipboard.writeText('${s.url}').then(()=>alert('Copied!'))">Copy</button>
-      </div>
-    `;
-    streamsArea.appendChild(div);
-  });
-
-  streamsArea.classList.remove("hidden");
-  log(`✅ Found ${streams.length} streams.`);
 };
