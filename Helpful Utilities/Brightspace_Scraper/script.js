@@ -1,5 +1,5 @@
 /* ===========================================================
-   Brightspace_Scraper v3.1
+   Brightspace_Scraper v3.3
    by chaotic-mess | https://chaotic-mess.github.io/My-Code-/
    Dark-mode downloader for Brightspace (PDFs, MP4s, DOCXs, etc.)
    Auto-detects course, deep-scans HTML topics, and builds a ZIP.
@@ -19,15 +19,17 @@
   const looksFile = u => /\.(pdf|mp4|docx?|pptx?|xlsx?|zip|txt|csv|rtf|md|epub)(?:[?#].*)?$/i.test(u) ||
                          /\/content\/enforced\//i.test(u) || /\/d2l\/common\/viewFile\.d2l/i.test(u);
 
-  /* ---------- Course Detection ---------- */
-  const isLessons = /\/d2l\/le\/lessons\//.test(location.pathname);
-  const m = location.pathname.match(/\/d2l\/(?:le\/content\/|lessons\/|home\/)(\d+)/);
-  const courseId = m && m[1];
-  if (!courseId) {
-    alert("Open a course home, Content, or Lessons page first.");
-    window.__bs_scraper_active = false;
-    return;
-  }
+/* ---------- Course Detection ---------- */
+   const m = location.pathname.match(/\/d2l\/le\/(?:content|lessons|home)\/(\d+)/);
+   const courseId = m && m[1];
+   const isLessons = /\/d2l\/le\/lessons\//.test(location.pathname);
+   
+   if (!courseId) {
+     alert("Open a course home, Content, or Lessons page first.");
+     window.__bs_scraper_active = false;
+     return;
+}
+
 
   /* ---------- UI Overlay ---------- */
   const ui = document.createElement("div");
