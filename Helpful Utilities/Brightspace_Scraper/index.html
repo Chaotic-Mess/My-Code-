@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Brightspace Downloader — Bookmarklet</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>Brightspace — One-click PDF downloader</h1>
+    <p>How it works: open your Brightspace course page (e.g. <code>https://bright.uvic.ca/d2l/home/426051</code>) and <strong>while logged in</strong> click the bookmarklet below (or install the userscript). The scraper will gather downloadable files (PDFs and other common extensions), build a ZIP, and prompt you to download it.</p>
+
+    <div class="bookmarklet-area">
+      <button id="copyBtn">Copy Bookmarklet</button>
+      <a id="dragBtn" href="#" draggable="true" title="Drag this to bookmarks bar">Drag: Download Brightspace Files</a>
+    </div>
+
+    <h2>Alternative</h2>
+    <p>If you prefer, install the userscript (Tampermonkey): paste the code from <code>script.js</code> into a new Tampermonkey script and enable it for <code>https://bright.uvic.ca/*</code>.</p>
+
+    <h3>Notes</h3>
+    <ul>
+      <li>You must be logged in to Brightspace when running the bookmarklet/userscript.</li>
+      <li>Depending on course structure, the script finds links by common file-extension matches and Brightspace file URLs.</li>
+    </ul>
+
+    <footer>Made for you — tweak as needed.</footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
