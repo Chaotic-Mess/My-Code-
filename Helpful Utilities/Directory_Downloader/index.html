@@ -3,33 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <title>GitHub Directory Downloader</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1"> 
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>GitHub Downloader</h1>
-    <p class="subtitle">Download any GitHub directory as a zip file</p>
-    
-    <div class="input-group">
-      <label class="input-label">Repository URL</label>
-      <input type="text" id="github-link" placeholder="https://github.com/owner/repo/tree/main/path">
-    </div>
-    
-    <div class="input-group">
-      <label class="input-label">Access Token (Optional)</label>
-      <input type="text" id="github-token" placeholder="Personal access token for private repositories">
-    </div>
-    
-    <button class="btn-primary" id="fetch-info">Fetch Directory Info</button>
-    
+    <h1>GitHub Directory Downloader</h1>
+    <p>Paste a GitHub directory URL to fetch and download its contents as a zip file.</p>
+
+    <input type="text" id="github-link" placeholder="e.g. https://github.com/owner/repo/tree/main/folder">
+    <input type="text" id="github-token" placeholder="Optional: GitHub token for private access">
+
+    <button id="fetch-info" class="btn-primary">Fetch Info</button>
+
     <div id="info-area"></div>
-    
-    <div id="confirm-area">
-      <button class="btn-secondary" id="cancel-download">Cancel</button>
-      <button class="btn-download" id="download-zip">Download Zip</button>
+
+    <div id="confirm-area" class="confirm-panel">
+      <button id="download-zip" class="btn-success">Download as Zip</button>
+      <button id="cancel-download" class="btn-cancel">✖ Cancel</button>
     </div>
-    
+
     <div id="status-area"></div>
   </div>
 
