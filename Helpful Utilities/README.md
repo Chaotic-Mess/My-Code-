@@ -60,3 +60,60 @@ No credentials, cookies, or files ever leave your machine.
 
 If you prefer, you can also install it as a **Tampermonkey userscript** to add a permanent “Download Files” button to Brightspace.  
 Either way, everything happens client-side — quick, safe, and spam-free.
+
+## YouTube Scraper
+
+A smart **bookmarklet-based companion** for YouTube that instantly shows video metadata, stream options, and lets you copy or save everything — including thumbnails, transcripts, or shortcuts — directly from any video page.
+
+**[Use it here](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/YouTube_Scraper)**
+
+### Usage
+
+1. Open the link above.  
+2. Drag the **"YouTube Scraper"** button to your bookmarks bar.  
+3. Go to any YouTube video page (e.g. `https://www.youtube.com/watch?v=abc123`).  
+4. Click the bookmarklet while the video is open.  
+5. A floating panel appears showing:
+   - Title, Channel, Views, Likes
+   - Description (first few lines)
+   - Downloadable formats (video/audio)
+   - Copy-to-clipboard buttons for title, link, etc.
+6. Choose what you want (e.g. video stream, thumbnail, transcript, or metadata) and hit **Download**.
+
+### Features
+
+- Detects available **video/audio streams** (resolution, format, codec).  
+- Lets you **copy video info** or URLs directly to your clipboard.  
+- Can save:
+  - Video/Audio streams (opens direct link)
+  - Thumbnail (JPG)
+  - Transcript (TXT, if captions exist)
+  - Metadata (JSON)
+  - Shortcut file (.webloc)
+- Built-in **fallbacks** — if a download type isn’t available, the tool automatically offers the next best alternative (e.g., saves a shortcut).  
+- Stylish dark overlay that matches the **Helpful Utilities** visual theme.  
+- No servers, no API keys, no backend — everything happens client-side in your browser.
+
+### How it works
+
+The YouTube Scraper runs directly inside the current page when you click the bookmarklet.  
+It extracts metadata from the player’s internal JSON (`ytInitialPlayerResponse`) and available `streamingData`.  
+Detected video and audio URLs are shown in a dropdown, and each can be opened, copied, or saved.
+
+If no streams are available (e.g., YouTube has restricted access), the scraper gracefully falls back to:
+- Thumbnail or transcript fetching  
+- Metadata export (`.json`)  
+- Shortcut file download (`.webloc`)  
+
+Clipboard and download functions are handled entirely in-browser using the [Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API) and the [Blob API](https://developer.mozilla.org/en-US/docs/Web/API/Blob).  
+Everything runs locally — **no data leaves your machine**.
+
+### Notes
+
+- Works best on regular `youtube.com/watch?v=` URLs (not Shorts or embedded players).  
+- The bookmarklet auto-checks that you’re on a valid YouTube page before running.  
+- Safe to use: no tracking, cookies, or third-party uploads.
+
+---
+
+
