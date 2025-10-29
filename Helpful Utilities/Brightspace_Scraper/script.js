@@ -1,234 +1,171 @@
 /* ===========================================================
-   Brightspace_Scraper v3.3
+   Brightspace_Scraper v3.7
    by chaotic-mess | https://chaotic-mess.github.io/My-Code-/
    Dark-mode downloader for Brightspace (PDFs, MP4s, DOCXs, etc.)
    Auto-detects course, deep-scans HTML topics, and builds a ZIP.
    =========================================================== */
 (async () => {
-  if (window.__bs_scraper_active) {
-    alert("Brightspace Scraper already running.");
-    return;
+'use strict';
+if (window.__bs_scraper) { console.warn("Already running."); return; }
+window.__bs_scraper = { version:"3.7" };
+
+///////////////////////////////////////////////////////////////////////////
+// Helper Functions
+///////////////////////////////////////////////////////////////////////////
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const sanitize = s => s.replace(/[^\w\-\.]/g,'_');
+const abs = (url) => new URL(url,location.href).href;
+const extOf = (u)=>u.split(/[#?]/)[0].split('.').pop()?.toLowerCase()||'';
+const today = ()=>{const d=new Date();return `(${String(d.getFullYear()).slice(2)}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')})`;};
+
+///////////////////////////////////////////////////////////////////////////
+// Load Dependencies (JSZip + FileSaver)
+///////////////////////////////////////////////////////////////////////////
+const loadScript = src => new Promise(res=>{
+  const s=document.createElement('script');
+  s.src=src; s.onload=res; document.head.appendChild(s);
+});
+await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+await loadScript("https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js");
+
+///////////////////////////////////////////////////////////////////////////
+// UI Creation
+///////////////////////////////////////////////////////////////////////////
+const ui = document.createElement('div');
+ui.innerHTML = `
+  <div id="bsHeader" style="
+    cursor:move;background:repeating-linear-gradient(45deg,#444 0 10px,#666 10px 20px);
+    color:white;padding:6px;font-weight:bold;display:flex;align-items:center;justify-content:space-between">
+    <span>Brightspace Scraper v3.7</span>
+    <span>
+      <button id="bsToggle" title="Toggle Theme" style="background:none;border:none;color:inherit;font-size:18px;cursor:pointer">⚙️</button>
+      <button id="bsClose" title="Close" style="background:none;border:none;color:inherit;font-size:18px;cursor:pointer">❌</button>
+    </span>
+  </div>
+  <div id="bsBody" style="padding:10px;font-size:13px;max-width:280px;">
+    <label><input type="checkbox" value="pdf" checked> PDF</label>
+    <label><input type="checkbox" value="mp4" checked> MP4</label>
+    <label><input type="checkbox" value="docx" checked> DOCX</label>
+    <label><input type="checkbox" value="pptx" checked> PPTX</label>
+    <label><input type="checkbox" value="zip" checked> ZIP</label>
+    <div style="margin-top:8px">
+      <button id="bsStart" style="width:100%;padding:6px;border:none;background:#0f0;color:#000;font-weight:bold;border-radius:4px">Start Scraping</button>
+    </div>
+    <div id="bsProgress" style="margin-top:8px;height:8px;background:#222;border-radius:4px;overflow:hidden"><div id="bsBar" style="height:8px;width:0;background:lime"></div></div>
+    <div id="bsLog" style="margin-top:8px;max-height:150px;overflow:auto;font-family:monospace"></div>
+  </div>`;
+Object.assign(ui.style,{
+  position:'fixed',bottom:'20px',right:'20px',width:'300px',
+  background:'#111',color:'#fff',border:'2px solid #333',
+  borderRadius:'10px',zIndex:999999,boxShadow:'0 0 10px #000'
+});
+document.body.appendChild(ui);
+
+///////////////////////////////////////////////////////////////////////////
+// Dragging logic
+///////////////////////////////////////////////////////////////////////////
+(()=>{const drag=ui.querySelector('#bsHeader');
+let ox=0,oy=0,is=false;
+drag.onmousedown=e=>{is=true;ox=e.clientX-ui.offsetLeft;oy=e.clientY-ui.offsetTop;};
+window.onmouseup=()=>is=false;
+window.onmousemove=e=>{if(!is)return;ui.style.left=(e.clientX-ox)+'px';ui.style.top=(e.clientY-oy)+'px';ui.style.right='auto';ui.style.bottom='auto';};
+})();
+
+///////////////////////////////////////////////////////////////////////////
+// Theme Toggle
+///////////////////////////////////////////////////////////////////////////
+let theme='industrial';
+const applyTheme=()=>{
+  if(theme==='industrial'){
+    ui.style.background='#333';
+    ui.style.color='#0f0';
+    ui.querySelector('#bsHeader').style.background='repeating-linear-gradient(45deg,#555 0 10px,#999 10px 20px)';
+    ui.querySelector('#bsBar').style.background='lime';
+  }else{
+    ui.style.background='#111';
+    ui.style.color='#9df';
+    ui.querySelector('#bsHeader').style.background='#222';
+    ui.querySelector('#bsBar').style.background='#4cf';
   }
-  window.__bs_scraper_active = true;
+};
+applyTheme();
+ui.querySelector('#bsToggle').onclick=()=>{theme=theme==='industrial'?'dark':'industrial';applyTheme();};
 
-  /* ---------- Utility Helpers ---------- */
-  const sleep = ms => new Promise(r => setTimeout(r, ms));
-  const abs = u => { try { return new URL(u, location.href).href; } catch { return null; } };
-  const san = s => (s || "").replace(/[<>:"/\\|?*]+/g, "_").trim();
-  const extOf = u => { const m = u && u.match(/\.[a-z0-9]{2,5}(?:$|\?)/i); return m ? m[0].toLowerCase() : ""; };
-  const looksFile = u => /\.(pdf|mp4|docx?|pptx?|xlsx?|zip|txt|csv|rtf|md|epub)(?:[?#].*)?$/i.test(u) ||
-                         /\/content\/enforced\//i.test(u) || /\/d2l\/common\/viewFile\.d2l/i.test(u);
+///////////////////////////////////////////////////////////////////////////
+// Core Scraper
+///////////////////////////////////////////////////////////////////////////
+const log = t => {
+  console.log('[Brightspace]',t);
+  const d=document.createElement('div');d.textContent=t;ui.querySelector('#bsLog').appendChild(d);
+  ui.querySelector('#bsLog').scrollTop=9999;
+};
 
-/* ---------- Course Detection ---------- */
-   const m = location.pathname.match(/\/d2l\/le\/(?:content|lessons|home)\/(\d+)/);
-   const courseId = m && m[1];
-   const isLessons = /\/d2l\/le\/lessons\//.test(location.pathname);
-   
-   if (!courseId) {
-     alert("Open a course home, Content, or Lessons page first.");
-     window.__bs_scraper_active = false;
-     return;
+async function collectLinksAggressive() {
+  const selTypes=[...ui.querySelectorAll('input[type=checkbox]:checked')].map(c=>c.value);
+  const links=new Set();
+  const walker=(el)=>{
+    el.querySelectorAll('a[href],iframe[src],embed[src],source[src]').forEach(x=>{
+      const u=abs(x.href||x.src);
+      const ex=extOf(u);
+      if(selTypes.includes(ex)) links.add(u);
+    });
+  };
+  walker(document);
+  // Also handle embedded Brightspace HTML blocks
+  document.querySelectorAll('d2l-html-block').forEach(b=>{
+    try{const html=b.getAttribute('html');if(html){const t=document.createElement('div');t.innerHTML=html;walker(t);}}catch(e){}
+  });
+  return [...links];
 }
 
+///////////////////////////////////////////////////////////////////////////
+// Downloader
+///////////////////////////////////////////////////////////////////////////
+async function fetchAsBlob(url){
+  try{
+    const r=await fetch(url);
+    if(!r.ok) throw new Error(r.status);
+    return await r.blob();
+  }catch(e){
+    log('❌ Failed '+url);
+    const blob=new Blob([`[InternetShortcut]\nURL=${url}\n`],{type:'text/plain'});
+    return new File([blob],sanitize(url.split('/').pop())+'.url',{type:'text/plain'});
+  }
+}
 
-  /* ---------- UI Overlay ---------- */
-  const ui = document.createElement("div");
-  ui.style = `
-    position:fixed;right:16px;bottom:16px;z-index:999999;
-    background:#1e1e1e;color:#eee;padding:14px 16px;border-radius:10px;
-    font:14px/1.4 system-ui,Segoe UI,Roboto,Arial;box-shadow:0 8px 20px rgba(0,0,0,.35);
-    width:360px;max-height:90vh;overflow-y:auto;
-  `;
-  ui.innerHTML = `
-    <b style="font-size:15px">Brightspace Scraper v3.0</b>
-    <div id="bs-course" style="margin:6px 0;color:#9ca3af">Detecting course…</div>
-    <div id="bs-status" style="margin:8px 0;color:#ccc">Initializing…</div>
-    <div id="bs-exts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
-    <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
-      <input type="checkbox" id="bs-deepscan" checked> Deep Scan HTML topics
-    </label>
-    <div style="height:6px;background:#333;border-radius:6px;overflow:hidden;margin-bottom:6px">
-      <div id="bs-bar" style="height:6px;width:0;background:#4ade80"></div>
-    </div>
-    <div id="bs-count" style="margin:6px 0;color:#bbb;font-size:12px"></div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
-      <button id="bs-start" style="background:#0b67ff;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Scan & Download</button>
-      <button id="bs-show" style="background:#333;color:#ccc;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Show Skipped</button>
-      <button id="bs-close" style="background:#333;color:#ccc;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Close</button>
-    </div>
-  `;
-  document.body.appendChild(ui);
-  const S = t => ui.querySelector("#bs-status").textContent = t;
-  const B = ui.querySelector("#bs-bar"), C = ui.querySelector("#bs-count");
+///////////////////////////////////////////////////////////////////////////
+// 🚀 Main
+///////////////////////////////////////////////////////////////////////////
+ui.querySelector('#bsStart').onclick = async ()=>{
+  const bar=ui.querySelector('#bsBar');
+  const links=await collectLinksAggressive();
+  log(`Found ${links.length} downloadable items`);
+  const zip=new JSZip();
+  let i=0;
+  for(const url of links){
+    i++;
+    log(`Fetching (${i}/${links.length}): ${url}`);
+    const blob=await fetchAsBlob(url);
+    const name=sanitize(url.split('/').pop()||('file_'+i));
+    zip.file(name,blob);
+    bar.style.width=((i/links.length)*100)+'%';
+    await sleep(300);
+  }
+  const cname=(document.title.match(/([A-Z]{2,}\s?\d{3,})/)||['Course'])[0];
+  const zipName=`Brightspace_${sanitize(cname)}_${today()}.zip`;
+  log('Zipping…');
+  const blob=await zip.generateAsync({type:'blob'});
+  saveAs(blob,zipName);
+  log('✅ Done! File saved as '+zipName);
+};
 
-  ui.querySelector("#bs-close").onclick = () => { ui.remove(); window.__bs_scraper_active = false; };
-
-  /* ---------- Load JSZip + FileSaver ---------- */
-  const load = src => new Promise(r => { const s=document.createElement("script"); s.src=src; s.onload=r; document.head.appendChild(s); });
-  await load("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
-  await load("https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js");
-
-  const zip = new JSZip();
-
-  /* ---------- File Type Toggles ---------- */
-  const types = [".pdf",".mp4",".docx",".pptx",".xlsx",".zip",".txt"];
-  const exDiv = ui.querySelector("#bs-exts");
-  types.forEach(x => {
-    const L = document.createElement("label");
-    L.innerHTML = `<input type="checkbox" data-ext="${x}" checked> ${x}`;
-    exDiv.appendChild(L);
-  });
-
-  /* ---------- Attempt ToC Fetch ---------- */
-  S("Fetching Table of Contents…");
-  let toc = null, courseName = "";
-  try {
-    const r = await fetch(`/d2l/api/le/1.68/${courseId}/content/toc`, { credentials: "same-origin" });
-    if (r.ok) {
-      toc = await r.json();
-      courseName = san(toc.Title || "");
-    }
-  } catch {}
-  ui.querySelector("#bs-course").textContent = courseName || `Course ID: ${courseId}`;
-
-   /* ---------- Fallback: Lessons or No ToC DOM scrape ---------- */
-   const scrapeDomLinks = () => {
-     const links = [];
-     // Capture normal <a> links and any embedded sources
-     document.querySelectorAll("a[href], source[src], iframe[src], embed[src]").forEach(el => {
-       const href = abs(el.getAttribute("href") || el.getAttribute("src"));
-       if (!href) return;
-       if (looksFile(href))
-         links.push({ Title: el.textContent.trim() || el.getAttribute("title") || "file", Url: href });
-     });
-     return { Modules: [{ Title: "Lesson Page", Topics: links }] };
-   };
-   
-   // Detect Lessons page
-   if (!toc || !toc.Modules?.length || isLessons) {
-     S(isLessons ? "Lessons layout detected — scanning visible page…" : "No ToC found; scanning page links…");
-     toc = scrapeDomLinks();
-   }
-
-
-  /* ---------- Collect Topics ---------- */
-  const topics = [];
-  const walk = m => {
-    (m.Topics || []).forEach(t => topics.push(t));
-    (m.Modules || []).forEach(walk);
-  };
-  (toc.Modules || []).forEach(walk);
-  S(`Found ${topics.length} topics.`);
-
-  /* ---------- Deep Scan HTML pages ---------- */ 
-   const deepScan = async (url, depth = 0, visited = new Set()) => {
-     if (!url || visited.has(url) || depth > 3) return [];
-     visited.add(url);
-   
-     try {
-       const r = await fetch(url, { credentials: "same-origin" });
-       if (!r.ok) return [];
-       const html = await r.text();
-   
-       // Keep a copy of this HTML page as a reference
-       const folderName = `html_pages/`;
-       zip.file(folderName + san(`page_${depth}_${Date.now()}.html`), html);
-   
-       const d = new DOMParser().parseFromString(html, "text/html");
-       const found = new Set();
-   
-       d.querySelectorAll("a[href], source[src], iframe[src], embed[src]").forEach(n => {
-         const u = abs(n.getAttribute("href") || n.getAttribute("src") || "");
-         if (!u) return;
-   
-         // Detect direct downloadable file URLs
-         if (looksFile(u)) {
-           found.add(u);
-         }
-         // Detect nested HTML content pages
-         else if (/\/viewContent\/\d+\/View/i.test(u) || /\/content\/\d+/i.test(u)) {
-           // Recursively follow the HTML link
-           deepScan(u, depth + 1, visited).then(subLinks => {
-             subLinks.forEach(x => found.add(x));
-           });
-         }
-       });
-   
-       return [...found];
-     } catch (e) {
-       console.warn("deepScan failed:", e);
-       return [];
-     }
-   };
-
-  /* ---------- Button Logic ---------- */
-  const skipped = [];
-  ui.querySelector("#bs-show").onclick = () => {
-    if (!skipped.length) return alert("No skipped items yet.");
-    alert(skipped.map(x => x.Title + " → " + (x.Url || "no URL")).join("\n"));
-  };
-
-  ui.querySelector("#bs-start").onclick = async () => {
-    ui.querySelector("#bs-start").disabled = true;
-    const allow = [...exDiv.querySelectorAll("input:checked")].map(c=>c.dataset.ext);
-    const want = t => { const e=extOf(t.Url||""); return !allow.length || allow.includes(e); };
-    const wanted = topics.filter(want);
-    const doDeep = ui.querySelector("#bs-deepscan").checked;
-
-    let done = 0;
-    C.textContent = `0/${wanted.length} downloaded`;
-    S("Downloading…");
-
-    const addURLShortcut = (dir, title, link) => {
-      const content = `[InternetShortcut]\nURL=${link}\n`;
-      zip.file(`${dir}${san(title)}.url`, content);
-    };
-
-    const add = async (mods, pre="") => {
-      for (const m of mods || []) {
-        const dir = pre + san(m.Title || "Module") + "/";
-        for (const t of m.Topics || []) {
-          if (!t.Url) { skipped.push(t); continue; }
-          const u = t.Url;
-          if (!want(t)) { skipped.push(t); continue; }
-
-          let targets = [u];
-          if (doDeep && /\.html?/i.test(u)) {
-            const extra = await deepScan(u);
-            extra.forEach(x => targets.push(x));
-          }
-
-          for (const link of targets) {
-            try {
-              const r = await fetch(link, { credentials:"same-origin" });
-              if (!r.ok || r.status===403) {
-                addURLShortcut(dir, t.Title || "link", link);
-                skipped.push({...t, Url:link, Type:"Shortcut"});
-                continue;
-              }
-              const blob = await r.blob();
-              const ext = extOf(link) || ".bin";
-              zip.file(dir + san(t.Title || "file") + ext, blob);
-              done++;
-              B.style.width = ((done/(wanted.length||1))*100).toFixed(1) + "%";
-              C.textContent = `${done}/${wanted.length} downloaded`;
-            } catch {
-              addURLShortcut(dir, t.Title || "link", link);
-              skipped.push({...t, Url:link, Type:"Shortcut"});
-            }
-            await sleep(60);
-          }
-        }
-        await add(m.Modules, dir);
-      }
-    };
-
-    await add(toc.Modules);
-    S("Building ZIP…");
-    const blob = await zip.generateAsync({ type:"blob" });
-    const name = `Brightspace_${courseName || courseId}.zip`;
-    saveAs(blob, name);
-    S(`Done: ${done} files, ${skipped.length} skipped.`);
-    setTimeout(() => { ui.remove(); window.__bs_scraper_active=false; }, 7000);
-  };
+///////////////////////////////////////////////////////////////////////////
+// Close / Reset
+///////////////////////////////////////////////////////////////////////////
+ui.querySelector('#bsClose').onclick=()=>{
+  ui.remove();delete window.__bs_scraper;
+};
+window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){ui.remove();delete window.__bs_scraper;}
+});
 })();
