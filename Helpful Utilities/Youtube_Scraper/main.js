@@ -60,14 +60,15 @@ document.getElementById("fetch-info").onclick = async () => {
     log("Contacting worker for available streams…");
     const data = await fetchVideoInfo(id);
 
-    if (!data.formats || !data.formats.length) {
+    const streams = data.formats || [];
+    if (!streams.length) {
       streamsArea.innerHTML = "<p>No downloadable streams found.</p>";
       log("No streams detected.");
       return;
     }
 
     // Populate the UI with available formats
-    data.formats.forEach(f => {
+    streams.forEach(f => {
       const div = document.createElement("div");
       div.className = "stream-item";
       div.innerHTML = `
@@ -81,7 +82,7 @@ document.getElementById("fetch-info").onclick = async () => {
     });
 
     streamsArea.classList.remove("hidden");
-    log(`✅ Found ${data.formats.length} streams.`);
+    log(`✅ Found ${streams.length} streams.`);
   } catch (e) {
     console.error(e);
     log("❌ Error: " + e.message);
