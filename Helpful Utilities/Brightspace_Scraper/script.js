@@ -1,152 +1,202 @@
-/* script.js — for the GitHub Pages site.
-   It produces a bookmarklet that runs the scrape-and-zip function on the Brightspace page.
-*/
+/* ===========================================================
+   Brightspace_Scraper v3.0
+   by chaotic-mess | https://chaotic-mess.github.io/My-Code-/
+   Dark-mode downloader for Brightspace (PDFs, MP4s, DOCXs, etc.)
+   Auto-detects course, deep-scans HTML topics, and builds a ZIP.
+   =========================================================== */
+(async () => {
+  if (window.__bs_scraper_active) {
+    alert("Brightspace Scraper already running.");
+    return;
+  }
+  window.__bs_scraper_active = true;
 
-const bookmarkletSource = `
-(async function(){
-  // Avoid double run
-  if(window.__brightDownloaderRunning) return alert('Brightspace downloader already running on this page.');
-  window.__brightDownloaderRunning = true;
+  /* ---------- Utility Helpers ---------- */
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const abs = u => { try { return new URL(u, location.href).href; } catch { return null; } };
+  const san = s => (s || "").replace(/[<>:"/\\|?*]+/g, "_").trim();
+  const extOf = u => { const m = u && u.match(/\.[a-z0-9]{2,5}(?:$|\?)/i); return m ? m[0].toLowerCase() : ""; };
+  const looksFile = u => /\.(pdf|mp4|docx?|pptx?|xlsx?|zip|txt|csv|rtf|md|epub)(?:[?#].*)?$/i.test(u) ||
+                         /\/content\/enforced\//i.test(u) || /\/d2l\/common\/viewFile\.d2l/i.test(u);
 
-  // lazy-load JSZip
-  function loadScript(url){return new Promise((res,rej)=>{
-    const s=document.createElement('script'); s.src=url; s.onload=res; s.onerror=rej; document.head.appendChild(s);
-  })}
-
-  try{
-    // load JSZip and FileSaver (for better save)
-    if(typeof JSZip === 'undefined') await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
-    if(typeof saveAs === 'undefined') await loadScript('https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js');
-  }catch(e){
-    console.error(e); alert('Failed to load JSZip or FileSaver libraries.');
-    window.__brightDownloaderRunning = false;
+  /* ---------- Course Detection ---------- */
+  const m = location.pathname.match(/\/d2l\/(?:le\/content\/|lessons\/|home\/)(\d+)/);
+  const courseId = m && m[1];
+  if (!courseId) {
+    alert("Open a course home, Content, or Lessons page first.");
+    window.__bs_scraper_active = false;
     return;
   }
 
-  // helper: find candidate links (PDFs, docs, common file endpoints)
-  function gatherLinks(){
-    const anchors = Array.from(document.querySelectorAll('a[href]'));
-    const candidates = [];
-    const seen = new Set();
-    const extRegex = /\\.(pdf|docx?|pptx?|xlsx?|zip|txt|csv)(?:[?#].*)?$/i;
-    for(const a of anchors){
-      const href = a.href;
-      if(!href) continue;
-      // common Brightspace file endpoints often include '/d2l/common/viewFile.d2l' or '/d2l/le/content' etc.
-      if(extRegex.test(href) || /\\/d2l\\/common\\/viewFile\\.d2l|\\/d2l\\/le\\/content\\//i.test(href) ){
-        if(!seen.has(href)){
-          candidates.push({href, text: (a.innerText||a.title||a.getAttribute('aria-label')||href).trim()});
-          seen.add(href);
-        }
-      }
-    }
-    return candidates;
-  }
+  /* ---------- UI Overlay ---------- */
+  const ui = document.createElement("div");
+  ui.style = `
+    position:fixed;right:16px;bottom:16px;z-index:999999;
+    background:#1e1e1e;color:#eee;padding:14px 16px;border-radius:10px;
+    font:14px/1.4 system-ui,Segoe UI,Roboto,Arial;box-shadow:0 8px 20px rgba(0,0,0,.35);
+    width:360px;max-height:90vh;overflow-y:auto;
+  `;
+  ui.innerHTML = `
+    <b style="font-size:15px">Brightspace Scraper v3.0</b>
+    <div id="bs-course" style="margin:6px 0;color:#9ca3af">Detecting course…</div>
+    <div id="bs-status" style="margin:8px 0;color:#ccc">Initializing…</div>
+    <div id="bs-exts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
+    <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+      <input type="checkbox" id="bs-deepscan" checked> Deep Scan HTML topics
+    </label>
+    <div style="height:6px;background:#333;border-radius:6px;overflow:hidden;margin-bottom:6px">
+      <div id="bs-bar" style="height:6px;width:0;background:#4ade80"></div>
+    </div>
+    <div id="bs-count" style="margin:6px 0;color:#bbb;font-size:12px"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+      <button id="bs-start" style="background:#0b67ff;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Scan & Download</button>
+      <button id="bs-show" style="background:#333;color:#ccc;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Show Skipped</button>
+      <button id="bs-close" style="background:#333;color:#ccc;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Close</button>
+    </div>
+  `;
+  document.body.appendChild(ui);
+  const S = t => ui.querySelector("#bs-status").textContent = t;
+  const B = ui.querySelector("#bs-bar"), C = ui.querySelector("#bs-count");
 
-  const links = gatherLinks();
-  if(links.length===0){
-    alert('No downloadable file links found on this page. Try opening the course Content page and run again.');
-    window.__brightDownloaderRunning = false;
-    return;
-  }
+  ui.querySelector("#bs-close").onclick = () => { ui.remove(); window.__bs_scraper_active = false; };
 
-  // show a small UI overlay to confirm
-  function makeOverlay(){
-    const overlay = document.createElement('div');
-    overlay.style = 'position:fixed;left:14px;bottom:14px;z-index:2147483647;background:#fff;padding:12px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.15);max-width:520px;font-family:system-ui,Arial';
-    overlay.innerHTML = \`
-      <div style="font-weight:600;margin-bottom:6px">Brightspace — download files</div>
-      <div style="font-size:13px;margin-bottom:8px">Found <b>\${links.length}</b> files. Select and click "Create ZIP". Fetches using your current session (must be logged in).</div>
-      <div id="bd-list" style="max-height:180px;overflow:auto;border:1px solid #eef2ff;padding:6px;border-radius:6px;margin-bottom:8px"></div>
-      <div style="display:flex;gap:8px;justify-content:flex-end">
-        <button id="bd-cancel" style="padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fafafa">Cancel</button>
-        <button id="bd-zip" style="padding:6px 10px;border-radius:6px;background:#0b67ff;color:white;border:0">Create ZIP</button>
-      </div>
-    \`;
-    document.body.appendChild(overlay);
-    return overlay;
-  }
+  /* ---------- Load JSZip + FileSaver ---------- */
+  const load = src => new Promise(r => { const s=document.createElement("script"); s.src=src; s.onload=r; document.head.appendChild(s); });
+  await load("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+  await load("https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js");
 
-  const overlay = makeOverlay();
-  const list = overlay.querySelector('#bd-list');
+  const zip = new JSZip();
 
-  links.forEach((l, idx)=>{
-    const row = document.createElement('div');
-    row.style = 'display:flex;align-items:center;gap:8px;padding:6px;border-bottom:1px dashed #f0f6ff';
-    row.innerHTML = '<input type="checkbox" checked data-idx="'+idx+'"><div style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:360px">'+(l.text||l.href)+'</div><div style="font-size:12px;color:#6b7280">('+ (new URL(l.href)).pathname.split('/').pop() +')</div>';
-    list.appendChild(row);
+  /* ---------- File Type Toggles ---------- */
+  const types = [".pdf",".mp4",".docx",".pptx",".xlsx",".zip",".txt"];
+  const exDiv = ui.querySelector("#bs-exts");
+  types.forEach(x => {
+    const L = document.createElement("label");
+    L.innerHTML = `<input type="checkbox" data-ext="${x}" checked> ${x}`;
+    exDiv.appendChild(L);
   });
 
-  overlay.querySelector('#bd-cancel').onclick = ()=>{
-    overlay.remove();
-    window.__brightDownloaderRunning = false;
-  };
+  /* ---------- Attempt ToC Fetch ---------- */
+  S("Fetching Table of Contents…");
+  let toc = null, courseName = "";
+  try {
+    const r = await fetch(`/d2l/api/le/1.68/${courseId}/content/toc`, { credentials: "same-origin" });
+    if (r.ok) {
+      toc = await r.json();
+      courseName = san(toc.Title || "");
+    }
+  } catch {}
+  ui.querySelector("#bs-course").textContent = courseName || `Course ID: ${courseId}`;
 
-  overlay.querySelector('#bd-zip').onclick = async ()=>{
-    const checkedIdx = Array.from(list.querySelectorAll('input[type=checkbox]:checked')).map(cb=>Number(cb.dataset.idx));
-    if(checkedIdx.length===0){ alert('No files selected'); return; }
-    try{
-      const zip = new JSZip();
-      const status = document.createElement('div'); status.style='margin-top:8px;font-size:13px';
-      overlay.appendChild(status);
-      for(const i of checkedIdx){
-        const file = links[i];
-        status.textContent = 'Fetching: ' + (file.href.split('/').pop() || file.href);
-        // fetch as same-origin (should carry cookies because script runs on domain)
-        try{
-          const resp = await fetch(file.href, {credentials:'same-origin'});
-          if(!resp.ok) { console.warn('Failed fetch', file.href, resp.status); continue; }
-          const blob = await resp.blob();
-          // generate safe filename
-          let name = decodeURIComponent((new URL(file.href)).pathname.split('/').pop() || 'file_'+i);
-          // fallback: try to get filename from content-disposition
-          const cd = resp.headers.get('content-disposition');
-          if(cd){
-            const m = cd.match(/filename\\*=UTF-8''([^;\\n]+)/i) || cd.match(/filename="?([^";\\n]+)"?/i);
-            if(m && m[1]) name = decodeURIComponent(m[1]);
-          }
-          zip.file(name, blob);
-        }catch(err){
-          console.error('Error fetching', file.href, err);
-        }
-      }
-      status.textContent = 'Generating ZIP…';
-      const zipBlob = await zip.generateAsync({type:'blob'}, meta => {
-        status.textContent = 'Zipping: ' + Math.round(meta.percent) + '%';
+  /* ---------- Fallback: DOM scrape ---------- */
+  const scrapeDomLinks = () => {
+    const links = [];
+    document.querySelectorAll("a[href]").forEach(a => {
+      const href = abs(a.getAttribute("href"));
+      if (!href) return;
+      if (looksFile(href))
+        links.push({ Title: a.textContent.trim() || "file", Url: href });
+    });
+    return { Modules:[{ Title:"Loose Files", Topics:links }] };
+  };
+  if (!toc || !toc.Modules?.length) {
+    S("No ToC found; scanning page links…");
+    toc = scrapeDomLinks();
+  }
+
+  /* ---------- Collect Topics ---------- */
+  const topics = [];
+  const walk = m => {
+    (m.Topics || []).forEach(t => topics.push(t));
+    (m.Modules || []).forEach(walk);
+  };
+  (toc.Modules || []).forEach(walk);
+  S(`Found ${topics.length} topics.`);
+
+  /* ---------- Deep Scan HTML pages ---------- */
+  const deepScan = async (url) => {
+    try {
+      const r = await fetch(url, { credentials:"same-origin" });
+      if (!r.ok) return [];
+      const html = await r.text();
+      const d = new DOMParser().parseFromString(html, "text/html");
+      const found = [];
+      d.querySelectorAll("a[href],source[src],iframe[src],embed[src]").forEach(n => {
+        const u = abs(n.getAttribute("href") || n.getAttribute("src") || "");
+        if (u && looksFile(u)) found.push(u);
       });
-      status.textContent = 'Done — preparing download';
-      saveAs(zipBlob, 'brightspace-files.zip');
-      setTimeout(()=>{overlay.remove(); window.__brightDownloaderRunning = false;}, 500);
-    }catch(err){
-      console.error(err);
-      alert('Error while creating ZIP: ' + err.message);
-      window.__brightDownloaderRunning = false;
-    }
+      return found;
+    } catch { return []; }
   };
 
+  /* ---------- Button Logic ---------- */
+  const skipped = [];
+  ui.querySelector("#bs-show").onclick = () => {
+    if (!skipped.length) return alert("No skipped items yet.");
+    alert(skipped.map(x => x.Title + " → " + (x.Url || "no URL")).join("\n"));
+  };
+
+  ui.querySelector("#bs-start").onclick = async () => {
+    ui.querySelector("#bs-start").disabled = true;
+    const allow = [...exDiv.querySelectorAll("input:checked")].map(c=>c.dataset.ext);
+    const want = t => { const e=extOf(t.Url||""); return !allow.length || allow.includes(e); };
+    const wanted = topics.filter(want);
+    const doDeep = ui.querySelector("#bs-deepscan").checked;
+
+    let done = 0;
+    C.textContent = `0/${wanted.length} downloaded`;
+    S("Downloading…");
+
+    const addURLShortcut = (dir, title, link) => {
+      const content = `[InternetShortcut]\nURL=${link}\n`;
+      zip.file(`${dir}${san(title)}.url`, content);
+    };
+
+    const add = async (mods, pre="") => {
+      for (const m of mods || []) {
+        const dir = pre + san(m.Title || "Module") + "/";
+        for (const t of m.Topics || []) {
+          if (!t.Url) { skipped.push(t); continue; }
+          const u = t.Url;
+          if (!want(t)) { skipped.push(t); continue; }
+
+          let targets = [u];
+          if (doDeep && /\.html?/i.test(u)) {
+            const extra = await deepScan(u);
+            extra.forEach(x => targets.push(x));
+          }
+
+          for (const link of targets) {
+            try {
+              const r = await fetch(link, { credentials:"same-origin" });
+              if (!r.ok || r.status===403) {
+                addURLShortcut(dir, t.Title || "link", link);
+                skipped.push({...t, Url:link, Type:"Shortcut"});
+                continue;
+              }
+              const blob = await r.blob();
+              const ext = extOf(link) || ".bin";
+              zip.file(dir + san(t.Title || "file") + ext, blob);
+              done++;
+              B.style.width = ((done/(wanted.length||1))*100).toFixed(1) + "%";
+              C.textContent = `${done}/${wanted.length} downloaded`;
+            } catch {
+              addURLShortcut(dir, t.Title || "link", link);
+              skipped.push({...t, Url:link, Type:"Shortcut"});
+            }
+            await sleep(60);
+          }
+        }
+        await add(m.Modules, dir);
+      }
+    };
+
+    await add(toc.Modules);
+    S("Building ZIP…");
+    const blob = await zip.generateAsync({ type:"blob" });
+    const name = `Brightspace_${courseName || courseId}.zip`;
+    saveAs(blob, name);
+    S(`Done: ${done} files, ${skipped.length} skipped.`);
+    setTimeout(() => { ui.remove(); window.__bs_scraper_active=false; }, 7000);
+  };
 })();
-`.trim();
-
-function makeBookmarklet() {
-  // minify a bit and encode
-  const min = bookmarkletSource.replace(/\n\s+/g,' ').replace(/\s{2,}/g,' ');
-  return 'javascript:' + encodeURIComponent(min);
-}
-
-document.addEventListener('DOMContentLoaded', ()=>{
-  const copyBtn = document.getElementById('copyBtn');
-  const dragBtn = document.getElementById('dragBtn');
-  const bm = makeBookmarklet();
-  // set drag link href directly to javascript:... (works when dragged to bookmarks bar)
-  dragBtn.href = bm;
-
-  copyBtn.addEventListener('click', async ()=>{
-    try{
-      await navigator.clipboard.writeText(bm);
-      copyBtn.textContent = 'Bookmarklet copied!';
-      setTimeout(()=>copyBtn.textContent='Copy Bookmarklet',2200);
-    }catch(e){
-      alert('Could not copy. You can drag the "Drag:" link to your bookmarks bar, or copy the code manually from the page source.');
-    }
-  });
-});
