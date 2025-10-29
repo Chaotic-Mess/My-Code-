@@ -3,7 +3,6 @@ body {
   color: #c9d1d9;
   font-family: "Inter", system-ui, sans-serif;
   margin: 0;
-  padding: 0;
 }
 .container {
   max-width: 760px;
@@ -49,7 +48,7 @@ footer {
   color: #8b949e;
 }
 
-/* Overlay (injected by script.js) */
+/* Overlay */
 #yt-helper {
   position: fixed;
   right: 20px;
@@ -58,8 +57,8 @@ footer {
   color: #c9d1d9;
   border: 1px solid #30363d;
   border-radius: 12px;
-  width: 360px;
-  max-height: 80vh;
+  width: 380px;
+  max-height: 85vh;
   overflow-y: auto;
   box-shadow: 0 8px 30px rgba(0,0,0,0.5);
   z-index: 999999;
@@ -71,13 +70,18 @@ footer {
   margin-top: 0;
 }
 #yt-helper button {
-  margin-top: 8px;
+  margin-top: 6px;
   padding: 6px 10px;
   border: none;
   border-radius: 6px;
   background: #0b67ff;
   color: #fff;
   cursor: pointer;
+}
+#yt-helper button.copy {
+  background: #333;
+  color: #ddd;
+  margin-left: 6px;
 }
 #yt-helper select {
   width: 100%;
