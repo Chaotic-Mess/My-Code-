@@ -1,5 +1,5 @@
 /* ===========================================================
-   Brightspace_Scraper V4.3 – "Hierarchical Organization"
+   Brightspace_Scraper V4.4 – "Hierarchical Organization"
    by chaotic-mess (Zac) + ChatGPT + Claude
    Now maintains proper folder structure through nested links!
    =========================================================== */
@@ -161,9 +161,11 @@
   }
 
   /* ---------------- QuickLink resolution ---------------- */
-  const fileIdToDirect = (fileId) => { const p = decodeURIComponent(fileId || "").replace(/^\/+/, ""); return abs(`/content/enforced/${p}`); };
-  const viewFileFromQuickLink = (u) => { const fid=getParam(u,"fileId"); if(!fid) return null;
-    return abs(`/d2l/common/viewFile.d2l?ou=${encodeURIComponent(courseId)}&fileId=${encodeURIComponent(fid)}`); };
+  const viewFileFromQuickLink = (u) => { 
+    const fid = getParam(u,"fileId"); 
+    if (!fid) return null;
+    return abs(`/d2l/common/viewFile.d2l?ou=${encodeURIComponent(courseId)}&fileId=${encodeURIComponent(fid)}`); 
+  };
 
   async function follow(url) {
     try { const res = await fetch(url, { credentials: "same-origin" }); const text = await res.clone().text().catch(()=> "");
@@ -182,9 +184,17 @@
     return null;
   }
   async function resolveQuickLink(u) {
-    const type = getParam(u, "type"); const fileId = getParam(u, "fileId");
-    if (type === "coursefile" && fileId) { const direct = fileIdToDirect(fileId); if (direct && looksFile(direct)) return direct; }
-    const vf = viewFileFromQuickLink(u); if (vf) return vf;
+    const type = getParam(u, "type"); 
+    const fileId = getParam(u, "fileId");
+    
+    // Always use viewFile.d2l endpoint - it handles the full path resolution
+    if (fileId) {
+      const viewFileUrl = abs(`/d2l/common/viewFile.d2l?ou=${encodeURIComponent(courseId)}&fileId=${encodeURIComponent(fileId)}`);
+      log(`Resolving QuickLink via viewFile: ${viewFileUrl}`);
+      return viewFileUrl;
+    }
+    
+    // Fallback: follow the URL and see where it leads
     const { finalUrl, body } = await follow(u);
     if (looksFile(finalUrl)) return finalUrl;
     const cand = extractFileFromHtml(body);
