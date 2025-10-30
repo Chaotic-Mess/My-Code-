@@ -1,5 +1,5 @@
 /* ===========================================================
-   Brightspace_Scraper v3.9 (Deep Hybrid)
+   Brightspace_Scraper v3.9.1 (Deep Hybrid + QuickLink Recovery)
    by chaotic-mess | https://chaotic-mess.github.io/My-Code-/
    Full detection: API ToC, Lessons, Smart-Curriculum, QuickLinks.
    =========================================================== */
@@ -38,7 +38,7 @@
     width:360px;max-height:90vh;overflow-y:auto;
   `;
   ui.innerHTML = `
-    <b style="font-size:15px">Brightspace Scraper v3.9</b>
+    <b style="font-size:15px">Brightspace Scraper v3.9.1</b>
     <div id="bs-course" style="margin:6px 0;color:#9ca3af">Detecting course…</div>
     <div id="bs-status" style="margin:8px 0;color:#ccc">Initializing…</div>
     <div id="bs-exts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
@@ -75,7 +75,7 @@
     exDiv.appendChild(L);
   });
 
-  /* ---------- ToC Fetch + Smart Fallback ---------- */
+  /* ---------- ToC Fetch + Smart + QuickLink Fallback ---------- */
   S("Fetching Table of Contents…");
   let toc = null, courseName = "";
   try {
@@ -87,40 +87,57 @@
   } catch {}
   ui.querySelector("#bs-course").textContent = courseName || `Course ID: ${courseId}`;
 
+  // DOM link collector
   const scrapeDomLinks = () => {
     const links = [];
     document.querySelectorAll("a[href], source[src], iframe[src], embed[src]").forEach(el => {
       const href = abs(el.getAttribute("href") || el.getAttribute("src"));
       if (!href) return;
-      if (looksFile(href))
+      if (looksFile(href)) {
         links.push({ Title: el.textContent.trim() || el.getAttribute("title") || "file", Url: href });
-      else if (/quickLink.*fileId=/i.test(href)) {
-        // quickLink handler
+      } else if (/quickLink\.d2l.*fileId=/i.test(href)) {
         const id = decodeURIComponent((href.match(/fileId=([^&]+)/i) || [])[1] || "");
         if (id) links.push({ Title: el.textContent.trim() || "QuickLink File", Url: `/content/enforced/${id}` });
+      } else if (/\/viewContent\/\d+\/View/i.test(href)) {
+        links.push({ Title: el.textContent.trim() || "HTML Topic", Url: href });
       }
     });
-    return { Modules: [{ Title: "Lesson Page", Topics: links }] };
+    return { Modules: [{ Title: "Detected Page", Topics: links }] };
   };
 
-  // Smart Curriculum iframe check
-  async function getSmartCurriculumLinks(){
+  // Smart-Curriculum iframe handler
+  async function getSmartCurriculumLinks() {
     const iframe = document.querySelector('iframe[src*="smart-curriculum"]');
-    if(!iframe) return null;
+    if (!iframe) return null;
     try {
       const doc = iframe.contentDocument || iframe.contentWindow.document;
       const links = [];
-      doc.querySelectorAll('a[href],source[src],iframe[src],embed[src]').forEach(a=>{
-        const href=abs(a.getAttribute("href")||a.getAttribute("src"));
-        if(href && looksFile(href)) links.push({Title:a.textContent.trim()||'file',Url:href});
+      doc.querySelectorAll('a[href],source[src],iframe[src],embed[src]').forEach(a => {
+        const href = abs(a.getAttribute("href") || a.getAttribute("src"));
+        if (href && looksFile(href)) links.push({ Title: a.textContent.trim() || "file", Url: href });
       });
-      return { Modules:[{Title:"SmartCurriculum",Topics:links}]};
-    } catch(e){ console.warn("SmartCurriculum blocked:",e); return null; }
+      return { Modules: [{ Title: "SmartCurriculum", Topics: links }] };
+    } catch (e) {
+      console.warn("SmartCurriculum blocked:", e);
+      return null;
+    }
   }
 
+  // Smart fallback + QuickLink-only detection
   if (!toc || !toc.Modules?.length || isLessons) {
     S("No ToC found or Lessons detected — scanning DOM…");
     toc = await getSmartCurriculumLinks() || scrapeDomLinks();
+  } else {
+    // If ToC exists but has no URLs (QuickLink-only course)
+    const allTopics = [];
+    const walk = m => { (m.Topics||[]).forEach(t=>allTopics.push(t)); (m.Modules||[]).forEach(walk); };
+    (toc.Modules||[]).forEach(walk);
+    const hasURLs = allTopics.some(t => t.Url);
+    if (!hasURLs) {
+      S("Detected QuickLink-only structure — scanning content page…");
+      const extras = scrapeDomLinks();
+      toc.Modules.push(extras.Modules[0]);
+    }
   }
 
   /* ---------- Collect Topics ---------- */
