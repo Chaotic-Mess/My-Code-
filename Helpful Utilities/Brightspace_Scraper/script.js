@@ -61,7 +61,7 @@
     <div id="drag" style="
       background: repeating-linear-gradient(45deg,#ff7a00,#ff7a00 8px,#303030 8px,#303030 16px);
       padding:8px 12px;cursor:move;color:#000;display:flex;justify-content:space-between;align-items:center;">
-      <b style="color:#111">Brightspace Scraper V4.1  — "TabCrawler 2"</b>
+      <b style="color:#FFFFFF">Brightspace Scraper V4.1  — "TabCrawler 2"</b>
       <button id="bs-close" title="Close" style="border:0;background:#111;color:#eee;padding:4px 8px;border-radius:6px">✕</button>
     </div>
     <div style="padding:12px">
