@@ -1,5 +1,5 @@
 /* ===========================================================
-   Brightspace_Scraper V4.4 – "Hierarchical Organization"
+   Brightspace_Scraper V4.5 – "Hierarchical Organization"
    by chaotic-mess (Zac) + ChatGPT + Claude
    Now maintains proper folder structure through nested links!
    =========================================================== */
@@ -60,7 +60,7 @@
     <div id="drag" style="
       background: repeating-linear-gradient(45deg,#10b981,#10b981 8px,#303030 8px,#303030 16px);
       padding:8px 12px;cursor:move;color:#000;display:flex;justify-content:space-between;align-items:center;">
-      <b style="color:#FFFFFF">Brightspace Scraper V4.3 – "Hierarchical"</b>
+      <b style="color:#FFFFFF">Brightspace Scraper V4.5 – "Hierarchical"</b>
       <button id="bs-close" title="Close" style="border:0;background:#111;color:#eee;padding:4px 8px;border-radius:6px">✕</button>
     </div>
     <div style="padding:12px">
@@ -183,58 +183,170 @@
     if (m4) return abs(m4[0]);
     return null;
   }
-  async function resolveQuickLink(u) {
+  async function resolveQuickLink(u, useTab = false) {
+    // If tabs are allowed, open the QuickLink and extract the real URL
+    if (useTab) {
+      log(`Opening QuickLink in tab: ${u}`);
+      const handle = TabManager.openOne(u);
+      if (!handle.blocked && handle.win) {
+        await sleep(2000); // Give it time to load and redirect
+        const realUrl = await TabManager.extractDownloadUrl(handle.win);
+        TabManager.closeOne(u);
+        if (realUrl && looksFile(realUrl)) {
+          log(`✓ Extracted from tab: ${realUrl}`);
+          return realUrl;
+        }
+      }
+    }
+    
+    // Fallback: try to construct the URL
     const type = getParam(u, "type"); 
     const fileId = getParam(u, "fileId");
     
-    // Always use viewFile.d2l endpoint - it handles the full path resolution
     if (fileId) {
       const viewFileUrl = abs(`/d2l/common/viewFile.d2l?ou=${encodeURIComponent(courseId)}&fileId=${encodeURIComponent(fileId)}`);
-      log(`Resolving QuickLink via viewFile: ${viewFileUrl}`);
       return viewFileUrl;
     }
     
-    // Fallback: follow the URL and see where it leads
+    // Last resort: follow the URL and see where it leads
     const { finalUrl, body } = await follow(u);
     if (looksFile(finalUrl)) return finalUrl;
     const cand = extractFileFromHtml(body);
     return cand || u;
   }
-  async function normalizeLink(u) { if (!u) return null; if (isQuickLink(u)) return await resolveQuickLink(u); return u; }
+  async function normalizeLink(u, useTab = false) { 
+    if (!u) return null; 
+    if (isQuickLink(u)) return await resolveQuickLink(u, useTab); 
+    return u; 
+  }
 
   /* ---------------- flatten topics ---------------- */
   const topics = [];
   (function walk(m){ (m.Topics||[]).forEach(t=>topics.push(t)); (m.Modules||[]).forEach(walk); })(toc);
   S(`Found ${topics.length} topics.`); log(`Topics: ${topics.length}`);
 
-  /* ---------------- TabManager ---------------- */
+  /* ---------------- TabManager with download extraction ---------------- */
   const TabManager = (() => {
     const opened = new Map();
-    const TIMEOUT_MS = 15000;
-    function openMany(urls) {
-      const handles = [];
-      for (const u of urls) {
-        let w = null; try { w = window.open(u, "_blank"); } catch {}
-        if (!w) { log("Popup blocked: " + u); handles.push({ url: u, win: null, blocked: true }); continue; }
-        opened.set(u, { win: w, t0: Date.now() }); handles.push({ url: u, win: w, blocked: false }); log("Opened tab: "+u);
+    const TIMEOUT_MS = 30000;
+    
+    function openOne(url) {
+      let w = null; 
+      try { w = window.open(url, "_blank"); } catch {}
+      if (!w) { 
+        log("Popup blocked: " + url); 
+        return { url, win: null, blocked: true }; 
       }
-      return handles;
+      opened.set(url, { win: w, t0: Date.now() }); 
+      log("Opened tab: " + url);
+      return { url, win: w, blocked: false };
     }
+    
+    async function waitForLoad(win, maxWait = 10000) {
+      const start = Date.now();
+      while (Date.now() - start < maxWait) {
+        try {
+          if (win.closed) return false;
+          // Check if document is loaded and has content
+          if (win.document && win.document.readyState === 'complete') {
+            return true;
+          }
+        } catch (e) {
+          // Cross-origin or other access issues
+        }
+        await sleep(200);
+      }
+      return false;
+    }
+    
+    async function extractDownloadUrl(win) {
+      try {
+        // Wait for the page to load
+        await waitForLoad(win);
+        
+        // Try to get the actual loaded URL (after redirects)
+        const finalUrl = win.location.href;
+        log(`Tab loaded: ${finalUrl}`);
+        
+        // If it's already a direct file URL, return it
+        if (looksFile(finalUrl)) {
+          return finalUrl;
+        }
+        
+        // Look for download buttons or PDF embeds in the page
+        try {
+          const doc = win.document;
+          
+          // Method 1: Look for download button/link
+          const downloadBtn = doc.querySelector('a[download], a[href*="download"], button[title*="Download"]');
+          if (downloadBtn) {
+            const href = downloadBtn.getAttribute('href');
+            if (href) return abs(href);
+          }
+          
+          // Method 2: Look for PDF embed/iframe src
+          const pdfEmbed = doc.querySelector('embed[src*=".pdf"], iframe[src*=".pdf"], object[data*=".pdf"]');
+          if (pdfEmbed) {
+            const src = pdfEmbed.getAttribute('src') || pdfEmbed.getAttribute('data');
+            if (src) return abs(src);
+          }
+          
+          // Method 3: Check if the page itself is displaying a PDF (PDF.js viewer)
+          if (finalUrl.includes('.pdf') || doc.contentType === 'application/pdf') {
+            return finalUrl;
+          }
+          
+          // Method 4: Look for any enforced content links
+          const links = [...doc.querySelectorAll('a[href*="/content/enforced/"]')];
+          if (links.length > 0) {
+            return abs(links[0].href);
+          }
+          
+        } catch (e) {
+          log(`Could not access tab content: ${e.message}`);
+        }
+        
+        // Return the final URL as fallback
+        return finalUrl;
+        
+      } catch (e) {
+        log(`Error extracting from tab: ${e.message}`);
+        return null;
+      }
+    }
+    
+    function closeOne(url) {
+      const h = opened.get(url);
+      if (h) {
+        try { if (h.win && !h.win.closed) h.win.close(); } catch {}
+        opened.delete(url);
+        log("Closed tab: " + url);
+      }
+    }
+    
     function closeAll() {
-      for (const [u, h] of opened) { try { if (h.win && !h.win.closed) h.win.close(); } catch {} opened.delete(u); log("Closed tab: "+u); }
+      for (const [u, h] of opened) { 
+        try { if (h.win && !h.win.closed) h.win.close(); } catch {} 
+        opened.delete(u); 
+        log("Closed tab: " + u); 
+      }
     }
+    
     function reapExpired() {
       const now = Date.now();
       for (const [u, h] of opened) {
         if (!h.win || h.win.closed || now - h.t0 > TIMEOUT_MS) {
           try { if (h.win && !h.win.closed) h.win.close(); } catch {}
-          opened.delete(u); log("Reaped tab: "+u);
+          opened.delete(u); 
+          log("Reaped tab: " + u);
         }
       }
     }
+    
     window.addEventListener("beforeunload", closeAll);
-    setInterval(reapExpired, 2000);
-    return { openMany, closeAll };
+    setInterval(reapExpired, 3000);
+    
+    return { openOne, extractDownloadUrl, closeOne, closeAll };
   })();
   ui.querySelector("#bs-canceltabs").onclick = () => TabManager.closeAll();
 
@@ -414,13 +526,11 @@
       quickPages = quickPages.filter(u => { try { return new URL(u, location.href).origin === location.origin; } catch { return false; } });
 
       if (finalAllowPopups && quickPages.length) {
-        const msg = `Detected ${quickPages.length} QuickLink launch pages. If you proceed, the script will open/close ${quickPages.length} tabs to prime them. Continue?`;
-        if (confirm(msg)) {
-          S(`Opening ${quickPages.length} helper tabs…`);
-          TabManager.openMany(quickPages);
-          await sleep(2000 + quickPages.length * 300);
-          for (const q of quickPages) { try { await fetch(q, { credentials: "same-origin" }); } catch {} }
-          TabManager.closeAll();
+        const msg = `Detected ${quickPages.length} QuickLink pages.\n\nThe script will open each in a tab, extract the download URL from the loaded page, then close it.\n\nThis may take ${Math.ceil(quickPages.length * 2.5)} seconds. Continue?`;
+        if (!confirm(msg)) {
+          ui.querySelector("#bs-start").disabled = false;
+          window.__bs_scraper_active = false;
+          return;
         }
       }
 
@@ -437,7 +547,8 @@
           return; 
         }
         
-        let primary = await normalizeLink(raw);
+        // Use tab extraction for QuickLinks if allowed
+        let primary = await normalizeLink(raw, finalAllowPopups);
         const filesToDownload = [];
         
         // Direct file link
