@@ -1,8 +1,9 @@
 /* ===========================================================
-   Brightspace Scraper v3.9.4 "TabCrawler"
-   by chaotic-mess | https://chaotic-mess.github.io/My-Code-/ | and part ChatGPT ❤️
+   Brightspace_Scraper v3.9.5 "TabCrawler+SafePrompt"
+   by Zac Matthias and Partly ChatGPT 💞 | https://chaotic-mess.github.io/My-Code-/
+   Single-file script for console/bookmarklet use.
    Full detection: API ToC, Lessons, Smart-Curriculum, QuickLinks.
-   Opens real tabs to expand internal pages, scrapes files, zips them.
+   Adds controlled popup/tab crawling + robust queueing.
    =========================================================== */
 (async () => {
   if (window.__bs_scraper_active) {
@@ -11,627 +12,679 @@
   }
   window.__bs_scraper_active = true;
 
-  /* ---------- Utilities ---------- */
+  /* ---------- tiny utilities ---------- */
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const abs = u => { try { return new URL(u, location.href).href; } catch { return null; } };
-  const san = s => (s || "").toString().replace(/[<>:"/\\|?*]+/g, "_").trim();
-  const extOf = u => { try { const m = u && u.match(/(\.[a-z0-9]{2,6})(?:[?#].*)?$/i); return m ? m[1].toLowerCase() : ""; } catch { return ""; } };
-  const isBrightspaceInternal = u => !!(u && (/\/d2l\//i.test(u) || /brightspace\.|bright\.uvic\.ca/i.test(u) || /content\/enforced\//i.test(u)));
-  const looksFile = u => !!(u && (/\.(pdf|mp4|m4v|mov|webm|mp3|docx?|pptx?|xlsx?|zip|txt|csv|rtf|md|epub)(?:[?#].*)?$/i.test(u)
-    || /\/content\/enforced\//i.test(u) || /\/d2l\/common\/viewFile\.d2l/i.test(u) || /download=1/i.test(u)));
-  const looksHtmlLike = u => !!(u && (/\.(?:html?|php|aspx)(?:[?#].*)?$/i.test(u) || /viewContent|lessons|lessons\/|units\/|topics\/|d2l\/le\/|quickLink/i.test(u)));
-  const sanitizeFilename = s => san(s || "file");
-  const humanDateTag = () => {
-    const d = new Date();
-    const yy = String(d.getFullYear()).slice(2);
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
-    return `(${yy}-${mm}-${dd})`;
-  };
+  const san = s => (s || "").replace(/[<>:"/\\|?*]+/g, "_").trim();
+  const extOf = u => { const m = u && u.match(/\.[a-z0-9]{2,6}(?:$|\?)/i); return m ? m[0].toLowerCase() : ""; };
+  const looksFile = u => !!u && (/\.(pdf|mp4|m4v|mov|mp3|docx?|pptx?|xlsx?|zip|txt|csv|rtf|md|epub)(?:[?#].*)?$/i.test(u)
+    || /\/content\/enforced\//i.test(u)
+    || /\/d2l\/common\/viewFile\.d2l/i.test(u)
+    || /type=coursefile/i.test(u));
+  const tryJSON = async (r) => { try { return await r.json(); } catch { return null; } };
 
-  /* ---------- Course detection ---------- */
-  const courseMatch = location.pathname.match(/\/d2l\/le\/(?:content|lessons|home)\/(\d+)/i) ||
-                      location.pathname.match(/\/d2l\/le\/lessons\/(\d+)/i) ||
-                      location.pathname.match(/\/d2l\/home\/(\d+)/i);
-  const courseId = courseMatch && courseMatch[1];
+  /* ---------- detect course ---------- */
+  const pathMatch = location.pathname.match(/\/d2l\/le\/(?:content|lessons|home)\/(\d+)/);
+  const courseId = pathMatch && pathMatch[1];
+  const isLessons = /\/d2l\/le\/lessons\//.test(location.pathname);
+
   if (!courseId) {
-    alert("Open a Brightspace course home, Content, or Lessons page first.");
+    alert("Open a course home, Content, or Lessons page first.");
     window.__bs_scraper_active = false;
     return;
   }
-  const isLessons = /\/d2l\/le\/lessons\//i.test(location.pathname);
 
-  /* ---------- Build UI (draggable with hazard topbar) ---------- */
-  const existingUi = document.querySelector("#bsx-root");
-  if (existingUi) existingUi.remove();
-
-  const root = document.createElement("div");
-  root.id = "bsx-root";
-  Object.assign(root.style, {
-    position: "fixed",
-    right: "16px",
-    bottom: "16px",
-    zIndex: 2147483647,
-    width: "380px",
-    maxHeight: "88vh",
-    overflow: "auto",
-    font: "13px/1.35 system-ui,Segoe UI,Roboto,Arial",
-    boxShadow: "0 10px 30px rgba(0,0,0,.35)",
-    borderRadius: "10px",
-  });
-
-  // Inner container + theme
-  root.innerHTML = `
-  <div id="bsx-panel" style="background:#111217;color:#e6eef8;border-radius:10px;overflow:hidden">
-    <div id="bsx-top" style="cursor:move;padding:8px 10px;background:repeating-linear-gradient(45deg,#2b2b2b 0 6px,#3b3b3b 6px 12px);color:#fff;display:flex;align-items:center;justify-content:space-between">
-      <div style="display:flex;gap:10px;align-items:center">
-        <strong style="font-size:14px">Brightspace Scraper v3.9.4</strong>
-        <span id="bsx-course" style="font-size:12px;color:#cbd5e1;margin-left:6px"></span>
-      </div>
-      <div style="display:flex;gap:6px;align-items:center">
-        <button id="bsx-gear" title="Settings" style="background:#222;border:0;color:#fff;padding:6px;border-radius:6px;cursor:pointer">⚙</button>
-        <button id="bsx-close" title="Close" style="background:#222;border:0;color:#fff;padding:6px;border-radius:6px;cursor:pointer">✖</button>
-      </div>
-    </div>
-
-    <div style="padding:10px">
-      <div id="bsx-status" style="color:#94a3b8;margin-bottom:8px">Initializing…</div>
-
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px" id="bsx-exts"></div>
-
-      <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-        <input type="checkbox" id="bsx-deepscan" checked> Aggressive Deep Scan (HTML pages)
-      </label>
-
-      <div style="height:8px;background:#222;border-radius:8px;overflow:hidden;margin-bottom:8px">
-        <div id="bsx-bar" style="height:8px;width:0;background:#16a34a"></div>
-      </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div id="bsx-count" style="color:#a6b0bf">0 / 0 downloaded</div>
-        <div style="display:flex;gap:6px">
-          <button id="bsx-start" style="background:#0b67ff;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Scan & Download</button>
-          <button id="bsx-show" style="background:#222;border:0;color:#fff;padding:6px 10px;border-radius:6px;cursor:pointer">Show Skipped</button>
-        </div>
-      </div>
-
-      <div style="color:#98a7b9;font-size:12px;margin-bottom:8px">
-        <label style="display:flex;align-items:center;gap:6px">
-          <input type="checkbox" id="bsx-autoclose" checked> Auto-close tabs after scrape
-        </label>
-      </div>
-
-      <div id="bsx-log" style="background:#0b0c0e;color:#9fb3c9;padding:8px;border-radius:6px;height:160px;overflow:auto;font-family:monospace;font-size:12px"></div>
-    </div>
-  </div>
+  /* ---------- UI Overlay (kept visually consistent) ---------- */
+  const ui = document.createElement("div");
+  ui.id = "bs-scraper-ui-root";
+  ui.style = `
+    position:fixed;right:16px;bottom:16px;z-index:999999;
+    background:#1e1e1e;color:#eee;padding:14px 16px;border-radius:10px;
+    font:14px/1.4 system-ui,Segoe UI,Roboto,Arial;box-shadow:0 8px 20px rgba(0,0,0,.35);
+    width:360px;max-height:90vh;overflow-y:auto;
   `;
-  document.body.appendChild(root);
+  ui.innerHTML = `
+    <b style="font-size:15px">Brightspace Scraper v3.9.5</b>
+    <div id="bs-course" style="margin:6px 0;color:#9ca3af">Detecting course…</div>
+    <div id="bs-status" style="margin:8px 0;color:#ccc">Idle</div>
+    <div id="bs-exts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px"></div>
+    <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+      <input type="checkbox" id="bs-deepscan" checked> Deep Scan HTML topics
+    </label>
+    <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+      <input type="checkbox" id="bs-allowpopups"> Allow Popups / Open Tabs when needed
+    </label>
+    <div style="height:6px;background:#333;border-radius:6px;overflow:hidden;margin-bottom:6px">
+      <div id="bs-bar" style="height:6px;width:0;background:#4ade80"></div>
+    </div>
+    <div id="bs-count" style="margin:6px 0;color:#bbb;font-size:12px">0/0 downloaded</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+      <button id="bs-start" style="background:#0b67ff;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Scan & Download</button>
+      <button id="bs-show" style="background:#333;color:#ccc;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Show Skipped</button>
+      <button id="bs-close" style="background:#333;color:#ccc;border:0;border-radius:6px;padding:6px 10px;cursor:pointer">Close</button>
+    </div>
+    <div id="bs-log" style="margin-top:8px;color:#9b9b9b;font-size:12px;max-height:120px;overflow:auto"></div>
+  `;
+  document.body.appendChild(ui);
 
-  // Dragging
-  const panel = document.getElementById("bsx-panel");
-  const topbar = document.getElementById("bsx-top");
-  let dragging = false, dragOffsetX = 0, dragOffsetY = 0;
-  topbar.addEventListener("mousedown", e => {
-    dragging = true;
-    const rect = panel.getBoundingClientRect();
-    dragOffsetX = e.clientX - rect.left;
-    dragOffsetY = e.clientY - rect.top;
-    document.body.style.userSelect = "none";
-  });
-  window.addEventListener("mousemove", e => {
-    if (!dragging) return;
-    panel.style.position = "fixed";
-    panel.style.left = (e.clientX - dragOffsetX) + "px";
-    panel.style.top = (e.clientY - dragOffsetY) + "px";
-    panel.style.right = "auto";
-    panel.style.bottom = "auto";
-  });
-  window.addEventListener("mouseup", () => { dragging = false; document.body.style.userSelect = ""; });
+  const S = t => ui.querySelector("#bs-status").textContent = t;
+  const B = ui.querySelector("#bs-bar");
+  const C = ui.querySelector("#bs-count");
+  const LOG = msg => {
+    const el = ui.querySelector("#bs-log");
+    const p = document.createElement("div");
+    p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    el.appendChild(p);
+    el.scrollTop = el.scrollHeight;
+    console.log("[BScraper]", msg);
+  };
 
-  document.getElementById("bsx-close").onclick = () => { root.remove(); window.__bs_scraper_active = false; };
+  ui.querySelector("#bs-close").onclick = () => { ui.remove(); window.__bs_scraper_active = false; };
 
-  const logEl = document.getElementById("bsx-log");
-  const statusEl = document.getElementById("bsx-status");
-  const barEl = document.getElementById("bsx-bar");
-  const countEl = document.getElementById("bsx-count");
-  const courseLabel = document.getElementById("bsx-course");
-  const appendLog = (t) => { const p = document.createElement("div"); p.textContent = t; logEl.appendChild(p); logEl.scrollTop = logEl.scrollHeight; console.log("[BSX]", t); };
-  const setStatus = s => { statusEl.textContent = s; appendLog(s); };
-
-  /* ---------- Load dependencies ---------- */
+  /* ---------- load zip libs ---------- */
   const loadScript = src => new Promise((res, rej) => {
-    if (document.querySelector(`script[src="${src}"]`)) { res(); return; }
+    if (document.querySelector(`script[src="${src}"]`)) return res();
     const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s);
   });
+  await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+  await loadScript("https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js");
+  const zip = new JSZip();
 
-  try {
-    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
-    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js");
-  } catch (e) {
-    setStatus("Failed to load libraries. Check network.");
-    throw e;
-  }
-  const JSZip = window.JSZip;
-  const saveAs = window.saveAs || (window.saveAs = (blob, name) => {
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+  /* ---------- file type toggles ---------- */
+  const fileTypes = [".pdf",".mp4",".mp3",".m4v",".docx",".pptx",".xlsx",".zip",".txt"];
+  const exDiv = ui.querySelector("#bs-exts");
+  fileTypes.forEach(x => {
+    const L = document.createElement("label");
+    L.style = "font-size:12px;color:#d1d5db";
+    L.innerHTML = `<input type="checkbox" data-ext="${x}" checked> ${x}`;
+    exDiv.appendChild(L);
   });
 
-  /* ---------- Extension toggles ---------- */
-  const exts = [".pdf", ".mp4", ".m4v", ".mov", ".webm", ".docx", ".pptx", ".xlsx", ".zip", ".txt", ".csv"];
-  const exDiv = document.getElementById("bsx-exts");
-  exts.forEach(x => {
-    const l = document.createElement("label");
-    l.style = "display:inline-flex;align-items:center;gap:6px;background:#121214;padding:6px;border-radius:6px;color:#dbe7f5;font-size:12px";
-    l.innerHTML = `<input type="checkbox" data-ext="${x}" checked> ${x}`;
-    exDiv.appendChild(l);
-  });
-
-  /* ---------- ToC attempt ---------- */
-  setStatus("Fetching Table of Contents...");
-  let toc = null, courseName = "", modules = null;
+  /* ---------- ToC fetch attempt ---------- */
+  S("Fetching Table of Contents…");
+  let toc = null, courseName = "";
   try {
     const r = await fetch(`/d2l/api/le/1.68/${courseId}/content/toc`, { credentials: "same-origin" });
     if (r.ok) {
       toc = await r.json();
-      courseName = sanitizeFilename(toc.Title || "");
-      courseLabel.textContent = courseName || `Course ${courseId}`;
-      appendLog("ToC loaded via API.");
+      courseName = san(toc.Title || "") || courseName;
+      LOG("ToC fetched via API.");
     } else {
-      appendLog("ToC API not available or returned non-ok.");
+      LOG("ToC API responded non-OK.");
     }
   } catch (e) {
-    appendLog("ToC API error or blocked.");
+    LOG("ToC API fetch failed.");
   }
+  ui.querySelector("#bs-course").textContent = courseName || `Course ID: ${courseId}`;
 
-  /* ---------- Smart-curriculum iframe detection ---------- */
-  async function scrapeSmartCurriculumIframe() {
+  /* ---------- Smart Curriculum iframe extraction ---------- */
+  async function getSmartCurrLinks() {
+    const iframe = document.querySelector('iframe[src*="smart-curriculum"]');
+    if (!iframe) return null;
     try {
-      const iframe = document.querySelector('iframe[src*="smart-curriculum"], iframe[src*="smart-curriculum"]');
-      if (!iframe) return null;
-      // try to access iframe doc
-      try {
-        const doc = iframe.contentDocument || iframe.contentWindow.document;
-        const results = [];
-        doc.querySelectorAll('a[href], source[src], iframe[src], embed[src]').forEach(n => {
-          const u = abs(n.getAttribute("href") || n.getAttribute("src"));
-          if (!u) return;
-          if (looksFile(u)) results.push({ Title: n.textContent.trim() || n.getAttribute("title") || "file", Url: u });
-        });
-        return { Modules: [{ Title: "SmartCurriculum", Topics: results }] };
-      } catch (e) {
-        appendLog("Smart-curriculum iframe blocked by cross-origin.");
-        return null;
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      // wait a bit if it's a React app (best-effort)
+      await sleep(250);
+      const links = [];
+      doc.querySelectorAll('a[href], source[src], iframe[src], embed[src]').forEach(n => {
+        const u = abs(n.getAttribute("href") || n.getAttribute("src") || "");
+        if (!u) return;
+        if (looksFile(u)) links.push({ Title: n.textContent.trim() || n.getAttribute("title") || "file", Url: u });
+        else if (/quickLink.*fileId=/i.test(u)) {
+          links.push({ Title: n.textContent.trim() || "QuickLink File", Url: u });
+        }
+      });
+      if (links.length) {
+        LOG("Extracted links from Smart Curriculum iframe.");
+        return { Modules: [{ Title: "SmartCurriculum", Topics: links }] };
       }
-    } catch (e) { return null; }
+      return null;
+    } catch (e) {
+      LOG("SmartCurriculum access blocked or failed.");
+      return null;
+    }
   }
 
-  /* ---------- DOM link sniffer fallback ---------- */
-  function scrapeDomLinks() {
-    appendLog("Scanning page DOM for links and media sources...");
+  /* ---------- DOM fallback scrapers ---------- */
+  function parseQuickLinkUrl(url) {
+    try {
+      const u = new URL(url, location.href);
+      const q = u.searchParams;
+      const fileId = q.get("fileId") || q.get("id");
+      return fileId ? decodeURIComponent(fileId) : null;
+    } catch { return null; }
+  }
+
+  function scrapeDomLinksFromPage() {
     const links = [];
     document.querySelectorAll("a[href], source[src], iframe[src], embed[src]").forEach(el => {
-      const href = abs(el.getAttribute("href") || el.getAttribute("src"));
+      const hrefRaw = el.getAttribute("href") || el.getAttribute("src");
+      const href = abs(hrefRaw);
       if (!href) return;
-      const title = (el.textContent || el.getAttribute("title") || "").trim() || "file";
-      // QuickLink special-case: quickLink.d2l? ... fileId=
-      if (/quickLink/i.test(href) && /fileId=/i.test(href)) {
-        // Try to infer enforced path if possible; otherwise store quicklink
-        const fid = decodeURIComponent((href.match(/fileId=([^&]+)/i) || [,""])[1] || "");
-        const enforced = fid ? (`/content/enforced/${fid}`) : href;
-        links.push({ Title: title || "QuickLink File", Url: enforced });
+      if (looksFile(href)) {
+        links.push({ Title: (el.textContent || el.title || href).trim().slice(0,120) || "file", Url: href });
       } else {
-        links.push({ Title: title, Url: href });
+        // catch quickLink -> coursefile
+        if (/quickLink.*fileId=/i.test(href)) {
+          // convert to enforced path if possible
+          const fileId = parseQuickLinkUrl(href);
+          if (fileId) {
+            // Brightspace enforced path often uses /content/enforced/<path>
+            // Build a best-effort enforced URL using courseId + fileId
+            const enforced = `/content/enforced/${courseId}-${fileId}`; // fallback placeholder; deep-scan will follow correctly
+            links.push({ Title: (el.textContent || "QuickLink File").trim(), Url: href, quickFileId: fileId });
+          } else {
+            links.push({ Title: (el.textContent || "QuickLink").trim(), Url: href });
+          }
+        } else {
+          // generic HTML link — include for deep scan if desired
+          links.push({ Title: (el.textContent || el.title || href).trim(), Url: href });
+        }
       }
     });
-    return { Modules: [{ Title: "Loose Files", Topics: links }] };
+    return { Modules: [{ Title: "Page Links", Topics: links }] };
   }
 
-  // If toc not present or empty OR we are on Lessons page, attempt SmartCurriculum or DOM scan
-  if (!toc || !toc.Modules || !toc.Modules.length || isLessons) {
-    setStatus(isLessons ? "Lessons layout detected — scanning page…" : "No ToC found; scanning page links…");
-    const smart = await scrapeSmartCurriculumIframe();
-    if (smart && smart.Modules && smart.Modules.length) {
-      toc = smart;
-      appendLog("Using SmartCurriculum iframe scan.");
-    } else {
-      toc = scrapeDomLinks();
-      appendLog("Using DOM fallback scan.");
-    }
+  /* ---------- decide initial toc to use ---------- */
+  if (!toc || !toc.Modules?.length || isLessons) {
+    S("No ToC or Lessons layout detected — scanning DOM + SmartCurriculum…");
+    const smart = await getSmartCurrLinks();
+    toc = smart || scrapeDomLinksFromPage();
   }
 
-  // Collect all topics into a flat array while preserving module path
+  /* ---------- collect topics (flatten) ---------- */
   const topics = [];
-  function walkModules(mods, pathParts = []) {
-    for (const m of mods || []) {
-      const myPath = pathParts.concat([m.Title || "Module"]);
-      (m.Topics || []).forEach(t => {
-        topics.push({ Topic: t, ModulePath: myPath.slice() });
+  const walk = m => {
+    (m.Topics || []).forEach(t => topics.push(t));
+    (m.Modules || []).forEach(sub => walk(sub));
+  };
+  (toc.Modules || []).forEach(walk);
+  S(`Found ${topics.length} topics.`);
+  LOG(`Initial topics gathered: ${topics.length}`);
+
+  /* ---------- deep scan / crawl helpers ---------- */
+  // fetch with timeout + retries
+  async function fetchWithTimeout(url, opts = {}, timeout = 15000, retries = 1) {
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        const r = await fetch(url, { ...opts, credentials: 'same-origin', signal: controller.signal });
+        clearTimeout(id);
+        return r;
+      } catch (e) {
+        if (attempt === retries) throw e;
+        await sleep(500 + attempt * 200);
+      }
+    }
+  }
+
+  // deepScan: returns array of downloadable URLs found under this page
+  async function deepScan(url, depth = 0, visited = new Set(), openTabsPolicy = { allowPopups: false, uiOpenTabs: [] }) {
+    if (!url || visited.has(url) || depth > 4) return [];
+    visited.add(url);
+
+    LOG(`deepScan(${depth}): ${url}`);
+    // try to fetch HTML as same-origin
+    try {
+      const r = await fetchWithTimeout(url, {}, 12000, 1);
+      if (!r.ok) {
+        LOG(`deepScan: fetch failed ${r.status} for ${url}`);
+        return [];
+      }
+      const html = await r.text();
+      // parse and extract
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const found = new Set();
+
+      // Save a copy of the HTML for inspection
+      try {
+        zip.file(`html_pages/page_${depth}_${Date.now()}.html`, html);
+      } catch (e) {
+        /* ignore zip write failures */
+      }
+
+      // find direct file links and quickLinks
+      doc.querySelectorAll("a[href], source[src], iframe[src], embed[src]").forEach(n => {
+        const raw = n.getAttribute("href") || n.getAttribute("src") || "";
+        const u = abs(raw);
+        if (!u) return;
+        if (looksFile(u)) found.add(u);
+        else if (/quickLink.*fileId=/i.test(u)) {
+          // quickLink might redirect to file — attempt to convert to direct quicklink endpoint
+          const fileId = parseQuickLinkUrl(u);
+          if (fileId) {
+            // create the quickLink dialog url and also attempt to generate an enforced content URL
+            const quickUrl = u;
+            found.add(quickUrl); // keep quickUrl so caller can follow
+          } else {
+            found.add(u);
+          }
+        } else if (/\/d2l\/le\/lessons|viewContent|\/content\//i.test(u)) {
+          // recursively follow pages (but don't flood)
+          // Use thenable recursion to avoid blocking the rest of the parsing
+          // We'll await the nested promises after enumerating all nodes.
+          // Push a marker so we will traverse recursively below.
+          found.add(u);
+        }
       });
-      if (m.Modules && m.Modules.length) walkModules(m.Modules, myPath);
-    }
-  }
-  walkModules(toc.Modules || []);
-  setStatus(`Found ${topics.length} topics (initial).`);
-  appendLog(`${topics.length} topic entries collected.`);
 
-  /* ---------- QuickLink resolver ---------- */
-  function resolveQuickLinkUrl(raw) {
-    if (!raw) return raw;
-    try {
-      const u = new URL(raw, location.href);
-      // If it's quickLink with fileId=..., try to build enforced content link
-      if (/quickLink/i.test(u.pathname) || /quickLink/i.test(u.search)) {
-        const fid = decodeURIComponent((u.search.match(/fileId=([^&]+)/i) || [,""])[1] || "");
-        // if fileId looks like "Folder%2fFile.pdf" or "Print%20outs%2fFile.pdf"
-        if (fid) {
-          // If it already looks like an enforced path, return content/enforced path
-          return `/content/enforced/${fid}`;
+      // For every candidate that is not a direct file, recursively crawl
+      const results = [...found];
+      const final = new Set();
+      for (const candidate of results) {
+        if (!candidate) continue;
+        if (looksFile(candidate)) final.add(candidate);
+        else {
+          // don't recurse on external origins to avoid CORS complexity
+          const sameOrigin = (() => {
+            try { return new URL(candidate, location.href).origin === location.origin; } catch { return false; }
+          })();
+          if (sameOrigin) {
+            const nested = await deepScan(candidate, depth + 1, visited, openTabsPolicy);
+            nested.forEach(x => final.add(x));
+          } else {
+            // if it's quickLink pointing to same host but with parameters, add it
+            if (/quickLink/i.test(candidate)) final.add(candidate);
+          }
         }
       }
-      return u.href;
-    } catch {
-      return raw;
-    }
-  }
-
-  /* ---------- Tab Crawler ---------- */
-  // queue of URLs to open in new tabs for scraping
-  const tabQueue = [];
-  const openedTabs = new Set();
-  const tabResults = {}; // url -> array of found file urls
-  let aborted = false;
-
-  // Max concurrent tabs
-  const MAX_TABS = 4;
-
-  // Open a visible tab and scrape once loaded. Return array of downloadable urls found.
-  async function openTabAndScrape(url, timeoutMs = 20_000, allowAutoclose = true) {
-    if (!url) return [];
-    appendLog(`TabCrawler: opening ${url}`);
-    let win;
-    try {
-      // Open with noopener/noreferrer to avoid some cross-window leaks; still accessible in most browsers
-      win = window.open(url, "_blank");
+      return [...final];
     } catch (e) {
-      appendLog("Tab open failed (popup blocked).");
+      LOG(`deepScan error: ${e.message}`);
       return [];
     }
-    if (!win) {
-      appendLog("Tab open blocked (window.open returned null).");
-      return [];
-    }
-    openedTabs.add(win);
-
-    // Wait for load via polling on document.readyState, with timeout
-    const start = Date.now();
-    const pollInterval = 200;
-    let success = false;
-    while (Date.now() - start < timeoutMs) {
-      try {
-        // If window closed externally
-        if (win.closed) { appendLog("Tab closed before load."); break; }
-        const ready = win.document && win.document.readyState;
-        if (ready === "complete" || ready === "interactive") { success = true; break; }
-      } catch (e) {
-        // Access denied until same-origin; but Brightspace pages opened in same origin should be accessible
-      }
-      await sleep(pollInterval);
-    }
-
-    const found = new Set();
-    if (success) {
-      appendLog(`TabCrawler: loaded ${url}`);
-      try {
-        // Scrape same-origin DOM
-        const doc = win.document;
-        // Add also any text-based quicklink in innerHTML (sometimes links are embedded)
-        const nodes = doc.querySelectorAll("a[href], source[src], iframe[src], embed[src]");
-        nodes.forEach(n => {
-          const raw = n.getAttribute("href") || n.getAttribute("src") || "";
-          const u = abs(raw);
-          if (!u) return;
-          if (looksFile(u)) found.add(u);
-          else if (/quickLink.*fileId=/i.test(u)) {
-            const fid = decodeURIComponent((u.match(/fileId=([^&]+)/i) || [,""])[1] || "");
-            if (fid) found.add(`/content/enforced/${fid}`);
-          } else if (looksHtmlLike(u)) {
-            // find candidate direct download links in the page text (some pages include direct enforced links)
-            try {
-              // attempt to find enforced style links inside attributes or text nodes
-              if (/\/content\/enforced\//i.test(u)) found.add(u);
-            } catch {}
-          }
-        });
-
-        // Some Brightspace pages embed quickLink launcher buttons that perform XHR to generate a download URL.
-        // Attempt to introspect inline scripts for /content/enforced/ patterns
-        try {
-          const scripts = Array.from(doc.scripts || []);
-          for (const s of scripts) {
-            if (!s.innerText) continue;
-            const matches = s.innerText.match(/\/content\/enforced\/[A-Za-z0-9%_\-\/\.]+/g);
-            if (matches) matches.forEach(m => found.add(abs(m)));
-          }
-        } catch (e) { /* ignore */ }
-      } catch (e) {
-        appendLog(`TabCrawler: scraping blocked for ${url}`);
-      }
-    } else {
-      appendLog(`TabCrawler: timed out waiting for ${url}`);
-    }
-
-    // Optionally close tab
-    if (allowAutoclose && !win.closed) {
-      try { win.close(); } catch(e) { /* ignore */ }
-    }
-    openedTabs.delete(win);
-    const arr = [...found];
-    tabResults[url] = arr;
-    appendLog(`TabCrawler: found ${arr.length} items in ${url}`);
-    return arr;
   }
 
-  // Conveyor to run tab tasks limited concurrency
-  async function runTabQueue(concurrency = MAX_TABS) {
-    const results = {};
-    let idx = 0;
-    async function worker() {
-      while (idx < tabQueue.length && !aborted) {
-        const i = idx++;
-        const job = tabQueue[i];
+  /* ---------- precompute download targets (with optional deep scan) ---------- */
+  async function computeTargets(topicsList, doDeep, allowPopups) {
+    const targets = []; // {title, moduleTitle, url, reason}
+    // helper to push unique
+    const pushed = new Set();
+    function pushIfNew(obj) {
+      const key = `${obj.moduleTitle}::${obj.title}::${obj.url}`;
+      if (!pushed.has(key)) {
+        pushed.add(key);
+        targets.push(obj);
+      }
+    }
+
+    LOG(`Computing targets. Topics: ${topicsList.length}. DeepScan: ${doDeep ? "ON" : "OFF"}. AllowPopups: ${allowPopups}`);
+
+    for (const t of topicsList) {
+      // If the topic has the quickFileId, try to convert to a direct 'quickLink' fetchable URL
+      let url = t.Url || t.url || t.UrlRaw || t.UrlRaw || '';
+      const title = t.Title || t.title || (t.Name || 'file').slice(0,200);
+
+      // If the URL is a quickLink dialog: prefer to include the quickLink URL (we will follow later)
+      if (/quickLink.*fileId=/i.test(url)) {
+        pushIfNew({ title, moduleTitle: t.Module || "Module", url, reason: "quicklink" });
+        continue;
+      }
+
+      // If the URL looks like an enforced content path, add directly
+      if (looksFile(url)) {
+        pushIfNew({ title, moduleTitle: t.Module || "Module", url, reason: "direct" });
+        continue;
+      }
+
+      // If deep scan enabled and URL is HTML-ish, run deepScan to harvest inner files
+      if (doDeep && /\.html?/i.test(url) || doDeep && /viewContent|lessons|content\//i.test(url)) {
+        // deep scan may return direct file URLs and quickLinks
         try {
-          const res = await openTabAndScrape(job.url, job.timeout || 20000, job.autoclose);
-          results[job.url] = res;
+          const found = await deepScan(url, 0, new Set(), { allowPopups: allowPopups });
+          if (found && found.length) {
+            for (const f of found) {
+              // prefer real file URLs first
+              if (looksFile(f)) pushIfNew({ title: `${title}`, moduleTitle: t.Module || "Module", url: f, reason: "deep" });
+              else pushIfNew({ title: `${title}`, moduleTitle: t.Module || "Module", url: f, reason: "deep-quick" });
+            }
+            continue;
+          } else {
+            // no inner found — still add the original as a fallback (so a .url will be created)
+            pushIfNew({ title, moduleTitle: t.Module || "Module", url, reason: "fallback" });
+            continue;
+          }
         } catch (e) {
-          appendLog("TabCrawler job error: " + (e && e.message || e));
-          results[job.url] = [];
+          LOG("deepScan failed during computeTargets: " + e.message);
+          pushIfNew({ title, moduleTitle: t.Module || "Module", url, reason: "fallback" });
         }
-        await sleep(200); // small gap between tab opens
-      }
-    }
-    await Promise.all(Array(concurrency).fill(0).map(worker));
-    return results;
-  }
-
-  /* ---------- Low-level fetcher (handles content-disposition) ---------- */
-  async function fetchBlobWithName(url, headers = {}, timeoutMs = 20000) {
-    try {
-      const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), timeoutMs);
-      const resp = await fetch(url, { credentials: "same-origin", headers, signal: controller.signal, redirect: "follow" });
-      clearTimeout(id);
-      if (!resp.ok) throw new Error("HTTP " + resp.status);
-      const contentDisposition = resp.headers.get("Content-Disposition") || "";
-      let filename = "";
-      const m = contentDisposition.match(/filename\*?=(?:UTF-8'')?["']?([^;"']+)["']?/i);
-      if (m && m[1]) {
-        filename = decodeURIComponent(m[1].replace(/["']/g, ""));
       } else {
-        // fallback to URL path
-        try {
-          const u = new URL(resp.url || url, location.href);
-          filename = decodeURIComponent((u.pathname.split("/").pop() || "file"));
-        } catch { filename = "file"; }
-      }
-      const blob = await resp.blob();
-      return { blob, filename, finalUrl: resp.url || url, status: resp.status };
-    } catch (e) {
-      return { error: e.message || String(e) };
-    }
-  }
-
-  /* ---------- Main Download Logic ---------- */
-  const zip = new JSZip();
-  const skipped = [];
-  const downloadedSet = new Set();
-
-  // Helper: Determine if extension is allowed by UI checkboxes
-  function allowedByExt(u) {
-    const checked = Array.from(exDiv.querySelectorAll("input[data-ext]:checked")).map(i => i.dataset.ext.toLowerCase());
-    const e = (extOf(u) || "").toLowerCase();
-    if (!checked.length) return true;
-    if (e && checked.includes(e)) return true;
-    // sometimes links lack extension but are enforced content; allow and attempt fetch
-    if (!e && isBrightspaceInternal(u)) return true;
-    return false;
-  }
-
-  // Prepare list of candidate targets per topic
-  const candidates = []; // {title, modulePath, originalUrl, type}
-  for (const t of topics) {
-    const item = t.Topic || t;
-    const rawUrl = item.Url || item.UrlString || item.href || item.Href || "";
-    const resolved = resolveQuickLinkUrl(rawUrl);
-    const title = item.Title || item.TitleText || item.TitleString || (typeof item === "string" ? item : "") || "file";
-    // If resolved is null use raw
-    const finalUrl = resolved || rawUrl;
-    if (!finalUrl) continue;
-    candidates.push({ title, modulePath: t.ModulePath || ["Module"], url: finalUrl });
-  }
-
-  setStatus(`Prepared ${candidates.length} candidate links.`);
-
-  /* ---------- Pre-scan: find which candidates are direct files, which need expansion ---------- */
-  const directFiles = []; // download directly
-  const expansions = []; // need deep scan or tab crawl
-  for (const c of candidates) {
-    const u = c.url;
-    if (looksFile(u)) {
-      directFiles.push(c);
-    } else if (/quickLink.*fileId=/i.test(u) || /\/content\/enforced\//i.test(u)) {
-      // quicklink-ish or enforced content might be direct downloadable (try)
-      directFiles.push(c);
-    } else if (looksHtmlLike(u) || isBrightspaceInternal(u)) {
-      expansions.push(c);
-    } else {
-      // external - treat as shortcut
-      skipped.push({ ...c, reason: "external_not_downloaded" });
-    }
-  }
-
-  appendLog(`${directFiles.length} direct candidates, ${expansions.length} pages to expand via tab crawler.`);
-
-  /* ---------- If expansions exist: prompt user about tabs ---------- */
-  const allowTabs = expansions.length > 0;
-  let doTabs = false;
-  if (allowTabs) {
-    const proceed = confirm(`Detected ${expansions.length} internal page instances that require opening new tabs. If you proceed, you will see your screen flicker with new tabs opening and closing. This is not a virus; this bypasses Brightspace dynamic loading. Continue?`);
-    if (!proceed) {
-      appendLog("User denied opening tabs. Expansion links will be saved as shortcuts.");
-      // convert expansions into shortcuts
-      expansions.forEach(x => skipped.push({ ...x, reason: "user_declined_tabs" }));
-    } else {
-      doTabs = true;
-    }
-  }
-
-  /* ---------- If user allowed tabs, populate tabQueue with URLs to crawl ---------- */
-  if (doTabs) {
-    for (const e of expansions) {
-      // For each expansion, push job to queue. We'll try to open the url and let TabCrawler extract downloadable links inside.
-      tabQueue.push({ url: e.url, timeout: 22000, autoclose: document.getElementById("bsx-autoclose").checked });
-    }
-    appendLog(`Starting TabCrawler with ${tabQueue.length} jobs (concurrency ${MAX_TABS}).`);
-    setStatus("Opening tabs to expand internal pages...");
-    const tabResultsAll = await runTabQueue(MAX_TABS);
-    // Now tabResultsAll contains arrays of discovered file urls per expansion url
-    // Convert them to further direct file tasks
-    for (const [srcUrl, arr] of Object.entries(tabResultsAll)) {
-      if (!arr || !arr.length) {
-        appendLog(`No downloadable links found in ${srcUrl}; will create shortcuts.`);
-        const original = expansions.find(x => x.url === srcUrl);
-        if (original) skipped.push({ ...original, reason: "no_links_found" });
-        continue;
-      }
-      // Add each discovered url as a directFile candidate, preserving module path/title
-      for (const foundUrl of arr) {
-        // ensure not already captured via directFiles
-        if (downloadedSet.has(foundUrl)) continue;
-        directFiles.push({ title: `from_${(new URL(srcUrl)).pathname.split("/").pop()}`, modulePath: ["Expanded"], url: foundUrl });
+        // default: add as-is
+        pushIfNew({ title, moduleTitle: t.Module || "Module", url, reason: "raw" });
       }
     }
+    return targets;
   }
 
-  /* ---------- Final download pass ---------- */
-  setStatus("Starting downloads...");
-  let totalToProcess = directFiles.length;
-  let doneCount = 0;
-  countEl.textContent = `${doneCount}/${totalToProcess} downloaded`;
-  barEl.style.width = "0%";
-
-  // Limit parallel network fetch concurrency
-  const FETCH_CONCURRENCY = 6;
-  let index = 0;
-  async function workerDownload() {
-    while (index < directFiles.length && !aborted) {
-      const i = index++;
-      const entry = directFiles[i];
-      const targetUrl = entry.url;
-      if (!allowedByExt(targetUrl)) {
-        appendLog(`Skipping (ext filter): ${targetUrl}`);
-        skipped.push({ ...entry, reason: "ext_filter" });
-        doneCount++;
-        countEl.textContent = `${doneCount}/${totalToProcess} downloaded`;
-        barEl.style.width = ((doneCount / (totalToProcess || 1)) * 100).toFixed(1) + "%";
-        continue;
-      }
+  /* ---------- Tab opener helper ---------- */
+  // Opens a list of URLs in background tabs (but visible) and returns handles.
+  async function openTabs(urls, onOpen = () => {}) {
+    const handles = [];
+    for (const u of urls) {
       try {
-        appendLog(`Fetching: ${targetUrl}`);
-        // If quickLink or enforced path may redirect; try fetchBlobWithName
-        const res = await fetchBlobWithName(targetUrl, {}, 20000);
-        if (res && res.blob && !res.error) {
-          // determine filename
-          let filename = res.filename || sanitizeFilename(entry.title || (new URL(res.finalUrl || targetUrl)).pathname.split("/").pop() || "file");
-          // ensure extension
-          const ext = extOf(filename) || extOf(res.finalUrl) || extOf(targetUrl) || ".bin";
-          if (!filename.toLowerCase().endsWith(ext)) filename = filename + ext;
-          // avoid duplicates
-          let safeName = [...entry.modulePath, filename].map(sanitizeFilename).join("/") ;
-          // ensure unique in zip
-          let suffix = 1;
-          let candidate = safeName;
-          while (zip.file(candidate) || downloadedSet.has(res.finalUrl)) {
-            candidate = safeName.replace(/(\.[^/.]+)$/, `_${suffix}$1`);
-            suffix++;
-          }
-          zip.file(candidate, res.blob);
-          downloadedSet.add(res.finalUrl || targetUrl);
-          appendLog(`Added to zip: ${candidate}`);
-        } else {
-          appendLog(`Failed to fetch ${targetUrl}: ${res && res.error || "unknown"}`);
-          // create shortcut fallback
-          const dir = [...entry.modulePath].map(sanitizeFilename).join("/") + "/";
-          const name = sanitizeFilename(entry.title || targetUrl);
-          zip.file(`${dir}${name}.url`, `[InternetShortcut]\nURL=${targetUrl}\n`);
-          skipped.push({ ...entry, reason: "fetch_failed", detail: res && res.error });
+        // open in new tab/window
+        const w = window.open(u, "_blank");
+        if (!w) {
+          LOG("Popup was blocked by browser for " + u);
+          handles.push({ url: u, window: null, blocked: true });
+          continue;
         }
+        handles.push({ url: u, window: w, blocked: false });
+        onOpen(u, w);
+        // small spacing to avoid overwhelming the browser
+        await sleep(250);
       } catch (e) {
-        appendLog(`Download error: ${e && e.message || e}`);
-        const dir = [...entry.modulePath].map(sanitizeFilename).join("/") + "/";
-        const name = sanitizeFilename(entry.title || targetUrl);
-        zip.file(`${dir}${name}.url`, `[InternetShortcut]\nURL=${targetUrl}\n`);
-        skipped.push({ ...entry, reason: "exception", detail: e && e.message });
+        LOG("openTabs error: " + e.message);
+        handles.push({ url: u, window: null, blocked: true });
       }
-      doneCount++;
-      countEl.textContent = `${doneCount}/${totalToProcess} downloaded`;
-      barEl.style.width = ((doneCount / (totalToProcess || 1)) * 100).toFixed(1) + "%";
-      await sleep(80);
     }
+    return handles;
   }
 
-  // start workers
-  const workers = Array(FETCH_CONCURRENCY).fill(0).map(() => workerDownload());
-  await Promise.all(workers);
+  /* ---------- Download worker: fetch files, or create .url shortcuts ---------- */
+  async function downloadWorker(tasks, concurrency = 4, uiUpdate = () => {}) {
+    let index = 0, done = 0, failed = 0;
+    const total = tasks.length;
 
-  setStatus("Packaging ZIP...");
+    async function worker() {
+      while (true) {
+        const i = index++;
+        if (i >= total) break;
+        const t = tasks[i];
+        uiUpdate({ index: i, total, title: t.title, status: "starting", done, failed });
+        try {
+          // if quicklink dialog url -> we try to fetch it and follow to real file
+          if (/quickLink.*fileId=/i.test(t.url)) {
+            // attempt to fetch quickLink endpoint and see content
+            try {
+              const r = await fetchWithTimeout(t.url, {}, 10000, 1);
+              // if quickLink returns a redirect or file, follow final url from response.url
+              if (r && (r.ok || r.status === 302 || r.status === 200)) {
+                // if content-type is binary, just save it
+                const ct = r.headers.get("content-type") || "";
+                if (/application\/pdf|application\/octet-stream|application\/zip|image\//i.test(ct) || looksFile(r.url)) {
+                  const blob = await r.blob();
+                  const ext = extOf(r.url) || extOf(t.url) || ".bin";
+                  zip.file(`${san(t.moduleTitle)}/${san(t.title)}${ext}`, blob);
+                  done++;
+                  uiUpdate({ done, failed });
+                  continue;
+                } else {
+                  // fallback: parse body to find direct links
+                  const html = await r.text();
+                  const d = new DOMParser().parseFromString(html, "text/html");
+                  const sublinks = [];
+                  d.querySelectorAll("a[href], source[src]").forEach(n => {
+                    const u = abs(n.getAttribute("href") || n.getAttribute("src") || "");
+                    if (u) sublinks.push(u);
+                  });
+                  // find download-like link
+                  const dl = sublinks.find(u => looksFile(u));
+                  if (dl) {
+                    const rr = await fetchWithTimeout(dl, {}, 12000, 1);
+                    if (rr && rr.ok) {
+                      const blob = await rr.blob();
+                      const ext = extOf(dl) || ".bin";
+                      zip.file(`${san(t.moduleTitle)}/${san(t.title)}${ext}`, blob);
+                      done++;
+                      uiUpdate({ done, failed });
+                      continue;
+                    }
+                  }
+                }
+              }
+              // if we reach here, quicklink couldn't be directly pulled — create shortcut
+              const content = `[InternetShortcut]\nURL=${t.url}\n`;
+              zip.file(`${san(t.moduleTitle)}/${san(t.title)}.url`, content);
+              failed++;
+              uiUpdate({ done, failed });
+              continue;
+            } catch (e) {
+              // quicklink fetch failed; create shortcut
+              const content = `[InternetShortcut]\nURL=${t.url}\n`;
+              zip.file(`${san(t.moduleTitle)}/${san(t.title)}.url`, content);
+              failed++;
+              uiUpdate({ done, failed });
+              continue;
+            }
+          }
 
-  // Smart name
-  const tag = humanDateTag();
-  const courseLabelName = courseName || `Course${courseId}`;
-  const zipName = `Brightspace_${courseLabelName}_${tag}.zip`;
+          // general direct file
+          const r = await fetchWithTimeout(t.url, {}, 15000, 1);
+          if (!r || !r.ok) {
+            // attempt to detect 403 vs blocked — create shortcut if can't fetch
+            const content = `[InternetShortcut]\nURL=${t.url}\n`;
+            zip.file(`${san(t.moduleTitle)}/${san(t.title)}.url`, content);
+            failed++;
+            uiUpdate({ done, failed });
+            continue;
+          }
+          // if content-type indicates HTML (and not a binary), treat as HTML and try to extract a direct file
+          const ct = r.headers.get("content-type") || "";
+          if (ct.includes("text/html") && !looksFile(t.url)) {
+            const body = await r.text();
+            const d = new DOMParser().parseFromString(body, "text/html");
+            const sublinks = [];
+            d.querySelectorAll("a[href], source[src], iframe[src], embed[src]").forEach(n => {
+              const u = abs(n.getAttribute("href") || n.getAttribute("src") || "");
+              if (u) sublinks.push(u);
+            });
+            // pick the first download-looking item
+            const dl = sublinks.find(u => looksFile(u));
+            if (dl) {
+              // fetch that
+              try {
+                const rr = await fetchWithTimeout(dl, {}, 15000, 1);
+                if (rr && rr.ok) {
+                  const blob = await rr.blob();
+                  const ext = extOf(dl) || ".bin";
+                  zip.file(`${san(t.moduleTitle)}/${san(t.title)}${ext}`, blob);
+                  done++;
+                  uiUpdate({ done, failed });
+                  continue;
+                }
+              } catch (e) {
+                // fallback to shortcut
+                zip.file(`${san(t.moduleTitle)}/${san(t.title)}.url`, `[InternetShortcut]\nURL=${t.url}\n`);
+                failed++;
+                uiUpdate({ done, failed });
+                continue;
+              }
+            } else {
+              // no inner downloads: save HTML as snapshot
+              try { zip.file(`${san(t.moduleTitle)}/${san(t.title)}.html`, body); } catch {}
+              failed++;
+              uiUpdate({ done, failed });
+              continue;
+            }
+          }
 
-  try {
-    const blob = await zip.generateAsync({ type: "blob" });
-    saveAs(blob, zipName);
-    setStatus(`Done: ${downloadedSet.size} files added, ${skipped.length} skipped. Saved as ${zipName}`);
-    appendLog("All done.");
-  } catch (e) {
-    setStatus("Failed to generate ZIP: " + (e && e.message || e));
-    appendLog("ZIP generation error: " + (e && e.message || e));
+          // otherwise it's a binary / file
+          try {
+            const blob = await r.blob();
+            const ext = extOf(t.url) || ".bin";
+            zip.file(`${san(t.moduleTitle)}/${san(t.title)}${ext}`, blob);
+            done++;
+            uiUpdate({ done, failed });
+            continue;
+          } catch (e) {
+            // fallback: .url shortcut
+            zip.file(`${san(t.moduleTitle)}/${san(t.title)}.url`, `[InternetShortcut]\nURL=${t.url}\n`);
+            failed++;
+            uiUpdate({ done, failed });
+            continue;
+          }
+        } catch (err) {
+          LOG(`Download error for ${t.url}: ${err.message || err}`);
+          // create shortcut as safe fallback
+          try { zip.file(`${san(t.moduleTitle)}/${san(t.title)}.url`, `[InternetShortcut]\nURL=${t.url}\n`); } catch {}
+          failed++;
+          uiUpdate({ done, failed });
+        }
+      }
+    }
+
+    // start workers
+    await Promise.all(Array(concurrency).fill(0).map(worker));
+    return { done, failed };
   }
 
-  // Show skipped details on button
-  document.getElementById("bsx-show").onclick = () => {
-    if (!skipped.length) return alert("No skipped items.");
-    const out = skipped.map(s => {
-      return `${s.title || s.Topic?.Title || "unknown"} -> ${s.url || s.Topic?.Url || ""} ${s.reason ? ` [${s.reason}]` : ""} ${s.detail ? ` - ${s.detail}` : ""}`;
-    }).join("\n\n");
-    // show in a prompt-style box (too large for alert)
-    const w = window.open("", "_blank", "noopener,noreferrer,width=800,height=600");
-    w.document.title = "Brightspace Scraper - Skipped Items";
-    w.document.body.style.fontFamily = "system-ui,Segoe UI,Roboto,Arial";
-    w.document.body.innerHTML = `<pre style="white-space:pre-wrap">${out.replace(/</g,"&lt;")}</pre>`;
+  /* ---------- Show skipped helper ---------- */
+  const skipped = [];
+  ui.querySelector("#bs-show").onclick = () => {
+    if (!skipped.length) return alert("No skipped items yet.");
+    const txt = skipped.map(x => `${x.title || x.Title} → ${x.url || x.Url}`).join("\n");
+    // copy to clipboard and present
+    try { navigator.clipboard.writeText(txt); alert("Skipped list copied to clipboard. Showing list now."); } catch {}
+    alert(txt);
   };
 
-  // Cleanup: close any still-opened tabs if autoclose is true/allowed
-  try {
-    if (openedTabs.size) {
-      appendLog("Cleaning up opened tabs...");
-      for (const t of Array.from(openedTabs)) {
-        try { if (!t.closed) t.close(); } catch (e) { /* ignore */ }
+  /* ---------- main button handler (no autorun) ---------- */
+  ui.querySelector("#bs-start").onclick = async () => {
+    try {
+      ui.querySelector("#bs-start").disabled = true;
+      S("Preparing scan…");
+      LOG("Start button clicked. Preparing targets...");
+
+      const doDeep = ui.querySelector("#bs-deepscan").checked;
+      const allowPopups = ui.querySelector("#bs-allowpopups").checked;
+
+      // Build a simple normalized topic list to pass into computeTargets
+      const normalizedTopics = topics.map(t => ({
+        Title: t.Title || t.title || (t.Name || "topic"),
+        Url: t.Url || t.url || t.UrlRaw || t.href || t.link || "",
+        Module: (t.Module || t.moduleTitle || "Module")
+      }));
+
+      // Preflight: if quicklinks present, prompt user about opening tabs
+      const hasQuicklinks = normalizedTopics.some(t => /quickLink.*fileId=/i.test(t.Url) || /quickLink/i.test(t.Url));
+      if (hasQuicklinks && !allowPopups) {
+        const proceed = confirm(
+          "Detected QuickLink items that may need additional loading. " +
+          "If you proceed with 'Allow Popups' checked, the script may open and close several tabs to force Brightspace to render the final resources. " +
+          "This will cause brief tab flickering. Continue?"
+        );
+        if (!proceed) {
+          S("User canceled tab-opening prompt. Running without popups.");
+        } else {
+          // user agreed; set the checkbox so we proceed
+          ui.querySelector("#bs-allowpopups").checked = true;
+        }
       }
-      openedTabs.clear();
+
+      const finalAllowPopups = ui.querySelector("#bs-allowpopups").checked;
+
+      // Compute targets (this may run deepScan)
+      S("Computing targets (this may take a moment)...");
+      const targets = await computeTargets(normalizedTopics, doDeep, finalAllowPopups);
+
+      // If there are quicklinks and user allowed popups, open those quicklink pages in tabs
+      // but only open the unique quicklink pages that are not direct file urls and are same-origin
+      let quicklinkPages = [...new Set(targets.filter(t => /quickLink/i.test(t.url) && !looksFile(t.url)).map(t => t.url))];
+      quicklinkPages = quicklinkPages.filter(u => {
+        try { return new URL(u, location.href).origin === location.origin; } catch { return false; }
+      });
+
+      if (quicklinkPages.length && finalAllowPopups) {
+        const confirmMsg = `Detected ${quicklinkPages.length} QuickLink pages that may need a real tab to initialize. ` +
+          `If you continue, ${quicklinkPages.length} tabs will briefly open and be closed by the script. Continue?`;
+        if (!confirm(confirmMsg)) {
+          LOG("User declined opening quicklink tabs.");
+        } else {
+          S(`Opening ${quicklinkPages.length} helper tabs...`);
+          LOG("Opening quicklink pages to prime server-side rendering.");
+          const handles = await openTabs(quicklinkPages, (u, w) => LOG("Opened tab for " + u));
+          // give them some time to finish loading
+          await sleep(2000 + quicklinkPages.length * 300);
+          // attempt to fetch each quicklink once to 'prime' the session & extract final URLs
+          for (const q of quicklinkPages) {
+            try {
+              LOG("Priming quicklink by fetching: " + q);
+              await fetchWithTimeout(q, {}, 8000, 1);
+            } catch (e) {
+              LOG("Priming fetch failed for " + q);
+            }
+          }
+          // close opened windows
+          for (const h of handles) {
+            try { if (h.window && !h.window.closed) { h.window.close(); LOG("Closed tab for " + h.url); } } catch {}
+          }
+          await sleep(500);
+        }
+      }
+
+      // Recompute targets after priming (deep-scan again if necessary) to pick up any resources that now exist
+      S("Recomputing targets after priming quicklinks...");
+      const recomputedTargets = await computeTargets(normalizedTopics, doDeep, finalAllowPopups);
+      LOG(`Targets discovered: ${recomputedTargets.length}`);
+
+      if (!recomputedTargets.length) {
+        S("No download targets found.");
+        ui.querySelector("#bs-start").disabled = false;
+        return;
+      }
+
+      // Filter by selected extensions
+      const allowedExts = [...exDiv.querySelectorAll("input:checked")].map(i => i.dataset.ext.toLowerCase());
+      const filtered = recomputedTargets.filter(t => {
+        const e = extOf(t.url).toLowerCase();
+        if (e && allowedExts.length) return allowedExts.includes(e);
+        // if no extension or unknown, still keep to try deep-resolution
+        return true;
+      });
+
+      // Build tasks for the downloader
+      const tasks = filtered.map(t => ({
+        title: t.title || t.Title,
+        moduleTitle: t.moduleTitle || t.Module || "Module",
+        url: t.url || t.Url,
+        reason: t.reason || "auto"
+      }));
+
+      // UI prepare
+      let done = 0, failed = 0;
+      C.textContent = `0/${tasks.length} downloaded`;
+      B.style.width = "0%";
+      S(`Downloading ${tasks.length} items...`);
+      LOG(`Starting download of ${tasks.length} items.`);
+
+      // uiUpdate callback
+      const uiUpdate = ({ done: d = done, failed: f = failed } = {}) => {
+        done = d; failed = f;
+        const total = tasks.length;
+        C.textContent = `${done}/${total} downloaded (failed ${failed})`;
+        B.style.width = (((done + failed) / (total || 1)) * 100).toFixed(1) + "%";
+      };
+
+      // run downloader with concurrency 6
+      const res = await downloadWorker(tasks, 6, ({ done: d, failed: f } = {}) => uiUpdate({ done: d, failed: f }));
+
+      // write ZIP and finalize
+      S("Building ZIP...");
+      LOG("Generating zip...");
+      const date = new Date();
+      const tag = `(${String(date.getFullYear()).slice(2)}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")})`;
+      const filename = `Brightspace_${(courseName || courseId)}_${tag}.zip`;
+      try {
+        const blob = await zip.generateAsync({ type: "blob" });
+        saveAs(blob, filename);
+        S(`Done: ${res.done} files, ${res.failed} skipped.`);
+        LOG(`Saved ${filename} with ${res.done} files and ${res.failed} skipped.`);
+      } catch (e) {
+        S("ZIP generation failed: " + (e.message || e));
+        LOG("ZIP generation error: " + e.message);
+      }
+
+    } catch (e) {
+      LOG("Fatal error in main: " + (e.message || e));
+      S("Error: " + (e.message || e));
+    } finally {
+      ui.querySelector("#bs-start").disabled = false;
+      window.__bs_scraper_active = false;
     }
-  } catch (e) { /* ignore */ }
+  };
 
-  // Reset active flag after a short delay so user sees status
-  setTimeout(() => {
-    window.__bs_scraper_active = false;
-  }, 1500);
-
+  LOG("Ready. Click Scan & Download to begin.");
+  S("Ready.");
 })();
