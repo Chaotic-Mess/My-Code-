@@ -1,8 +1,7 @@
 /* ===========================================================
-   Brightspace_Scraper V4.1  — "TabCrawler 2"
-   by chaotic-mess (Zac) + ChatGPT | https://github.com/Chaotic-Mess/My-Code
-   Old + new layouts: ToC, Lessons, Smart-Curriculum, QuickLinks.
-   Opens real tabs only when necessary, then closes them automatically.
+   Brightspace_Scraper V4.3 – "Hierarchical Organization"
+   by chaotic-mess (Zac) + ChatGPT + Claude
+   Now maintains proper folder structure through nested links!
    =========================================================== */
 (async () => {
   if (window.__bs_scraper_active) { alert("Brightspace Scraper already running."); return; }
@@ -11,8 +10,8 @@
   /* ---------------- tiny utils ---------------- */
   const sleep = (ms) => new Promise(r => setTimeout(r, ms));
   const abs = (u) => { try { return new URL(u, location.href).href; } catch { return null; } };
-  const san = (s) => (s || "").replace(/[<>:"/\\|?*]+/g, "_").trim();
-  const extOf = (u) => { const m = u && u.match(/\.[a-z0-9]{2,6}(?:$|\?)/i); return m ? m[0].toLowerCase() : ""; };
+  const san = (s) => (s || "").replace(/[<>:"/\\|?*]+/g, "_").trim().substring(0, 100);
+  const extOf = (u) => { const m = u && u.match(/\.[a-z0-9]{2,6}(?:$|\?)/i); return m ? m[0].toLowerCase().split('?')[0] : ""; };
   const todayTag = () => { const d = new Date(); return `(${String(d.getFullYear()).slice(2)}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')})`; };
 
   const looksFile = (u) =>
@@ -59,9 +58,9 @@
   `;
   ui.innerHTML = `
     <div id="drag" style="
-      background: repeating-linear-gradient(45deg,#ff7a00,#ff7a00 8px,#303030 8px,#303030 16px);
+      background: repeating-linear-gradient(45deg,#10b981,#10b981 8px,#303030 8px,#303030 16px);
       padding:8px 12px;cursor:move;color:#000;display:flex;justify-content:space-between;align-items:center;">
-      <b style="color:#FFFFFF">Brightspace Scraper V4.1  — "TabCrawler 2"</b>
+      <b style="color:#FFFFFF">Brightspace Scraper V4.3 – "Hierarchical"</b>
       <button id="bs-close" title="Close" style="border:0;background:#111;color:#eee;padding:4px 8px;border-radius:6px">✕</button>
     </div>
     <div style="padding:12px">
@@ -69,13 +68,13 @@
       <div id="bs-status" style="margin:8px 0;color:#ccc">Idle</div>
       <div id="bs-exts" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
       <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
-        <input type="checkbox" id="bs-deepscan" checked> Deep Scan HTML topics
+        <input type="checkbox" id="bs-deepscan" checked> Deep Scan HTML (preserves folder structure)
       </label>
       <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
         <input type="checkbox" id="bs-allowpopups"> Allow Popups / Open Tabs when needed
       </label>
       <div style="height:6px;background:#333;border-radius:6px;overflow:hidden;margin-bottom:6px">
-        <div id="bs-bar" style="height:6px;width:0;background:#4ade80"></div>
+        <div id="bs-bar" style="height:6px;width:0;background:#10b981"></div>
       </div>
       <div id="bs-count" style="margin:6px 0;color:#bbb;font-size:12px">0/0 downloaded</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
@@ -157,7 +156,7 @@
     try { const doc = iframe.contentDocument || iframe.contentWindow?.document; if (!doc) return null; return scrapeDomLinks(doc); } catch { return null; }
   }
   if (!toc || !toc.Modules?.length || isLessons) {
-    S("No ToC / Lessons detected — scanning DOM…");
+    S("No ToC / Lessons detected – scanning DOM…");
     toc = await scrapeSmartCurriculum() || scrapeDomLinks(document);
   }
 
@@ -200,8 +199,8 @@
 
   /* ---------------- TabManager ---------------- */
   const TabManager = (() => {
-    const opened = new Map(); // url -> {win, t0}
-    const TIMEOUT_MS = 15000;   // hard close after 15s
+    const opened = new Map();
+    const TIMEOUT_MS = 15000;
     function openMany(urls) {
       const handles = [];
       for (const u of urls) {
@@ -229,34 +228,73 @@
   })();
   ui.querySelector("#bs-canceltabs").onclick = () => TabManager.closeAll();
 
-  /* ---------------- deep scan ---------------- */
-  async function deepScan(url, depth = 0, visited = new Set()) {
+  /* ---------------- HIERARCHICAL deep scan ---------------- */
+  // Returns array of { url, title, path } where path is breadcrumb array
+  async function deepScanHierarchical(url, depth = 0, visited = new Set(), breadcrumb = []) {
     if (!url || visited.has(url) || depth > 3) return [];
     visited.add(url);
+    
+    const results = [];
+    
     try {
       const res = await fetch(url, { credentials: "same-origin" });
       if (!res.ok) return [];
+      
       const html = await res.text();
       const d = new DOMParser().parseFromString(html, "text/html");
-      const found = new Set();
+      
+      // Try to get a meaningful page title
+      let pageTitle = d.querySelector("title")?.textContent?.trim() || 
+                      d.querySelector("h1")?.textContent?.trim() || 
+                      d.querySelector("h2")?.textContent?.trim() ||
+                      `Page_${depth}`;
+      pageTitle = san(pageTitle);
+      
       const nodes = d.querySelectorAll("a[href], source[src], iframe[src], embed[src], object[data]");
+      
       for (const n of nodes) {
         const raw = abs(n.getAttribute("href") || n.getAttribute("src") || n.getAttribute("data") || "");
         if (!raw) continue;
+        
         let link = raw;
         if (isQuickLink(link)) link = await resolveQuickLink(link);
-        if (looksFile(link)) found.add(link);
-        else if (isHtmlLike(link)) (await deepScan(link, depth+1, visited)).forEach(x => found.add(x));
+        
+        // Get link text for better naming
+        const linkTitle = san((n.textContent || n.title || "").trim().slice(0, 80) || "file");
+        
+        if (looksFile(link)) {
+          // Found a file - record it with current breadcrumb
+          results.push({ 
+            url: link, 
+            title: linkTitle, 
+            path: [...breadcrumb] 
+          });
+        } else if (isHtmlLike(link)) {
+          // Found another HTML page - recurse with extended breadcrumb
+          const nested = await deepScanHierarchical(
+            link, 
+            depth + 1, 
+            visited, 
+            [...breadcrumb, pageTitle]
+          );
+          results.push(...nested);
+        }
       }
-      return [...found];
-    } catch { return []; }
+      
+      return results;
+    } catch (e) {
+      log(`Deep scan error at ${url}: ${e.message}`);
+      return [];
+    }
   }
 
   /* ---------------- downloader helpers ---------------- */
   const skipped = [];
+  const downloadedFiles = new Set(); // Track to avoid duplicates
+  
   ui.querySelector("#bs-show").onclick = () => {
     if (!skipped.length) return alert("No skipped items yet.");
-    const lines = skipped.map(x => `${x.Title || x.title || "item"} → ${x.Url || x.url || "no URL"}`);
+    const lines = skipped.map(x => `${x.Title || x.title || "item"} → ${x.Url || x.url || "no URL"} (${x.Reason || "unknown"})`);
     try { navigator.clipboard?.writeText(lines.join("\n")); } catch {}
     alert(lines.join("\n"));
   };
@@ -270,6 +308,7 @@
     } catch {}
     return null;
   }
+  
   function extFromMime(ct) {
     const map = {
       "application/pdf": ".pdf", "video/mp4": ".mp4", "audio/mp3": ".mp3", "audio/mpeg": ".mp3",
@@ -284,9 +323,21 @@
   }
 
   async function saveLink(dir, title, link, allowSet) {
+    // Avoid downloading same URL multiple times
+    if (downloadedFiles.has(link)) {
+      log(`Already downloaded: ${link}`);
+      return true;
+    }
+    
     try {
+      log(`Downloading: ${link}`);
       const r = await fetch(link, { credentials: "same-origin" });
-      if (!r.ok || r.status === 403) { zip.file(`${dir}${san(title)}.url`, `[InternetShortcut]\nURL=${link}\n`); skipped.push({ Title:title, Url:link, Type:"Shortcut" }); return false; }
+      if (!r.ok || r.status === 403) { 
+        log(`Failed to fetch (${r.status}): ${link}`);
+        zip.file(`${dir}${san(title)}.url`, `[InternetShortcut]\nURL=${link}\n`); 
+        skipped.push({ Title:title, Url:link, Type:"Shortcut", Reason: `HTTP ${r.status}` }); 
+        return false; 
+      }
 
       const cd = r.headers.get("content-disposition") || "";
       const hinted = decodeRFC5987(cd);
@@ -295,19 +346,35 @@
       const urlExt = extOf(link);
       const chosenExt = hintedExt || urlExt || ctExt || ".bin";
 
-      if (allowSet.size && chosenExt && !allowSet.has(chosenExt.toLowerCase())) return false;
+      if (allowSet.size && chosenExt && !allowSet.has(chosenExt.toLowerCase())) {
+        log(`Skipped (type filter): ${chosenExt} - ${link}`);
+        return false;
+      }
 
       const base = san(hinted ? hinted.replace(/\.[a-z0-9]{2,6}$/i, "") : (title || "file"));
       const blob = await r.blob();
-      zip.file(dir + base + chosenExt, blob);
+      
+      // Handle duplicate filenames in same directory
+      let finalPath = dir + base + chosenExt;
+      let counter = 1;
+      while (zip.file(finalPath)) {
+        finalPath = dir + base + `_${counter}` + chosenExt;
+        counter++;
+      }
+      
+      zip.file(finalPath, blob);
+      downloadedFiles.add(link);
+      log(`✓ Saved: ${finalPath}`);
       return true;
-    } catch {
-      zip.file(`${dir}${san(title)}.url`, `[InternetShortcut]\nURL=${link}\n`); skipped.push({ Title:title, Url:link, Type:"Shortcut" });
+    } catch (e) {
+      log(`Error downloading ${link}: ${e.message}`);
+      zip.file(`${dir}${san(title)}.url`, `[InternetShortcut]\nURL=${link}\n`); 
+      skipped.push({ Title:title, Url:link, Type:"Shortcut", Reason: e.message });
       return false;
     }
   }
 
-  /* ---------------- button handler (no autorun) ---------------- */
+  /* ---------------- button handler ---------------- */
   ui.querySelector("#bs-start").onclick = async () => {
     try {
       ui.querySelector("#bs-start").disabled = true;
@@ -315,7 +382,6 @@
       const doDeep = ui.querySelector("#bs-deepscan").checked;
       const allowPopups = ui.querySelector("#bs-allowpopups").checked;
 
-      // Preflight popup warning if needed
       const hasQuicklinks = topics.some(t => isQuickLink(t.Url || t.url || ""));
       if (hasQuicklinks && !allowPopups) {
         const proceed = confirm(
@@ -328,14 +394,12 @@
 
       const finalAllowPopups = ui.querySelector("#bs-allowpopups").checked;
 
-      /* normalize topics */
       const workList = topics.map(t => ({
         Title: t.Title || t.title || t.Name || "topic",
         Url:   t.Url || t.url || t.href || "",
         Module: (t.Module || t.moduleTitle || "Module")
       }));
 
-      /* quicklink priming via real tabs (optional) */
       let quickPages = [...new Set(workList.map(x => x.Url).filter(u => isQuickLink(u)))];
       quickPages = quickPages.filter(u => { try { return new URL(u, location.href).origin === location.origin; } catch { return false; } });
 
@@ -343,37 +407,66 @@
         const msg = `Detected ${quickPages.length} QuickLink launch pages. If you proceed, the script will open/close ${quickPages.length} tabs to prime them. Continue?`;
         if (confirm(msg)) {
           S(`Opening ${quickPages.length} helper tabs…`);
-          const handles = TabManager.openMany(quickPages);
-          // watchdog: wait a bit so the launch pages can set cookies/session
+          TabManager.openMany(quickPages);
           await sleep(2000 + quickPages.length * 300);
-          // prime by fetching each once
           for (const q of quickPages) { try { await fetch(q, { credentials: "same-origin" }); } catch {} }
-          // close helper tabs now; reaper keeps cleaning too
           TabManager.closeAll();
         }
       }
 
-      /* process and download */
-      let done = 0, total = workList.length;
-      C.textContent = `0/${total} processed`; B.style.width = "0%";
+      let done = 0, filesDownloaded = 0;
+      const total = workList.length;
+      C.textContent = `0/${total} topics, 0 files`; 
+      B.style.width = "0%";
       S("Scanning & downloading…");
 
-      async function processTopic(dir, t) {
-        const raw = t.Url; if (!raw) { skipped.push(t); return; }
-        let primary = await normalizeLink(raw);
-        const targets = new Set();
-
-        if (looksFile(primary)) targets.add(primary);
-        if (doDeep && (isHtmlLike(primary) || /\.html?($|\?)/i.test(primary))) {
-          const extras = await deepScan(primary);
-          extras.forEach(x => targets.add(x));
+      async function processTopic(baseDir, t) {
+        const raw = t.Url; 
+        if (!raw) { 
+          skipped.push({...t, Reason: "No URL"}); 
+          return; 
         }
-        if (!targets.size) { zip.file(`${dir}${san(t.Title)}.url`, `[InternetShortcut]\nURL=${primary}\n`); skipped.push({ ...t, Url: primary, Type:"Shortcut" }); return; }
+        
+        let primary = await normalizeLink(raw);
+        const filesToDownload = [];
+        
+        // Direct file link
+        if (looksFile(primary)) {
+          filesToDownload.push({ 
+            url: primary, 
+            title: t.Title, 
+            path: [] 
+          });
+          log(`Direct file: ${primary}`);
+        }
+        
+        // Deep scan for nested files
+        if (doDeep && (isHtmlLike(primary) || /\.html?($|\?)/i.test(primary))) {
+          log(`Deep scanning: ${primary}`);
+          const nested = await deepScanHierarchical(primary, 0, new Set(), []);
+          filesToDownload.push(...nested);
+          log(`Found ${nested.length} nested files`);
+        }
+        
+        // No files found - create shortcut
+        if (filesToDownload.length === 0) { 
+          log(`No files found, creating shortcut for: ${primary}`);
+          zip.file(`${baseDir}${san(t.Title)}.url`, `[InternetShortcut]\nURL=${primary}\n`); 
+          skipped.push({ ...t, Url: primary, Type:"Shortcut", Reason: "Not a file link" }); 
+          return; 
+        }
 
-        for (const link of targets) {
-          await saveLink(dir, t.Title || "file", link, allowSet);
-          done++; B.style.width = ((done / (total || 1)) * 100).toFixed(1) + "%";
-          C.textContent = `${done}/${total} processed`;
+        // Download all files with proper hierarchy
+        for (const item of filesToDownload) {
+          // Build directory path: baseDir + breadcrumb path
+          let dir = baseDir;
+          if (item.path.length > 0) {
+            dir += item.path.join("/") + "/";
+          }
+          
+          const success = await saveLink(dir, item.title, item.url, allowSet);
+          if (success) filesDownloaded++;
+          
           await sleep(60);
         }
       }
@@ -381,12 +474,16 @@
       async function walk(mods, pre = "") {
         for (const m of mods || []) {
           const dir = pre + san(m.Title || "Module") + "/";
-          for (const t of m.Topics || []) await processTopic(dir, t);
+          for (const t of m.Topics || []) {
+            await processTopic(dir, t);
+            done++; 
+            B.style.width = ((done / (total || 1)) * 100).toFixed(1) + "%";
+            C.textContent = `${done}/${total} topics, ${filesDownloaded} files`;
+          }
           await walk(m.Modules, dir);
         }
       }
 
-      // WATCHDOG: if progress stalls, nudge UI but continue gracefully
       let lastDone = 0;
       const watchdog = setInterval(() => {
         if (done === lastDone) { log("Watchdog: progress unchanged, continuing…"); }
@@ -396,19 +493,22 @@
       await walk(toc.Modules || []);
       clearInterval(watchdog);
 
-      // ensure all helper tabs are closed
       TabManager.closeAll();
 
       S("Building ZIP…");
       const name = `Brightspace_${courseName || "Course"}_${todayTag()}.zip`;
       const blob = await zip.generateAsync({ type: "blob" });
       saveAs(blob, name);
-      S(`Done. ${done} items handled, ${skipped.length} shortcuts/skipped.`);
-      log(`Saved ${name}`);
+      S(`Done! ${filesDownloaded} files downloaded, ${skipped.length} skipped.`);
+      log(`✓ Saved ${name} - ${filesDownloaded} files, ${skipped.length} skipped`);
+      
+      if (skipped.length > 0) {
+        log(`Skipped: ${skipped.map(s => `${s.Title} (${s.Reason})`).join(', ')}`);
+      }
     } catch (e) {
-      S("Error: " + (e.message || e)); log(e);
+      S("Error: " + (e.message || e)); 
+      log("ERROR: " + e.stack);
     } finally {
-      // final cleanup
       TabManager.closeAll();
       ui.querySelector("#bs-start").disabled = false;
       window.__bs_scraper_active = false;
