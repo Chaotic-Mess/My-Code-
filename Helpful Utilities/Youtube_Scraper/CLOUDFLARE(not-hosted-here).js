@@ -199,30 +199,69 @@ function extractBaseJsUrl(html) {
   return m ? "https://www.youtube.com" + m[1] : null;
 }
 
-/* ---------------- Cipher Decoding (v3) ---------------- */
+/* ---------------- Cipher Decoding (v4 - Enhanced) ---------------- */
 async function buildDecipher(baseJsUrl) {
   const js = await (await fetch(baseJsUrl)).text();
 
-  // Find main signature function name (supports 2023–2025 patterns)
-  const funcNameMatch =
-    js.match(/["']signature["']\s*,\s*([a-zA-Z0-9$]+)\(/) ||
-    js.match(/\.sig\|\|([a-zA-Z0-9$]+)\(/) ||
-    js.match(/["']s"\s*,\s*([a-zA-Z0-9$]{2,})\(/);
-  const funcName = funcNameMatch ? funcNameMatch[1] : null;
-  if (!funcName) throw new Error("Cipher function not found.");
+  // Try multiple patterns to find the signature function (YouTube keeps changing this)
+  const patterns = [
+    /\b[cs]\s*&&\s*[adf]\.set\([^,]+\s*,\s*encodeURIComponent\(([a-zA-Z0-9$]+)\(/,
+    /\b[a-zA-Z0-9]+\s*&&\s*[a-zA-Z0-9]+\.set\([^,]+\s*,\s*encodeURIComponent\(([a-zA-Z0-9$]+)\(/,
+    /(?:\b|[^a-zA-Z0-9$])([a-zA-Z0-9$]{2,})\s*=\s*function\(\s*a\s*\)\s*\{\s*a\s*=\s*a\.split\(\s*""\s*\)/,
+    /([a-zA-Z0-9$]+)\s*=\s*function\(\s*a\s*\)\s*\{\s*a\s*=\s*a\.split\(\s*""\s*\);[a-zA-Z0-9$]{2}\.[a-zA-Z0-9$]{2}\(a,\d+\)/,
+    /\b[cs]\s*&&\s*[adf]\.set\([^,]+\s*,\s*([a-zA-Z0-9$]+)\(/,
+    /\bc\s*&&\s*a\.set\([^,]+\s*,\s*\([^)]*\)\s*\(\s*([a-zA-Z0-9$]+)\(/,
+    /["']signature["']\s*,\s*([a-zA-Z0-9$]+)\(/,
+    /\.sig\|\|([a-zA-Z0-9$]+)\(/,
+    /["']s"\s*,\s*([a-zA-Z0-9$]{2,})\(/,
+  ];
 
-  // Extract its body
-  const bodyMatch = js.match(new RegExp(`${funcName}=function\\(a\\)\\{([^}]+)\\}`));
-  if (!bodyMatch) throw new Error("Cipher body not found.");
+  let funcName = null;
+  for (const pattern of patterns) {
+    const match = js.match(pattern);
+    if (match && match[1]) {
+      funcName = match[1];
+      console.log("Found cipher function:", funcName, "using pattern:", pattern.source.substring(0, 50));
+      break;
+    }
+  }
+  
+  if (!funcName) {
+    console.error("Tried all patterns, none matched");
+    throw new Error("Cipher function not found.");
+  }
+
+  // Extract function body with multiple pattern attempts
+  let bodyMatch = js.match(new RegExp(`${funcName.replace(/\$/g, '\\$')}=function\\(a\\)\\{([^}]+)\\}`));
+  if (!bodyMatch) {
+    bodyMatch = js.match(new RegExp(`${funcName.replace(/\$/g, '\\$')}\\s*=\\s*function\\s*\\(\\s*a\\s*\\)\\s*\\{(.*?)\\}`, 's'));
+  }
+  if (!bodyMatch) {
+    console.error("Could not find function body for:", funcName);
+    throw new Error("Cipher body not found.");
+  }
   const body = bodyMatch[1];
+  console.log("Function body:", body.substring(0, 100));
 
   // Find helper object name and definition
-  const helperNameMatch = body.match(/;([A-Za-z0-9$]{2})\./);
+  const helperNameMatch = body.match(/;([A-Za-z0-9$]{2,3})\./);
   const helperName = helperNameMatch ? helperNameMatch[1] : null;
-  const helperDefMatch = js.match(
-    new RegExp(`var ${helperName}=\\{(.*?)\\};`, "s")
-  );
-  if (!helperDefMatch) throw new Error("Helper not found.");
+  if (!helperName) {
+    console.error("Could not find helper object name in body");
+    throw new Error("Helper object not found.");
+  }
+  
+  console.log("Helper object name:", helperName);
+  
+  // Try multiple patterns for helper definition
+  let helperDefMatch = js.match(new RegExp(`var ${helperName}=\\{(.*?)\\};`, "s"));
+  if (!helperDefMatch) {
+    helperDefMatch = js.match(new RegExp(`${helperName}=\\{(.*?)\\};`, "s"));
+  }
+  if (!helperDefMatch) {
+    console.error("Could not find helper definition for:", helperName);
+    throw new Error("Helper definition not found.");
+  }
   const helperBody = helperDefMatch[1];
 
   const actions = {};
@@ -231,16 +270,29 @@ async function buildDecipher(baseJsUrl) {
     if (m) actions[m[1]] = m[2];
   });
 
+  console.log("Found actions:", Object.keys(actions));
+
   const ops = {};
   for (const [k, v] of Object.entries(actions)) {
-    if (/splice/.test(v)) ops[k] = (a, b) => a.splice(0, b);
-    else if (/reverse/.test(v)) ops[k] = (a) => a.reverse();
-    else if (/var c=a\[0\];a\[0\]=a\[b%a\.length\];a\[b\]=c/.test(v))
+    if (/splice/.test(v)) {
+      ops[k] = (a, b) => a.splice(0, b);
+      console.log(`  ${k}: splice`);
+    } else if (/reverse/.test(v)) {
+      ops[k] = (a) => a.reverse();
+      console.log(`  ${k}: reverse`);
+    } else if (/var c=a\[0\];a\[0\]=a\[b%a\.length\];a\[b\]=c/.test(v) || /var c=a\[0\];a\[0\]=a\[b(?:%a\.length)?\];a\[b(?:%a\.length)?\]=c/.test(v)) {
       ops[k] = (a, b) => {
         const c = a[0];
         a[0] = a[b % a.length];
         a[b] = c;
       };
+      console.log(`  ${k}: swap`);
+    }
+  }
+  
+  if (Object.keys(ops).length === 0) {
+    console.error("No operations found! Actions:", actions);
+    throw new Error("No cipher operations decoded");
   }
 
   const steps = body.split(";").filter((s) => s.includes(helperName + "."));
