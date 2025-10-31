@@ -99,71 +99,92 @@ export default {
         }
       }
       
-      // Original info endpoint
+      // Original info endpoint (reworked): Prefer Innertube API, then Piped, finally HTML scrape
       const videoUrl = searchParams.get("url");
-
       if (!videoUrl || !/^https:\/\/(www\.)?youtube\.com\/watch/.test(videoUrl)) {
         return respond({ error: "Invalid or missing YouTube URL." }, 400);
       }
-
-      const html = await fetchHTML(videoUrl);
-      const player = extractPlayerResponse(html);
+      const videoIdMatch = videoUrl.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+      const videoId = videoIdMatch ? videoIdMatch[1] : null;
       
-      if (!player) {
-        console.error("Failed to extract player response");
-        throw new Error("No ytInitialPlayerResponse found. YouTube may have changed their page structure.");
+      let finalFormats = [];
+      let metaTitle = "Unknown";
+      let metaAuthor = "Unknown";
+      let metaLength = null;
+
+      // 1) Try Innertube API (no cipher needed for direct URLs)
+      try {
+        if (videoId) {
+          const it = await fetchInnertubeData(videoId);
+          if (it && it.streamingData) {
+            const raw = [
+              ...(it.streamingData.formats || []),
+              ...(it.streamingData.adaptiveFormats || []),
+            ];
+            finalFormats = raw.filter(f => f.url).map(f => ({
+              mime: f.mimeType?.split(";")[0],
+              quality: f.qualityLabel || f.audioQuality || "unknown",
+              ext: f.mimeType?.split("/")[1]?.split(";")[0] || "?",
+              size: f.contentLength ? `${(f.contentLength / 1048576).toFixed(2)} MB` : "—",
+              url: f.url,
+            }));
+            metaTitle = it.videoDetails?.title || metaTitle;
+            metaAuthor = it.videoDetails?.author || metaAuthor;
+            metaLength = it.videoDetails?.lengthSeconds || metaLength;
+          }
+        }
+      } catch (e) {
+        console.log("Innertube fetch failed:", e.message);
       }
 
-      if (!player.streamingData) {
-        throw new Error("No streaming data available. Video may be unavailable, private, or region-locked.");
-      }
-
-      const baseJsUrl = extractBaseJsUrl(html);
-      const rawFormats = [
-        ...(player.streamingData?.formats || []),
-        ...(player.streamingData?.adaptiveFormats || []),
-      ];
-
-      if (rawFormats.length === 0) {
-        throw new Error("No formats found in streaming data.");
-      }
-
-      let decipher = null;
-      if (baseJsUrl) {
+      // 2) If still nothing, try HTML scrape (best-effort; may not decipher)
+      if (!finalFormats.length) {
         try {
-          decipher = await buildDecipher(baseJsUrl);
+          const html = await fetchHTML(videoUrl);
+          const player = extractPlayerResponse(html);
+          if (player?.streamingData) {
+            const baseJsUrl = extractBaseJsUrl(html);
+            let decipher = null;
+            if (baseJsUrl) {
+              try {
+                decipher = await buildDecipher(baseJsUrl);
+              } catch (e) {
+                console.log("Decipher build failed:", e.message);
+              }
+            }
+            const raw = [
+              ...(player.streamingData.formats || []),
+              ...(player.streamingData.adaptiveFormats || []),
+            ];
+            const mapped = await Promise.all(raw.map(async (f) => {
+              let url = f.url;
+              if (!url && f.signatureCipher) {
+                const params = new URLSearchParams(f.signatureCipher);
+                url = params.get("url");
+                const s = params.get("s");
+                const sp = params.get("sp") || "sig";
+                if (decipher && s) {
+                  const sig = decipher(s);
+                  url += `&${sp}=${sig}`;
+                }
+              }
+              return {
+                mime: f.mimeType?.split(";")[0],
+                quality: f.qualityLabel || f.audioQuality || "unknown",
+                ext: f.mimeType?.split("/")[1]?.split(";")[0] || "?",
+                size: f.contentLength ? `${(f.contentLength / 1048576).toFixed(2)} MB` : "—",
+                url,
+              };
+            }));
+            finalFormats = mapped.filter(x => x.url);
+            metaTitle = player.videoDetails?.title || metaTitle;
+            metaAuthor = player.videoDetails?.author || metaAuthor;
+            metaLength = player.videoDetails?.lengthSeconds || metaLength;
+          }
         } catch (e) {
-          console.error("Decipher build failed:", e.message);
-          // Continue without decipher - some videos may not need it
+          console.log("HTML scrape failed:", e.message);
         }
       }
-
-      const formats = await Promise.all(
-        rawFormats.map(async (f) => {
-          let url = f.url;
-          if (!url && f.signatureCipher) {
-            const params = new URLSearchParams(f.signatureCipher);
-            url = params.get("url");
-            const s = params.get("s");
-            const sp = params.get("sp") || "sig";
-            if (decipher && s) {
-              const sig = decipher(s);
-              url += `&${sp}=${sig}`;
-            }
-          }
-          return {
-            mime: f.mimeType?.split(";")[0],
-            quality: f.qualityLabel || f.audioQuality || "unknown",
-            ext: f.mimeType?.split("/")[1]?.split(";")[0] || "?",
-            size: f.contentLength
-              ? `${(f.contentLength / 1048576).toFixed(2)} MB`
-              : "—",
-            url,
-          };
-        })
-      );
-
-      let finalFormats = formats.filter((x) => x.url);
 
       // Fallback: if no direct formats found, try Piped API (yt-dlp style backend)
       if (!finalFormats.length) {
@@ -184,13 +205,25 @@ export default {
         }
       }
 
+      // 3) Piped fallback if still nothing
+      if (!finalFormats.length && videoId) {
+        try {
+          console.log("No direct formats; trying Piped for", videoId);
+          const piped = await fetchPipedStreams(videoId);
+          if (piped && piped.length) {
+            finalFormats = piped;
+            console.log(`Piped fallback provided ${piped.length} formats`);
+          }
+        } catch (e) {
+          console.log("Piped fallback failed:", e.message);
+        }
+      }
+
       const out = {
-        title: player.videoDetails?.title || "Unknown",
-        author: player.videoDetails?.author || "Unknown",
-        duration: player.videoDetails?.lengthSeconds
-          ? `${Math.floor(player.videoDetails.lengthSeconds / 60)}:${(
-              "0" + (player.videoDetails.lengthSeconds % 60)
-            ).slice(-2)}`
+        title: metaTitle,
+        author: metaAuthor,
+        duration: metaLength
+          ? `${Math.floor(metaLength / 60)}:${("0" + (metaLength % 60)).slice(-2)}`
           : "—",
         formats: finalFormats,
       };
@@ -286,7 +319,7 @@ async function buildDecipher(baseJsUrl) {
   }
   
   if (!funcName) {
-    console.error("Tried all patterns, none matched");
+    console.log("Tried all patterns, none matched");
     throw new Error("Cipher function not found.");
   }
 
@@ -381,6 +414,31 @@ function respond(obj, status = 200) {
       "Cache-Control": "no-store",
     },
   });
+}
+
+/* ---------------- Innertube (YouTube internal) ---------------- */
+async function fetchInnertubeData(videoId) {
+  const key = "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"; // public web API key used by YouTube WEB client
+  const url = `https://www.youtube.com/youtubei/v1/player?key=${key}`;
+  const body = {
+    context: {
+      client: {
+        clientName: "WEB",
+        clientVersion: "2.20241031.01.00",
+      },
+    },
+    videoId,
+  };
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`Innertube ${res.status}`);
+  return res.json();
 }
 
 /* ---------------- Piped Fallback ---------------- */
