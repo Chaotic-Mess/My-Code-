@@ -17,45 +17,82 @@ export default {
       // DOWNLOAD PROXY ENDPOINT
       if (pathname === "/download" || searchParams.has("download")) {
         const streamUrl = searchParams.get("download") || searchParams.get("url");
+        const videoId = searchParams.get("vid") || "";
+        const desiredQuality = searchParams.get("quality") || "";
+        const desiredExt = (searchParams.get("ext") || "").toLowerCase();
         if (!streamUrl) {
           return respond({ error: "Missing download URL" }, 400);
         }
         
         console.log("Proxy: Fetching video from:", streamUrl.substring(0, 100) + "...");
         
+        const makeResponse = async (videoResponse) => new Response(videoResponse.body, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": videoResponse.headers.get("Content-Type") || "video/mp4",
+            "Content-Length": videoResponse.headers.get("Content-Length") || "",
+            "Content-Disposition": `attachment; filename="${searchParams.get("filename") || "video.mp4"}"`,
+            "Cache-Control": "no-store",
+          },
+        });
+
         try {
-          // Fetch the video stream from YouTube with proper headers
-          const videoResponse = await fetch(streamUrl, {
-            headers: {
-              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
-              "Accept": "*/*",
-              "Accept-Language": "en-US,en;q=0.9",
-            },
-          });
-          
+          // Prefer a range request (some googlevideo endpoints require it)
+          const headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+            "Accept": "*/*",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Referer": "https://www.youtube.com/",
+            "Origin": "https://www.youtube.com",
+            "Range": "bytes=0-" 
+          };
+
+          let videoResponse = await fetch(streamUrl, { headers });
           console.log("Proxy: YouTube response status:", videoResponse.status);
           console.log("Proxy: Content-Type:", videoResponse.headers.get("Content-Type"));
           console.log("Proxy: Content-Length:", videoResponse.headers.get("Content-Length"));
-          
+
+          // Retry without Range if first attempt failed
           if (!videoResponse.ok) {
-            const errorText = await videoResponse.text();
-            console.error("Proxy: YouTube error:", errorText.substring(0, 200));
-            return respond({ 
-              error: `YouTube returned ${videoResponse.status}`,
-              details: errorText.substring(0, 200)
-            }, 500);
+            console.log("Proxy: retry without Range header");
+            const { Range, ...h2 } = headers;
+            videoResponse = await fetch(streamUrl, { headers: h2 });
+            console.log("Proxy: retry status:", videoResponse.status);
           }
-          
-          // Return the video stream with appropriate headers
-          return new Response(videoResponse.body, {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": videoResponse.headers.get("Content-Type") || "video/mp4",
-              "Content-Length": videoResponse.headers.get("Content-Length") || "",
-              "Content-Disposition": `attachment; filename="${searchParams.get("filename") || "video.mp4"}"`,
-              "Cache-Control": "no-store",
-            },
-          });
+
+          if (videoResponse.ok) {
+            return await makeResponse(videoResponse);
+          }
+
+          // Final fallback: if videoId provided, try Piped proxy stream
+          if (videoId) {
+            console.log("Proxy: direct fetch failed; attempting Piped fallback for", videoId);
+            const piped = await fetchPipedStreams(videoId);
+            // Find a best match by ext/quality; else first available
+            let candidate = null;
+            if (piped && piped.length) {
+              candidate = piped.find(p => desiredExt && p.ext && p.ext.toLowerCase() === desiredExt) ||
+                          piped.find(p => desiredQuality && (p.quality||"").includes(desiredQuality)) ||
+                          piped[0];
+            }
+            if (candidate && candidate.url) {
+              console.log("Proxy: fetching Piped candidate", candidate.url.substring(0, 80));
+              const resp2 = await fetch(candidate.url, {
+                headers: {
+                  "User-Agent": headers["User-Agent"],
+                  "Accept": "*/*",
+                }
+              });
+              if (resp2.ok) return await makeResponse(resp2);
+              console.log("Proxy: Piped candidate failed with", resp2.status);
+            }
+          }
+
+          const errorText = await videoResponse.text().catch(() => "");
+          console.error("Proxy: YouTube error:", (errorText||"").substring(0, 200));
+          return respond({ 
+            error: `YouTube returned ${videoResponse.status}`
+          }, 500);
         } catch (err) {
           console.error("Proxy: Fetch error:", err.message);
           return respond({ error: "Proxy fetch failed: " + err.message }, 500);

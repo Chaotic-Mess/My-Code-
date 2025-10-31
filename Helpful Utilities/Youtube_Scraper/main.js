@@ -12,12 +12,12 @@ function log(msg) {
 }
 
 // Download stream function - Routes through Worker proxy to bypass IP restrictions
-async function downloadStream(url, filename, videoTitle) {
+async function downloadStream(url, filename, videoTitle, videoId, quality, ext) {
   try {
     log(`Starting download: ${filename}`);
     
     // Construct the proxy URL - this makes the Worker download the video
-    const proxyUrl = `${WORKER_URL}/download?download=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
+    const proxyUrl = `${WORKER_URL}/download?download=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}&vid=${encodeURIComponent(videoId||"")}&quality=${encodeURIComponent(quality||"")}&ext=${encodeURIComponent(ext||"")}`;
     
     log("Downloading through proxy (this may take a moment)...");
     console.log("Proxy URL:", proxyUrl);
@@ -167,7 +167,7 @@ document.getElementById("fetch-info").onclick = async () => {
       const downloadBtn = document.createElement("button");
       downloadBtn.textContent = "Download";
       downloadBtn.className = "btn-download";
-      downloadBtn.onclick = () => downloadStream(f.url, `${data.title}_${f.quality}_${idx}.${f.ext}`, meta.title);
+  downloadBtn.onclick = () => downloadStream(f.url, `${data.title}_${f.quality}_${idx}.${f.ext}`, meta.title, id, f.quality, f.ext);
       
       // Copy URL button
       const copyBtn = document.createElement("button");
