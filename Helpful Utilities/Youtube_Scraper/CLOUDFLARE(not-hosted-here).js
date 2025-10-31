@@ -126,6 +126,27 @@ export default {
         })
       );
 
+      let finalFormats = formats.filter((x) => x.url);
+
+      // Fallback: if no direct formats found, try Piped API (yt-dlp style backend)
+      if (!finalFormats.length) {
+        try {
+          const vid = (videoUrl.match(/[?&]v=([a-zA-Z0-9_-]{11})/) || [null, null])[1];
+          if (vid) {
+            console.log("No direct formats; trying Piped for", vid);
+            const piped = await fetchPipedStreams(vid);
+            if (piped && piped.length) {
+              finalFormats = piped;
+              console.log(`Piped fallback provided ${piped.length} formats`);
+            } else {
+              console.log("Piped fallback returned 0 formats");
+            }
+          }
+        } catch (e) {
+          console.error("Piped fallback failed:", e.message);
+        }
+      }
+
       const out = {
         title: player.videoDetails?.title || "Unknown",
         author: player.videoDetails?.author || "Unknown",
@@ -134,9 +155,10 @@ export default {
               "0" + (player.videoDetails.lengthSeconds % 60)
             ).slice(-2)}`
           : "—",
-        formats: formats.filter((x) => x.url),
+        formats: finalFormats,
       };
 
+      console.log(`Found ${out.formats.length} formats`);
       return respond(out);
     } catch (err) {
       console.error("Worker error:", err.message, err.stack);
@@ -322,4 +344,65 @@ function respond(obj, status = 200) {
       "Cache-Control": "no-store",
     },
   });
+}
+
+/* ---------------- Piped Fallback ---------------- */
+async function fetchPipedStreams(videoId) {
+  const INSTANCES = [
+    "https://piped.video",
+    "https://pipedapi.kavin.rocks",
+    "https://piped.privacydev.net",
+  ];
+
+  for (const host of INSTANCES) {
+    try {
+      const url = `${host}/api/v1/streams/${videoId}`;
+      console.log("Piped: fetching", url);
+      const res = await fetch(url, {
+        headers: {
+          "Accept": "application/json",
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        },
+      });
+      if (!res.ok) {
+        console.log("Piped instance returned", res.status);
+        continue;
+      }
+      const data = await res.json();
+
+      const out = [];
+
+      const pushStream = (s, kind) => {
+        if (!s) return;
+        const url = s.url || s.proxyUrl || s.downloadUrl;
+        if (!url) return;
+        const container = (s.container || s.codec || "").toLowerCase();
+        const mime = s.mimeType || (kind === "audio" ? `audio/${container || "m4a"}` : `video/${container || "mp4"}`);
+        const ext = (mime.split("/")[1] || container || "mp4").split(";")[0];
+        const size = s.size || s.contentLength;
+        const quality = s.qualityLabel || s.quality || s.bitrate || "unknown";
+        out.push({
+          mime,
+          quality: String(quality),
+          ext,
+          size: size ? `${(Number(size) / 1048576).toFixed(2)} MB` : "—",
+          url,
+        });
+      };
+
+      (data.videoStreams || []).forEach(v => pushStream(v, "video"));
+      (data.audioStreams || []).forEach(a => pushStream(a, "audio"));
+      (data.relatedStreams || []); // ignore
+
+      // Some instances provide combined formats
+      if (Array.isArray(data.streams)) data.streams.forEach(v => pushStream(v, "video"));
+
+      return out;
+    } catch (e) {
+      console.log("Piped fetch failed:", e.message);
+      continue;
+    }
+  }
+
+  return [];
 }
