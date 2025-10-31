@@ -61,6 +61,52 @@ No credentials, cookies, or files ever leave your machine.
 If you prefer, you can also install it as a **Tampermonkey userscript** to add a permanent “Download Files” button to Brightspace.  
 Either way, everything happens client-side — quick, safe, and spam-free.
 
+## YouTube Video Downloader
+
+A fast and free **YouTube video and audio downloader** that lets you download videos in various quality options (up to 4K) or extract audio-only in multiple formats — all without ads, tracking, or subscriptions.
+
+**[Use it here](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Youtube_Downloader)**
+
+### Usage
+
+1. Open the page linked above.
+2. Paste any YouTube video URL into the input field.
+3. Choose your preferred options:
+   - **Audio Only** - Extract just the audio track (MP3, WAV, Opus, or Ogg)
+   - **Quality** - Select video quality (360p to 4K)
+   - **Audio Format** - Choose audio format when downloading audio only
+4. Click **"Get Download Link"**.
+5. Once processed, click the download button to save your video or audio file.
+
+### Features
+
+- Download videos in **HD, Full HD, 2K, or 4K** quality.
+- Extract **audio-only** in MP3, WAV, Opus, or Ogg formats.
+- Choose between **MP4 and WebM** video formats.
+- Works with standard YouTube videos, **Shorts**, and age-restricted content.
+- **Completely free** — no API keys, no subscriptions, no hidden costs.
+- **Privacy-focused** — your URLs are processed directly by cobalt.tools API, nothing is logged or tracked.
+- Works entirely in your browser using the **cobalt.tools API** (free and open-source).
+
+### How it works
+
+This downloader sends your YouTube URL to [cobalt.tools](https://cobalt.tools), a free and open-source media download API.
+The API processes the video and returns a direct download link.
+
+**Privacy:** Your video URL is sent directly from your browser to cobalt's API servers. I don't store, log, or track anything.
+cobalt.tools also respects privacy and doesn't retain your data.
+
+The entire interface runs client-side in your browser — no backend servers to maintain, no databases, no tracking pixels.
+
+### Notes
+
+- Some videos may be unavailable due to geographic restrictions, copyright claims, or YouTube's policies.
+- If a specific quality isn't available, cobalt will return the closest available option.
+- Download speeds depend on your internet connection and the video size.
+- This tool is powered by the incredible [cobalt.tools](https://cobalt.tools) service — consider supporting them!
+
+---
+
 ## YouTube Scraper
 
 A smart **bookmarklet-based companion** for YouTube that instantly shows video metadata, stream options, and lets you copy or save everything — including thumbnails, transcripts, or shortcuts — directly from any video page.

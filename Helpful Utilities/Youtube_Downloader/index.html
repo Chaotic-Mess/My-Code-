@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Video Downloader | Helpful Utilities</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>YouTube Video Downloader</h1>
+    <p class="subtitle">
+      Download YouTube videos and audio in various formats and quality options — fast, free, and private.
+    </p>
+
+    <section>
+      <h2>What It Does</h2>
+      <p>
+        This tool uses the <strong>cobalt.tools API</strong> to fetch downloadable links for YouTube videos.
+        It supports multiple formats (MP4, WebM, MP3), quality options, and even audio-only downloads.
+        Everything runs in your browser — no data collection, no tracking, no nonsense.
+      </p>
+      <ul>
+        <li>Download videos in HD, Full HD, or 4K quality</li>
+        <li>Extract audio-only (MP3, M4A, Opus formats)</li>
+        <li>Choose video format (MP4, WebM)</li>
+        <li>Entirely client-side — your URLs never touch our servers</li>
+        <li>Free and no rate limits for normal use</li>
+      </ul>
+    </section>
+
+    <section class="form">
+      <h2>Try It Out</h2>
+      <p class="note">Paste any YouTube video URL below.</p>
+      <pre>https://www.youtube.com/watch?v=X1oG54jPuKw</pre>
+
+      <input type="text" id="youtube-url" placeholder="Enter YouTube video URL">
+
+      <div class="options">
+        <label>
+          <input type="checkbox" id="audio-only" />
+          Audio Only
+        </label>
+        
+        <label for="quality">Quality:</label>
+        <select id="quality">
+          <option value="max">Best Available</option>
+          <option value="2160">4K (2160p)</option>
+          <option value="1440">2K (1440p)</option>
+          <option value="1080">Full HD (1080p)</option>
+          <option value="720">HD (720p)</option>
+          <option value="480">SD (480p)</option>
+          <option value="360">Low (360p)</option>
+        </select>
+
+        <label for="format">Audio Format:</label>
+        <select id="audio-format">
+          <option value="best">Best</option>
+          <option value="mp3">MP3</option>
+          <option value="ogg">Ogg</option>
+          <option value="wav">WAV</option>
+          <option value="opus">Opus</option>
+        </select>
+      </div>
+
+      <button id="fetch-video" class="btn-primary">🎥 Get Download Link</button>
+
+      <div id="result-area" class="result"></div>
+
+      <div id="console-area" class="console"></div>
+    </section>
+
+    <section>
+      <h2>How It Works</h2>
+      <p>
+        This tool sends your YouTube URL to <a href="https://cobalt.tools" target="_blank">cobalt.tools</a>,
+        a free and open-source media downloader API. The API processes the video and returns a direct download link.
+      </p>
+      <p>
+        <strong>Privacy:</strong> Your video URL is sent directly from your browser to cobalt's servers.
+        I don't store, log, or track anything. cobalt.tools also respects privacy and doesn't store your data.
+      </p>
+    </section>
+
+    <section>
+      <h2>Notes & Tips</h2>
+      <ul>
+        <li>Works with standard YouTube videos, Shorts, and even some age-restricted content.</li>
+        <li>Audio-only mode extracts just the audio track (great for music or podcasts).</li>
+        <li>If a specific quality isn't available, cobalt will return the closest match.</li>
+        <li>Download speeds depend on your connection and the video size.</li>
+        <li>Some videos may be geo-restricted or unavailable due to YouTube's policies.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Credits & About</h2>
+      <p>
+        Created by <a href="https://github.com/chaotic-mess" target="_blank">chaotic-mess</a>  
+        as part of the <a href="https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/" target="_blank">Helpful Utilities</a> suite.
+      </p>
+      <p>
+        Powered by <a href="https://cobalt.tools" target="_blank">cobalt.tools</a> — an amazing free service.  
+        Consider <a href="https://github.com/imputnet/cobalt" target="_blank">supporting them on GitHub</a>!
+      </p>
+      <p>
+        This page and its script are released under the MIT License.  
+        You're free to reuse, remix, or extend it — just keep the credit.
+      </p>
+    </section>
+
+    <footer>
+      <p>© 2025 chaotic-mess | <a href="https://github.com/chaotic-mess/My-Code-/tree/main/Helpful%20Utilities/Youtube_Downloader" target="_blank">View on GitHub</a></p>
+    </footer>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
