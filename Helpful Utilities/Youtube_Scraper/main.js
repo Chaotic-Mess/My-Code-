@@ -70,8 +70,13 @@ async function fetchOembed(videoId) {
 async function fetchVideoInfo(videoId) {
   const api = `${WORKER_URL}/?url=https://www.youtube.com/watch?v=${videoId}`;
   const res = await fetch(api);
-  if (!res.ok) throw new Error(`Worker returned ${res.status}`);
   const data = await res.json();
+  
+  if (!res.ok) {
+    console.error("Worker error response:", data);
+    throw new Error(data.error || `Worker returned ${res.status}`);
+  }
+  
   if (data.error) throw new Error(data.error);
   return data;
 }
@@ -101,6 +106,15 @@ document.getElementById("fetch-info").onclick = async () => {
   try {
     log("Contacting worker for available streams…");
     const data = await fetchVideoInfo(id);
+    
+    // Log the full response for debugging
+    console.log("Worker response:", data);
+    
+    if (data.error) {
+      log(`❌ Worker error: ${data.error}`);
+      streamsArea.innerHTML = `<p style="color:red">Worker error: ${data.error}</p>`;
+      return;
+    }
 
     const streams = data.formats || [];
     if (!streams.length) {
