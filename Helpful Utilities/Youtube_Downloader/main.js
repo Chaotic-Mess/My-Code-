@@ -1,5 +1,5 @@
-// cobalt.tools API endpoint
-const COBALT_API = 'https://api.cobalt.tools/api/json';
+// PythonAnywhere API endpoint - Replace 'yourusername' with your actual PythonAnywhere username
+const API_ENDPOINT = 'https://yourusername.pythonanywhere.com/api/download';
 
 function logToConsole(msg, type = 'info') {
   const consoleArea = document.getElementById('console-area');
@@ -28,18 +28,15 @@ function isValidYouTubeUrl(url) {
 async function fetchDownloadLink(url, options) {
   const requestBody = {
     url: url,
-    vCodec: "h264",
-    vQuality: options.quality,
-    aFormat: options.audioFormat,
-    isAudioOnly: options.audioOnly,
-    filenamePattern: "pretty",
-    downloadMode: "auto"
+    quality: options.quality,
+    audio_only: options.audioOnly,
+    audio_format: options.audioFormat
   };
 
-  logToConsole('Fetching download link from cobalt.tools...');
+  logToConsole('🔍 Fetching download link from server...');
   
   try {
-    const response = await fetch(COBALT_API, {
+    const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -49,13 +46,14 @@ async function fetchDownloadLink(url, options) {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    logToConsole(`Error: ${error.message}`, 'error');
+    logToConsole(`❌ Error: ${error.message}`, 'error');
     throw error;
   }
 }
@@ -64,67 +62,38 @@ function displayResult(data) {
   const resultArea = document.getElementById('result-area');
   resultArea.innerHTML = '';
 
-  if (data.status === 'error' || data.status === 'rate-limit') {
+  if (data.error) {
     resultArea.innerHTML = `
       <div class="error-box">
-        <h3>Error</h3>
-        <p>${data.text || 'Failed to fetch download link. Please try again later.'}</p>
+        <h3>❌ Error</h3>
+        <p>${data.error}</p>
       </div>
     `;
-    logToConsole(`${data.text}`, 'error');
+    logToConsole(`❌ ${data.error}`, 'error');
     return;
   }
 
-  if (data.status === 'picker') {
-    // Multiple download options (e.g., different qualities)
+  if (data.success && data.download_url) {
+    const videoInfo = data.info || {};
     resultArea.innerHTML = `
       <div class="success-box">
-        <h3>Multiple Options Available</h3>
-        <p>Choose from the available download options:</p>
-        <div id="picker-options"></div>
-      </div>
-    `;
-    
-    const pickerDiv = document.getElementById('picker-options');
-    data.picker.forEach((item, index) => {
-      const btn = document.createElement('a');
-      btn.href = item.url;
-      btn.className = 'btn-download';
-      btn.textContent = `Download Option ${index + 1}`;
-      btn.target = '_blank';
-      btn.download = '';
-      pickerDiv.appendChild(btn);
-    });
-    
-    logToConsole('✅ Multiple download options available!', 'success');
-  } else if (data.status === 'redirect' || data.status === 'stream') {
-    // Single download link
-    resultArea.innerHTML = `
-      <div class="success-box">
-        <h3>Ready to Download!</h3>
-        <p>Your download link is ready. Click the button below to download your ${data.status === 'redirect' ? 'video' : 'file'}.</p>
-        <a href="${data.url}" class="btn-download" target="_blank" download>⬇Download Now</a>
+        <h3>✅ Ready to Download!</h3>
+        ${videoInfo.title ? `<p><strong>Title:</strong> ${videoInfo.title}</p>` : ''}
+        ${videoInfo.duration ? `<p><strong>Duration:</strong> ${videoInfo.duration}</p>` : ''}
+        ${videoInfo.format ? `<p><strong>Format:</strong> ${videoInfo.format}</p>` : ''}
+        <p>Click the button below to download your ${data.audio_only ? 'audio' : 'video'} file.</p>
+        <a href="${data.download_url}" class="btn-download" target="_blank" download>⬇️ Download Now</a>
       </div>
     `;
     logToConsole('✅ Download link ready!', 'success');
-  } else if (data.status === 'tunnel') {
-    // Cobalt tunnel (handles the download through their service)
-    resultArea.innerHTML = `
-      <div class="success-box">
-        <h3>Processing Video</h3>
-        <p>Your video is being processed. Click below to start the download.</p>
-        <a href="${data.url}" class="btn-download" target="_blank" download>⬇Download Now</a>
-      </div>
-    `;
-    logToConsole('Video processing complete!', 'success');
   } else {
     resultArea.innerHTML = `
       <div class="error-box">
-        <h3>Unexpected Response</h3>
-        <p>Received an unexpected response from the API. Status: ${data.status}</p>
+        <h3>⚠️ Unexpected Response</h3>
+        <p>Received an unexpected response from the server.</p>
       </div>
     `;
-    logToConsole(`Unexpected status: ${data.status}`, 'error');
+    logToConsole('⚠️ Unexpected server response', 'error');
   }
 
   resultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
