@@ -37,6 +37,31 @@ export default {
         });
 
         try {
+          // If we have a videoId, try Piped first. Many googlevideo links now require an 'n' transform.
+          if (videoId) {
+            try {
+              console.log("Proxy: attempting Piped-first for", videoId);
+              const piped = await fetchPipedStreams(videoId);
+              if (Array.isArray(piped) && piped.length) {
+                let candidate = piped.find(p => desiredExt && p.ext && p.ext.toLowerCase() === desiredExt) ||
+                                piped.find(p => desiredQuality && (p.quality||"").includes(desiredQuality)) ||
+                                piped[0];
+                if (candidate && candidate.url) {
+                  const respP = await fetch(candidate.url, {
+                    headers: {
+                      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+                      "Accept": "*/*",
+                    }
+                  });
+                  console.log("Proxy: Piped-first status:", respP.status);
+                  if (respP.ok) return await makeResponse(respP);
+                }
+              }
+            } catch (e) {
+              console.log("Proxy: Piped-first failed:", e.message);
+            }
+          }
+
           // Prefer a range request (some googlevideo endpoints require it)
           const headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
@@ -64,7 +89,7 @@ export default {
             return await makeResponse(videoResponse);
           }
 
-          // Final fallback: if videoId provided, try Piped proxy stream
+          // Final fallback: if videoId provided, try Piped proxy stream (second attempt)
           if (videoId) {
             console.log("Proxy: direct fetch failed; attempting Piped fallback for", videoId);
             const piped = await fetchPipedStreams(videoId);
