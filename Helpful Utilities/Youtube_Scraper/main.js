@@ -11,6 +11,48 @@ function log(msg) {
   area.scrollTop = area.scrollHeight;
 }
 
+// Download stream function
+async function downloadStream(url, filename, videoTitle) {
+  try {
+    log(`Starting download: ${filename}`);
+    
+    // Create a temporary anchor element and trigger download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.target = "_blank";
+    
+    // For cross-origin URLs, we need to fetch and create a blob
+    try {
+      // Try direct download first (works if CORS allows)
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      log(`✅ Download started: ${filename}`);
+    } catch (e) {
+      // If direct download fails, try fetching as blob
+      log("Fetching video data...");
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      
+      // Clean up blob URL after a delay
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+      log(`✅ Download completed: ${filename}`);
+    }
+  } catch (error) {
+    console.error("Download error:", error);
+    log(`❌ Download failed: ${error.message}`);
+    alert("Download failed. Try copying the URL and opening it in a new tab, then right-click to save.");
+  }
+}
+
 // Extract video ID from link
 function extractVideoId(url) {
   const m = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -68,16 +110,37 @@ document.getElementById("fetch-info").onclick = async () => {
     }
 
     // Populate the UI with available formats
-    streams.forEach(f => {
+    streams.forEach((f, idx) => {
       const div = document.createElement("div");
       div.className = "stream-item";
-      div.innerHTML = `
-        <span>${f.mime.toUpperCase()} — ${f.quality} (${f.size || "?"})</span>
-        <div>
-          <a href="${f.url}" target="_blank">Open</a>
-          <button onclick="navigator.clipboard.writeText('${f.url}').then(()=>alert('Copied!'))">Copy</button>
-        </div>
-      `;
+      
+      const infoSpan = document.createElement("span");
+      infoSpan.textContent = `${f.mime.toUpperCase()} — ${f.quality} (${f.size || "?"})`;
+      
+      const btnGroup = document.createElement("div");
+      btnGroup.className = "btn-group";
+      
+      // Download button
+      const downloadBtn = document.createElement("button");
+      downloadBtn.textContent = "Download";
+      downloadBtn.className = "btn-download";
+      downloadBtn.onclick = () => downloadStream(f.url, `${data.title}_${f.quality}_${idx}.${f.ext}`, meta.title);
+      
+      // Copy URL button
+      const copyBtn = document.createElement("button");
+      copyBtn.textContent = "Copy URL";
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(f.url).then(() => {
+          copyBtn.textContent = "Copied!";
+          setTimeout(() => copyBtn.textContent = "Copy URL", 2000);
+        });
+      };
+      
+      btnGroup.appendChild(downloadBtn);
+      btnGroup.appendChild(copyBtn);
+      
+      div.appendChild(infoSpan);
+      div.appendChild(btnGroup);
       streamsArea.appendChild(div);
     });
 
