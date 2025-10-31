@@ -14,30 +14,52 @@ export default {
     try {
       const { searchParams, pathname } = new URL(request.url);
       
-      // NEW: Proxy endpoint for downloading videos
+      // DOWNLOAD PROXY ENDPOINT
       if (pathname === "/download" || searchParams.has("download")) {
         const streamUrl = searchParams.get("download") || searchParams.get("url");
         if (!streamUrl) {
           return respond({ error: "Missing download URL" }, 400);
         }
         
-        // Fetch the video stream from YouTube
-        const videoResponse = await fetch(streamUrl);
+        console.log("Proxy: Fetching video from:", streamUrl.substring(0, 100) + "...");
         
-        if (!videoResponse.ok) {
-          return respond({ error: "Failed to fetch video stream" }, 500);
+        try {
+          // Fetch the video stream from YouTube with proper headers
+          const videoResponse = await fetch(streamUrl, {
+            headers: {
+              "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36",
+              "Accept": "*/*",
+              "Accept-Language": "en-US,en;q=0.9",
+            },
+          });
+          
+          console.log("Proxy: YouTube response status:", videoResponse.status);
+          console.log("Proxy: Content-Type:", videoResponse.headers.get("Content-Type"));
+          console.log("Proxy: Content-Length:", videoResponse.headers.get("Content-Length"));
+          
+          if (!videoResponse.ok) {
+            const errorText = await videoResponse.text();
+            console.error("Proxy: YouTube error:", errorText.substring(0, 200));
+            return respond({ 
+              error: `YouTube returned ${videoResponse.status}`,
+              details: errorText.substring(0, 200)
+            }, 500);
+          }
+          
+          // Return the video stream with appropriate headers
+          return new Response(videoResponse.body, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": videoResponse.headers.get("Content-Type") || "video/mp4",
+              "Content-Length": videoResponse.headers.get("Content-Length") || "",
+              "Content-Disposition": `attachment; filename="${searchParams.get("filename") || "video.mp4"}"`,
+              "Cache-Control": "no-store",
+            },
+          });
+        } catch (err) {
+          console.error("Proxy: Fetch error:", err.message);
+          return respond({ error: "Proxy fetch failed: " + err.message }, 500);
         }
-        
-        // Return the video stream with appropriate headers
-        return new Response(videoResponse.body, {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": videoResponse.headers.get("Content-Type") || "video/mp4",
-            "Content-Length": videoResponse.headers.get("Content-Length") || "",
-            "Content-Disposition": `attachment; filename="${searchParams.get("filename") || "video.mp4"}"`,
-            "Cache-Control": "no-store",
-          },
-        });
       }
       
       // Original info endpoint

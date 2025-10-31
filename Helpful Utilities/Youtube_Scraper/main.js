@@ -20,12 +20,20 @@ async function downloadStream(url, filename, videoTitle) {
     const proxyUrl = `${WORKER_URL}/download?download=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
     
     log("Downloading through proxy (this may take a moment)...");
+    console.log("Proxy URL:", proxyUrl);
     
     // Fetch through the proxy
     const response = await fetch(proxyUrl);
+    console.log("Proxy response status:", response.status);
+    console.log("Proxy response headers:", {
+      contentType: response.headers.get('Content-Type'),
+      contentLength: response.headers.get('Content-Length'),
+      contentDisposition: response.headers.get('Content-Disposition')
+    });
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
+      console.error("Proxy error data:", errorData);
       throw new Error(errorData.error || `Proxy returned ${response.status}`);
     }
     
@@ -34,11 +42,14 @@ async function downloadStream(url, filename, videoTitle) {
     if (contentLength) {
       const sizeMB = (parseInt(contentLength, 10) / 1048576).toFixed(2);
       log(`Downloading ${sizeMB} MB...`);
+    } else {
+      log("Downloading (size unknown)...");
     }
     
     // Convert response to blob
     const blob = await response.blob();
-    log(`Processing download...`);
+    console.log("Blob created:", blob.size, "bytes, type:", blob.type);
+    log(`Processing download (${(blob.size / 1048576).toFixed(2)} MB)...`);
     
     // Create download link
     const blobUrl = URL.createObjectURL(blob);
