@@ -12,7 +12,35 @@ export default {
     }
 
     try {
-      const { searchParams } = new URL(request.url);
+      const { searchParams, pathname } = new URL(request.url);
+      
+      // NEW: Proxy endpoint for downloading videos
+      if (pathname === "/download" || searchParams.has("download")) {
+        const streamUrl = searchParams.get("download") || searchParams.get("url");
+        if (!streamUrl) {
+          return respond({ error: "Missing download URL" }, 400);
+        }
+        
+        // Fetch the video stream from YouTube
+        const videoResponse = await fetch(streamUrl);
+        
+        if (!videoResponse.ok) {
+          return respond({ error: "Failed to fetch video stream" }, 500);
+        }
+        
+        // Return the video stream with appropriate headers
+        return new Response(videoResponse.body, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": videoResponse.headers.get("Content-Type") || "video/mp4",
+            "Content-Length": videoResponse.headers.get("Content-Length") || "",
+            "Content-Disposition": `attachment; filename="${searchParams.get("filename") || "video.mp4"}"`,
+            "Cache-Control": "no-store",
+          },
+        });
+      }
+      
+      // Original info endpoint
       const videoUrl = searchParams.get("url");
 
       if (!videoUrl || !/^https:\/\/(www\.)?youtube\.com\/watch/.test(videoUrl)) {

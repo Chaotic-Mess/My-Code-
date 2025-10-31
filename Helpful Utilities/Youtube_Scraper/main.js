@@ -16,40 +16,50 @@ async function downloadStream(url, filename, videoTitle) {
   try {
     log(`Starting download: ${filename}`);
     
-    // Create a temporary anchor element and trigger download
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    a.target = "_blank";
+    // Use the Worker as a proxy to download the video
+    // This bypasses IP restrictions since the Worker fetches it
+    const proxyUrl = `${WORKER_URL}/download?download=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
     
-    // For cross-origin URLs, we need to fetch and create a blob
-    try {
-      // Try direct download first (works if CORS allows)
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      log(`✅ Download started: ${filename}`);
-    } catch (e) {
-      // If direct download fails, try fetching as blob
-      log("Fetching video data...");
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      
-      a.href = blobUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      
-      // Clean up blob URL after a delay
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-      log(`✅ Download completed: ${filename}`);
+    log("Fetching video through proxy...");
+    const response = await fetch(proxyUrl);
+    
+    if (!response.ok) {
+      throw new Error(`Proxy returned ${response.status}`);
     }
+    
+    // Get total size if available
+    const contentLength = response.headers.get('Content-Length');
+    const total = parseInt(contentLength, 10);
+    
+    if (total && total > 5000000) { // If larger than 5MB, show progress
+      log(`Downloading ${(total / 1048576).toFixed(2)} MB...`);
+    }
+    
+    // Get the blob from the response
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    
+    // Trigger download
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    // Clean up blob URL after a delay
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+    log(`✅ Download completed: ${filename}`);
   } catch (error) {
     console.error("Download error:", error);
     log(`❌ Download failed: ${error.message}`);
-    alert("Download failed. Try copying the URL and opening it in a new tab, then right-click to save.");
+    
+    // Fallback: provide copy URL option
+    if (confirm("Download failed. Would you like to copy the direct URL instead? (Note: It may expire soon)")) {
+      navigator.clipboard.writeText(url).then(() => {
+        alert("URL copied! Open it in a new tab immediately to download.");
+      });
+    }
   }
 }
 
