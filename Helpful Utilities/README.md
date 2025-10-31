@@ -9,13 +9,13 @@
 
 | Tool | Description | Link |
 |------|-------------|------|
-| 🎥 **YouTube Downloader** | Download videos & audio in any quality | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Youtube_Downloader) |
-| 📦 **Directory Downloader** | Grab entire GitHub directories as ZIP | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Directory_Downloader) |
-| 📚 **Brightspace Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper) |
+| **YouTube Downloader** | Download videos & audio in any quality | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Youtube_Downloader) |
+| **Directory Downloader** | Grab entire GitHub directories as ZIP | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Directory_Downloader) |
+| **Brightspace Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper) |
 
 ---
 
-#### GitHub Directory Downloader
+# ***GitHub Directory Downloader***
 
 **Download any GitHub directory as a ZIP file — no cloning required.**
 
@@ -50,7 +50,7 @@ Pure JavaScript magic using the GitHub REST API and JSZip. Everything runs local
 
 ---
 
-#### Brightspace Scraper
+# ***Brightspace Scraper***
 
 **One-click bookmarklet to download all your course materials as a single ZIP.**
 
@@ -87,7 +87,7 @@ Runs as a bookmarklet directly in your Brightspace page. Scans the DOM for downl
 
 ---
 
-#### YouTube Video Downloader
+# ***YouTube Video Downloader***
 
 **Download YouTube videos and audio in HD, 4K, or as audio-only — fast, free, and private.**
 
