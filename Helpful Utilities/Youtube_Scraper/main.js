@@ -11,35 +11,37 @@ function log(msg) {
   area.scrollTop = area.scrollHeight;
 }
 
-// Download stream function
+// Download stream function - Routes through Worker proxy to bypass IP restrictions
 async function downloadStream(url, filename, videoTitle) {
   try {
     log(`Starting download: ${filename}`);
     
-    // Use the Worker as a proxy to download the video
-    // This bypasses IP restrictions since the Worker fetches it
+    // Construct the proxy URL - this makes the Worker download the video
     const proxyUrl = `${WORKER_URL}/download?download=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
     
-    log("Fetching video through proxy...");
+    log("Downloading through proxy (this may take a moment)...");
+    
+    // Fetch through the proxy
     const response = await fetch(proxyUrl);
     
     if (!response.ok) {
-      throw new Error(`Proxy returned ${response.status}`);
+      const errorData = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
+      throw new Error(errorData.error || `Proxy returned ${response.status}`);
     }
     
-    // Get total size if available
+    // Get content length for progress indication
     const contentLength = response.headers.get('Content-Length');
-    const total = parseInt(contentLength, 10);
-    
-    if (total && total > 5000000) { // If larger than 5MB, show progress
-      log(`Downloading ${(total / 1048576).toFixed(2)} MB...`);
+    if (contentLength) {
+      const sizeMB = (parseInt(contentLength, 10) / 1048576).toFixed(2);
+      log(`Downloading ${sizeMB} MB...`);
     }
     
-    // Get the blob from the response
+    // Convert response to blob
     const blob = await response.blob();
-    const blobUrl = URL.createObjectURL(blob);
+    log(`Processing download...`);
     
-    // Trigger download
+    // Create download link
+    const blobUrl = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = blobUrl;
     a.download = filename;
@@ -47,17 +49,23 @@ async function downloadStream(url, filename, videoTitle) {
     a.click();
     document.body.removeChild(a);
     
-    // Clean up blob URL after a delay
+    // Clean up blob URL
     setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
     log(`✅ Download completed: ${filename}`);
   } catch (error) {
     console.error("Download error:", error);
     log(`❌ Download failed: ${error.message}`);
     
-    // Fallback: provide copy URL option
-    if (confirm("Download failed. Would you like to copy the direct URL instead? (Note: It may expire soon)")) {
+    // Offer to copy the direct URL as fallback
+    const copyDirect = confirm(
+      "Download through proxy failed.\n\n" +
+      "Would you like to copy the direct YouTube URL?\n" +
+      "(Warning: It expires quickly and may not work from your IP)"
+    );
+    
+    if (copyDirect) {
       navigator.clipboard.writeText(url).then(() => {
-        alert("URL copied! Open it in a new tab immediately to download.");
+        alert("URL copied! Try pasting it in your browser immediately.");
       });
     }
   }
