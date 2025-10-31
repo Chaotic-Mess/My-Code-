@@ -125,30 +125,6 @@ Uses a custom PythonAnywhere backend running [yt-dlp](https://github.com/yt-dlp/
 
 ---
 
-## Design Philosophy
-
-All tools share a unified, modern design language:
-
-- **Color-coded headers** — Red for YouTube, Green for GitHub, Blue for Brightspace
-- **Dark theme** — Easy on the eyes, modern aesthetic
-- **Wide layouts** — Maximum content visibility
-- **Fast & responsive** — Optimized for speed and usability
-- **Privacy-first** — Everything runs client-side when possible
-
----
-
-## Contributing
-
-Got ideas? Found a bug? Want to add a new tool?
-
-1. Fork the repo
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
 ## License
 
 MIT License — do whatever you want with these tools, just keep the credits intact.
