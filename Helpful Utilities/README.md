@@ -11,8 +11,7 @@
 |------|-------------|------|-----|
 | **YouTube Downloader** | Download videos & audio in any quality | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Youtube_Downloader) | ![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white) | 
 | **Directory Downloader** | Grab entire GitHub directories as ZIP | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Directory_Downloader) | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
-| **Brightspace Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper) | ![Brightspace](https://img.shields.io/badge/Brightspace-000000?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAVtUlEQVR4Ae2dzXLbRhKA9QrEE1AvEOkFbL+A5AdYOw+wzF6pilIl7mkp5RArlwi5Lbdq5ZL2tPJah9WeTOoUnWzpFrkipeKsxD+QlPi3ome2AJAQAKIHg/8eEC5VAoIAMT8funt6enqW6ML/m7R/ffj9&logoColor=white)
- |
+| **Brightspace Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper) | ![Brightspace](https://img.shields.io/badge/Brightspace-F36C21?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAVtUlEQVR4Ae2dzXLbRhKA9QrEE1AvEOkFbL+A5AdYOw+wzF6pilIl7mkp5RArlwi5Lbdq5ZL2tPJah9WeTOoUnWzpFrkipeKsxD+QlPi3ome2AJAQAKIHg/8eEC5VAoIAMT8funt6enqW6ML/m7R/ffj9&logoColor=white)|
 
 ---
 
