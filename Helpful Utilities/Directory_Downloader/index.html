@@ -63,6 +63,53 @@
     </section>
 
     <section>
+      <h2>How to Get a GitHub Token (For Private Repos)</h2>
+      <p>
+        To download from private repositories, you'll need a GitHub Personal Access Token. 
+        Don't worry — it's quick and easy to create one!
+      </p>
+      
+      <h3 style="color: #00dd00; font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.75rem;">Step-by-Step Guide:</h3>
+      <ol style="line-height: 1.8; margin-bottom: 1.5rem;">
+        <li>Go to <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings → Developer Settings → Personal Access Tokens</a></li>
+        <li>Click <strong>"Generate new token"</strong> → Choose <strong>"Tokens (classic)"</strong></li>
+        <li>Give your token a descriptive name (e.g., "Directory Downloader")</li>
+        <li>Set an expiration date (or choose "No expiration" if you want it permanent)</li>
+        <li>Under <strong>Select scopes</strong>, check the <code>repo</code> checkbox
+          <ul style="margin-top: 0.5rem;">
+            <li>This grants read access to your private repositories</li>
+            <li>For public repos only, you don't need any scopes selected</li>
+          </ul>
+        </li>
+        <li>Scroll down and click <strong>"Generate token"</strong></li>
+        <li>⚠️ <strong>Copy the token immediately</strong> — you won't be able to see it again!</li>
+        <li>Paste the token into the "GitHub token" field above</li>
+      </ol>
+
+      <div style="background: #0d0d0d; border-left: 4px solid #00aa00; padding: 1rem; border-radius: 6px; margin-top: 1rem;">
+        <p style="margin: 0; color: #00dd00; font-weight: 600;">🔒 Security Note:</p>
+        <p style="margin-top: 0.5rem; margin-bottom: 0;">
+          Your token is processed entirely in your browser and is never sent to any server other than GitHub's API.
+          Treat it like a password — don't share it publicly or commit it to repositories.
+        </p>
+      </div>
+
+      <h3 style="color: #00dd00; font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.75rem;">Alternative: Fine-Grained Tokens</h3>
+      <p>
+        GitHub also offers <strong>fine-grained personal access tokens</strong> with more precise permissions:
+      </p>
+      <ol style="line-height: 1.8;">
+        <li>Follow the same path but choose <strong>"Fine-grained tokens"</strong></li>
+        <li>Select specific repositories you want to grant access to</li>
+        <li>Under <strong>Repository permissions</strong>, set <code>Contents</code> to <strong>"Read-only"</strong></li>
+        <li>Generate and copy your token</li>
+      </ol>
+      <p style="margin-top: 1rem;">
+        This approach is more secure as it limits access to only the repositories you specify.
+      </p>
+    </section>
+
+    <section>
       <h2>Credits & About</h2>
       <p>
         Created by <a href="https://github.com/chaotic-mess" target="_blank">chaotic-mess</a>  
