@@ -1,8 +1,19 @@
 function parseGithubLink(link) {
-  const m = link.match(/github\.com\/([^\/]+)\/([^\/]+)\/tree\/([^\/]+)\/(.+)/);
-  if (!m) return null;
-  return { owner: m[1], repo: m[2], branch: m[3], path: m[4] };
+  try {
+    const url = new URL(link);
+    const parts = url.pathname.split("/").filter(Boolean);
+    // Expect: [owner, repo, "tree", branch, ...pathParts]
+    if (parts.length < 4 || parts[2] !== "tree") return null;
+    const owner = parts[0];
+    const repo = parts[1];
+    const branch = parts[3];
+    const path = parts.slice(4).join("/");
+    return { owner, repo, branch, path };
+  } catch {
+    return null;
+  }
 }
+
 
 async function fetchDirectoryContents(owner, repo, path, branch, token) {
   let files = [];
