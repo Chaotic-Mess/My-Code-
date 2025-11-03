@@ -162,4 +162,10 @@ npm start
 ## License
 
 MIT — Idk. Just view only
+
+---
+
+**[← Back to Personal Projects](../README.md)** | **[← Back to Main Portfolio](../../README.md)**
+
+`````
  
