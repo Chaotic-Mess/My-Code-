@@ -1,0 +1,417 @@
+/* Services page specific styles */
+.services-main {
+    margin-top: 5rem;
+    padding: 2rem 5%;
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero Section */
+.services-hero {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.services-hero h1 {
+    font-size: 3rem;
+    background: linear-gradient(45deg, #fff, #8ab4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.services-hero p {
+    color: rgba(138, 180, 255, 0.8);
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.service-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.selector-btn {
+    background: rgba(138, 180, 255, 0.1);
+    color: #8ab4ff;
+    border: 1px solid rgba(138, 180, 255, 0.3);
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+}
+
+.selector-btn:hover,
+.selector-btn.active {
+    background: rgba(138, 180, 255, 0.2);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(138, 180, 255, 0.2);
+}
+
+/* Service Cards */
+.service-category {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.service-card {
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(138, 180, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 0%, 
+        rgba(138, 180, 255, 0.15),
+        transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(138, 180, 255, 0.2);
+}
+
+.service-card:hover .card-glow {
+    opacity: 1;
+}
+
+.service-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    border-radius: 50%;
+    background: rgba(138, 180, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.service-icon::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #8ab4ff;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.service-card h3 {
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+}
+
+.benefits-list {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.benefits-list li {
+    color: rgba(138, 180, 255, 0.8);
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.benefits-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: #8ab4ff;
+    border-radius: 50%;
+}
+
+.approval-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: rgba(138, 180, 255, 0.6);
+}
+
+.apply-btn {
+    width: 100%;
+    background: linear-gradient(45deg, rgba(138, 180, 255, 0.1), rgba(138, 180, 255, 0.2));
+    color: #fff;
+    border: 1px solid rgba(138, 180, 255, 0.3);
+    padding: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+}
+
+.apply-btn:hover {
+    background: rgba(138, 180, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(138, 180, 255, 0.3);
+}
+
+/* AI Advisor Section */
+.ai-advisor {
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+    background: rgba(10, 10, 26, 0.4);
+    border-top: 1px solid rgba(138, 180, 255, 0.1);
+    border-bottom: 1px solid rgba(138, 180, 255, 0.1);
+}
+
+.advisor-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.advisor-content h2 {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, #fff, #8ab4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.advisor-content p {
+    color: rgba(138, 180, 255, 0.8);
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.advisor-features {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.advisor-features li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.feature-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 1rem;
+    background: rgba(138, 180, 255, 0.2);
+    border-radius: 50%;
+    position: relative;
+}
+
+.feature-icon::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #8ab4ff;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.chat-btn {
+    background: linear-gradient(45deg, rgba(138, 180, 255, 0.1), rgba(138, 180, 255, 0.2));
+    color: #fff;
+    border: 1px solid rgba(138, 180, 255, 0.3);
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+}
+
+.chat-btn:hover {
+    background: rgba(0, 42, 110, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(138, 180, 255, 0.3);
+}
+
+.advisor-visual {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ai-orb {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.orb-core {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle at center, #8ab4ff, transparent);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite;
+}
+
+.orb-ring {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border: 2px solid rgba(138, 180, 255, 0.3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotate 10s linear infinite;
+}
+
+.orb-particles {
+    position: absolute;
+    width: 100%;
+    height: 5%;
+    top: 50%;
+    left: 50%;
+    animation: rotate 15s linear infinite reverse;
+}
+
+.orb-particles::before,
+.orb-particles::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #8ab4ff;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #8ab4ff;
+}
+
+.orb-particles::before {
+    top: -100px;
+    left: 95px;
+    transform: translateX(-50%);
+}
+
+.orb-particles::after {
+    bottom: -100px;
+    right: 95px;
+    transform: translateX(50%);
+}
+
+@keyframes rotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Credit System Section */
+.credit-system {
+    text-align: center;
+    padding: 4rem 0;
+}
+
+.credit-system h2 {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, #fff, #8ab4ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.credit-system p {
+    color: rgba(138, 180, 255, 0.8);
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+}
+
+.credit-benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.benefit-card {
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(138, 180, 255, 0.2);
+    border-radius: 15px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(138, 180, 255, 0.2);
+}
+
+.benefit-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 1.5rem;
+    background: rgba(138, 180, 255, 0.1);
+    border-radius: 50%;
+    position: relative;
+}
+
+.benefit-card h4 {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.benefit-card p {
+    color: rgba(138, 180, 255, 0.8);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .advisor-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .advisor-features li {
+        justify-content: center;
+    }
+
+    .advisor-visual {
+        height: 300px;
+    }
+}

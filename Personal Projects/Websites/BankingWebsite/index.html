@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUNA BANKING</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="video-background">
+        <video autoplay muted loop playsinline id="heroVideo">
+            <source src="video/luna-card-1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+    <button id="muteToggle" class="mute-toggle" aria-label="Toggle video sound">
+        <i class="fas fa-volume-mute"></i>
+    </button>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>LUNA</h1>
+                <div class="logo-orbit"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="pages/wallets.html">Vault</a></li>
+                <li><a href="pages/transactions.html">Transfers</a></li>
+                <li><a href="pages/services.html">Services</a></li>
+                <li><a href="pages/support.html">Support</a></li>
+                <li><a href="pages/locations.html">Locations</a></li>
+            </ul>
+            <div class="theme-switch">
+                <input type="checkbox" id="theme-toggle" checked>
+                <label for="theme-toggle" class="switch">
+                    <span class="sun"><i class="fas fa-sun"></i></span>
+                    <span class="moon"><i class="fas fa-moon"></i></span>
+                </label>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Welcome to LUNA</h1>
+                <p>Banking Beyond Earth's Boundaries</p>
+                <a href="pages/wallets.html" class="cta-button">Get Started</a>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>Next-Gen Banking</h2>
+            <div class="feature-grid">
+                <div class="feature-card hybrid">
+                    <div class="feature-icon">
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Hybrid Service Network</h3>
+                    <p>Experience seamless banking with our blend of human expertise and AI assistance, available worldwide</p>
+                    <div class="feature-stats">
+                        <div class="stat">
+                            <span class="stat-value">24/7</span>
+                            <span class="stat-label">Support</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">150+</span>
+                            <span class="stat-label">Countries</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card credit">
+                    <div class="feature-icon">
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Revolutionary Credit System</h3>
+                    <p>Our AI-powered credit scoring benefits both clients and the bank, leading to higher approval rates</p>
+                    <div class="feature-stats">
+                        <div class="stat">
+                            <span class="stat-value">95%</span>
+                            <span class="stat-label">Approval Rate</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">2hrs</span>
+                            <span class="stat-label">Average Response</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card benefits">
+                    <div class="feature-icon">
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Tailored Benefits</h3>
+                    <p>Specialized programs for seniors, new parents, and education with enhanced rewards</p>
+                    <div class="feature-stats">
+                        <div class="stat">
+                            <span class="stat-value">3x</span>
+                            <span class="stat-label">Rewards</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">0%</span>
+                            <span class="stat-label">APR*</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card education">
+                    <div class="feature-icon">
+                        <div class="icon-pulse"></div>
+                    </div>
+                    <h3>Financial Education</h3>
+                    <p>Access AI-driven personalized learning paths and human financial advisors</p>
+                    <div class="feature-stats">
+                        <div class="stat">
+                            <span class="stat-value">500+</span>
+                            <span class="stat-label">Courses</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">1-on-1</span>
+                            <span class="stat-label">Coaching</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="worldwide">
+            <div class="world-grid">
+                <div class="world-content">
+                    <h2>Global Presence, Personal Touch</h2>
+                    <p>With physical locations and digital services worldwide, LUNA brings the future of banking wherever you are.</p>
+                    <div class="presence-stats">
+                        <div class="presence-stat">
+                            <span class="stat-number">2500+</span>
+                            <span class="stat-text">Physical Locations</span>
+                        </div>
+                        <div class="presence-stat">
+                            <span class="stat-number">10000+</span>
+                            <span class="stat-text">AI Assistants</span>
+                        </div>
+                        <div class="presence-stat">
+                            <span class="stat-number">15000+</span>
+                            <span class="stat-text">Human Staff</span>
+                        </div>
+                    </div>
+                    <a href="pages/locations.html" class="locations-btn">Find Nearest Location</a>
+                </div>
+                <div class="world-map">
+                    <div class="map-points"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: support@lunabank.com</p>
+                <p>Phone: 1-800-LUNA</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="pages/about.html">About Us</a></li>
+                    <li><a href="pages/privacy.html">Privacy Policy</a></li>
+                    <li><a href="pages/terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LUNA Banking. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

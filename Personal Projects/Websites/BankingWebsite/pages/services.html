@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - LUNA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/services.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>LUNA</h1>
+                <div class="logo-orbit"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="wallets.html">Vault</a></li>
+                <li><a href="transactions.html">Transfers</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="support.html">Support</a></li>
+                <li><a href="locations.html">Locations</a></li>
+            </ul>
+            <div class="theme-switch">
+                <input type="checkbox" id="theme-toggle" checked>
+                <label for="theme-toggle" class="switch">
+                    <span class="sun"><i class="fas fa-sun"></i></span>
+                    <span class="moon"><i class="fas fa-moon"></i></span>
+                </label>
+            </div>
+        </nav>
+    </header>
+
+    <main class="services-main">
+        <section class="services-hero">
+            <h1>Personalized Banking Solutions</h1>
+            <p>Discover services tailored to your unique journey</p>
+            <div class="service-selector">
+                <button class="selector-btn active" data-category="all">All Services</button>
+                <button class="selector-btn" data-category="personal">Personal</button>
+                <button class="selector-btn" data-category="business">Business</button>
+                <button class="selector-btn" data-category="special">Special Programs</button>
+            </div>
+        </section>
+
+        <section class="service-cards">
+            <!-- Personal Banking Services -->
+            <div class="service-category personal">
+                <div class="service-card">
+                    <div class="card-glow"></div>
+                    <div class="service-icon new-parents"></div>
+                    <h3>New Parents Program</h3>
+                    <ul class="benefits-list">
+                        <li>0% APR for 18 months</li>
+                        <li>Parental leave grace period</li>
+                        <li>Child savings bonus</li>
+                        <li>Family insurance benefits</li>
+                    </ul>
+                    <div class="approval-info">
+                        <span class="approval-time">2hr approval</span>
+                        <span class="acceptance-rate">98% accepted</span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="card-glow"></div>
+                    <div class="service-icon senior"></div>
+                    <h3>Senior Advantage</h3>
+                    <ul class="benefits-list">
+                        <li>Higher savings interest</li>
+                        <li>Free wealth management</li>
+                        <li>Healthcare partnerships</li>
+                        <li>Priority service</li>
+                    </ul>
+                    <div class="approval-info">
+                        <span class="approval-time">1hr approval</span>
+                        <span class="acceptance-rate">99% accepted</span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="card-glow"></div>
+                    <div class="service-icon education"></div>
+                    <h3>Education Plus</h3>
+                    <ul class="benefits-list">
+                        <li>Student loan refinancing</li>
+                        <li>Study abroad support</li>
+                        <li>Merit scholarships</li>
+                        <li>Career guidance</li>
+                    </ul>
+                    <div class="approval-info">
+                        <span class="approval-time">3hr approval</span>
+                        <span class="acceptance-rate">95% accepted</span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+            </div>
+
+            <!-- Business Services -->
+            <div class="service-category business">
+                <div class="service-card">
+                    <div class="card-glow"></div>
+                    <div class="service-icon startup"></div>
+                    <h3>Startup Accelerator</h3>
+                    <ul class="benefits-list">
+                        <li>Fast-track credit lines</li>
+                        <li>Mentorship program</li>
+                        <li>Investor networking</li>
+                        <li>Free business tools</li>
+                    </ul>
+                    <div class="approval-info">
+                        <span class="approval-time">4hr approval</span>
+                        <span class="acceptance-rate">92% accepted</span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+
+                <div class="service-card">
+                    <div class="card-glow"></div>
+                    <div class="service-icon global"></div>
+                    <h3>Global Commerce</h3>
+                    <ul class="benefits-list">
+                        <li>Multi-currency accounts</li>
+                        <li>International transfers</li>
+                        <li>Trade financing</li>
+                        <li>Forex services</li>
+                    </ul>
+                    <div class="approval-info">
+                        <span class="approval-time">6hr approval</span>
+                        <span class="acceptance-rate">90% accepted</span>
+                    </div>
+                    <button class="apply-btn">Apply Now</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="ai-advisor">
+            <div class="advisor-container">
+                <div class="advisor-content">
+                    <h2>Meet NOVA</h2>
+                    <p>Your personal AI financial advisor</p>
+                    <ul class="advisor-features">
+                        <li>
+                            <span class="feature-icon"></span>
+                            <span class="feature-text">24/7 personalized guidance</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon"></span>
+                            <span class="feature-text">Smart investment recommendations</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon"></span>
+                            <span class="feature-text">Real-time market insights</span>
+                        </li>
+                        <li>
+                            <span class="feature-icon"></span>
+                            <span class="feature-text">Seamless human expert handoff</span>
+                        </li>
+                    </ul>
+                    <button class="chat-btn">Chat with NOVA</button>
+                </div>
+                <div class="advisor-visual">
+                    <div class="ai-orb">
+                        <div class="orb-core"></div>
+                        <div class="orb-ring"></div>
+                        <div class="orb-particles"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="credit-system">
+            <h2>Quantum Credit System™</h2>
+            <p>Our revolutionary AI-powered credit assessment</p>
+            <div class="credit-benefits">
+                <div class="benefit-card">
+                    <div class="benefit-icon fast"></div>
+                    <h4>Lightning Fast</h4>
+                    <p>2-hour average approval time</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon fair"></div>
+                    <h4>Always Fair</h4>
+                    <p>Holistic assessment beyond scores</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon smart"></div>
+                    <h4>Smart Rates</h4>
+                    <p>AI-optimized interest rates</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: support@lunabank.com</p>
+                <p>Phone: 1-800-LUNA</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LUNA Banking. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/services.js"></script>
+</body>
+</html>
+

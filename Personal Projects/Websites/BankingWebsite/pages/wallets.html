@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault - LUNA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/wallets.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>LUNA</h1>
+                <div class="logo-orbit"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="wallets.html" class="active">Vault</a></li>
+                <li><a href="transactions.html">Transfers</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="support.html">Support</a></li>
+                <li><a href="locations.html">Locations</a></li>
+            </ul>
+            <div class="theme-switch">
+                <input type="checkbox" id="theme-toggle" checked>
+                <label for="theme-toggle" class="switch">
+                    <span class="sun"><i class="fas fa-sun"></i></span>
+                    <span class="moon"><i class="fas fa-moon"></i></span>
+                </label>
+            </div>
+        </nav>
+    </header>
+
+    <main class="wallet-main">
+        <section class="wallet-header">
+            <h1>My Wallets</h1>
+            <button class="add-card-btn">+ Add New Card</button>
+        </section>
+
+        <section class="cards-carousel">
+            <button class="carousel-btn prev">&lt;</button>
+            <div class="cards-container">
+                <div class="card visa">
+                    <div class="card-chip"></div>
+                    <div class="card-number">**** **** **** 1234</div>
+                    <div class="card-info">
+                        <div class="card-holder">JOHN DOE</div>
+                        <div class="card-expiry">12/25</div>
+                    </div>
+                </div>
+                <div class="card mastercard">
+                    <div class="card-chip"></div>
+                    <div class="card-number">**** **** **** 5678</div>
+                    <div class="card-info">
+                        <div class="card-holder">JOHN DOE</div>
+                        <div class="card-expiry">03/26</div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-btn next">&gt;</button>
+        </section>
+
+        <section class="wallet-details">
+            <div class="balance-info">
+                <h2>Card Balance</h2>
+                <div class="balance">$5,234.56</div>
+                <div class="quick-actions">
+                    <button>Send Money</button>
+                    <button>Request Money</button>
+                    <button>Block Card</button>
+                </div>
+            </div>
+            
+            <div class="recent-transactions">
+                <h2>Recent Transactions</h2>
+                <div class="transaction-list">
+                    <div class="transaction">
+                        <div class="transaction-info">
+                            <strong>Amazon.com</strong>
+                            <span>Oct 31, 2025</span>
+                        </div>
+                        <div class="transaction-amount negative">-$54.99</div>
+                    </div>
+                    <div class="transaction">
+                        <div class="transaction-info">
+                            <strong>Salary Deposit</strong>
+                            <span>Oct 28, 2025</span>
+                        </div>
+                        <div class="transaction-amount positive">+$3,250.00</div>
+                    </div>
+                    <div class="transaction">
+                        <div class="transaction-info">
+                            <strong>Starbucks</strong>
+                            <span>Oct 27, 2025</span>
+                        </div>
+                        <div class="transaction-amount negative">-$4.85</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: support@lunabank.com</p>
+                <p>Phone: 1-800-LUNA</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LUNA Banking. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/wallets.js"></script>
+</body>
+</html>

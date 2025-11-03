@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Transfers - LUNA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/transactions.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>LUNA</h1>
+                <div class="logo-orbit"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="wallets.html">Vault</a></li>
+                <li><a href="transactions.html" class="active">Transfers</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="support.html">Support</a></li>
+                <li><a href="locations.html">Locations</a></li>
+            </ul>
+            <div class="theme-switch">
+                <input type="checkbox" id="theme-toggle" checked>
+                <label for="theme-toggle" class="switch">
+                    <span class="sun"><i class="fas fa-sun"></i></span>
+                    <span class="moon"><i class="fas fa-moon"></i></span>
+                </label>
+            </div>
+        </nav>
+    </header>
+
+    <main class="transactions-main">
+        <section class="transactions-header">
+            <h1>Quantum Transfers</h1>
+            <div class="transaction-actions">
+                <button class="action-btn send">New Transfer</button>
+                <button class="action-btn schedule">Schedule Transfer</button>
+            </div>
+        </section>
+
+        <section class="transaction-dashboard">
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <div class="card-icon incoming"></div>
+                    <div class="card-details">
+                        <h3>Incoming</h3>
+                        <p class="amount">+$8,432.50</p>
+                        <span class="trend positive">+12.4%</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon outgoing"></div>
+                    <div class="card-details">
+                        <h3>Outgoing</h3>
+                        <p class="amount">-$3,217.25</p>
+                        <span class="trend negative">-8.7%</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon pending"></div>
+                    <div class="card-details">
+                        <h3>Pending</h3>
+                        <p class="amount">$1,543.00</p>
+                        <span class="status">3 transfers</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="transaction-history">
+                <div class="history-header">
+                    <h2>Transfer History</h2>
+                    <div class="history-filters">
+                        <button class="filter-btn active">All</button>
+                        <button class="filter-btn">Incoming</button>
+                        <button class="filter-btn">Outgoing</button>
+                        <button class="filter-btn">Pending</button>
+                    </div>
+                </div>
+
+                <div class="history-list">
+                    <div class="transaction-item">
+                        <div class="transaction-icon incoming"></div>
+                        <div class="transaction-details">
+                            <h4>Salary Deposit</h4>
+                            <span class="date">Nov 1, 2025</span>
+                        </div>
+                        <div class="transaction-status completed">Completed</div>
+                        <div class="transaction-amount positive">+$3,250.00</div>
+                    </div>
+
+                    <div class="transaction-item">
+                        <div class="transaction-icon outgoing"></div>
+                        <div class="transaction-details">
+                            <h4>Rent Payment</h4>
+                            <span class="date">Oct 31, 2025</span>
+                        </div>
+                        <div class="transaction-status completed">Completed</div>
+                        <div class="transaction-amount negative">-$1,800.00</div>
+                    </div>
+
+                    <div class="transaction-item">
+                        <div class="transaction-icon pending"></div>
+                        <div class="transaction-details">
+                            <h4>Investment Transfer</h4>
+                            <span class="date">Oct 30, 2025</span>
+                        </div>
+                        <div class="transaction-status pending">Pending</div>
+                        <div class="transaction-amount">$500.00</div>
+                    </div>
+                </div>
+
+                <div class="history-pagination">
+                    <button class="page-btn prev">Previous</button>
+                    <div class="page-numbers">
+                        <button class="page-number active">1</button>
+                        <button class="page-number">2</button>
+                        <button class="page-number">3</button>
+                    </div>
+                    <button class="page-btn next">Next</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: support@lunabank.com</p>
+                <p>Phone: 1-800-LUNA</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LUNA Banking. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/theme.js"></script>
+    <script src="../js/transactions.js"></script>
+</body>
+</html>
+

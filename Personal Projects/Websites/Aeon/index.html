@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEON SERVICES</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- BOOT SEQUENCE -->
+    <div id="boot-sequence" class="active">
+        <canvas id="static-canvas"></canvas>
+        <svg id="aeon-symbol" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <filter id="glitch">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise"/>
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G"/>
+                </filter>
+                <filter id="glow">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            <!-- Triangle -->
+            <path id="triangle" d="M 100 30 L 170 150 L 30 150 Z" 
+                  fill="none" stroke="#00ff88" stroke-width="2" 
+                  filter="url(#glow)" opacity="0"/>
+            <!-- Eye -->
+            <ellipse id="eye-outline" cx="100" cy="110" rx="30" ry="20" 
+                     fill="none" stroke="#00ff88" stroke-width="2" 
+                     filter="url(#glow)" opacity="0"/>
+            <circle id="pupil" cx="100" cy="110" r="8" 
+                    fill="#00ff88" filter="url(#glow)" opacity="0"/>
+        </svg>
+        <div id="manifesto" class="hidden">
+            <p class="manifesto-line">Visibility is weakness.</p>
+            <p class="manifesto-line">Legacy is digital.</p>
+            <p class="manifesto-line">You were never private.</p>
+        </div>
+    </div>
+
+    <!-- MAIN VAULT -->
+    <div id="vault-door" class="vault-closed">
+        <div class="vault-left"></div>
+        <div class="vault-right"></div>
+    </div>
+
+    <!-- MAIN INTERFACE -->
+    <main id="main-interface" class="hidden">
+        <!-- Cursor Distortion Overlay -->
+        <canvas id="cursor-distortion"></canvas>
+        
+        <!-- Navigation -->
+        <nav id="main-nav">
+            <div class="nav-item" data-section="operators">
+                <span class="nav-glitch" data-text="OPERATORS">OPERATORS</span>
+            </div>
+            <div class="nav-item" data-section="live-ops">
+                <span class="nav-glitch" data-text="LIVE OPS">LIVE OPS</span>
+                <span class="locked-indicator">■</span>
+            </div>
+            <div class="nav-item" data-section="black-words">
+                <span class="nav-glitch" data-text="BLACK WORDS">BLACK WORDS</span>
+            </div>
+            <div class="nav-item" data-section="terminal">
+                <span class="nav-glitch" data-text="█████">█████</span>
+            </div>
+        </nav>
+
+        <!-- AEON Logo Corner -->
+        <div id="aeon-logo">
+            <span class="logo-text">ÆEON</span>
+            <span class="logo-subtext">SERVICES</span>
+        </div>
+
+        <!-- Status Bar -->
+        <div id="status-bar">
+            <span class="status-item">SECURE CONNECTION</span>
+            <span class="status-separator">|</span>
+            <span class="status-item" id="current-time"></span>
+            <span class="status-separator">|</span>
+            <span class="status-item">37 ACTIVE</span>
+        </div>
+
+        <!-- Content Panels -->
+        <div id="content-container">
+            <!-- OPERATORS GRID -->
+            <section id="operators-section" class="content-panel active">
+                <h1 class="section-title">
+                    <span class="title-line"></span>
+                    OPERATIONAL ROSTER
+                    <span class="title-line"></span>
+                </h1>
+                <div id="operators-grid"></div>
+                <div id="operator-detail-panel">
+                    <div class="detail-placeholder">
+                        <div class="detail-placeholder-icon">◆</div>
+                        <div class="detail-placeholder-text">SELECT AN OPERATOR</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LIVE OPS -->
+            <section id="live-ops-section" class="content-panel">
+                <div class="access-denied">
+                    <h2>ACCESS REQUIRES CLEARANCE</h2>
+                    <p>Interaction sequence incomplete.</p>
+                    <div class="puzzle-hint">[ Seek the pattern in the silence ]</div>
+                </div>
+                <div id="live-ops-content" class="hidden">
+                    <h1 class="section-title">LIVE OPERATIONS</h1>
+                    <div class="mission-tracker">
+                        <div class="mission-feed">
+                            <div class="mission-controls">
+                                <input type="text" class="mission-filter" placeholder="FILTER OPERATIONS..." spellcheck="false">
+                                <button class="mission-refresh">↻ REFRESH</button>
+                            </div>
+                            <div class="feed-item">
+                                <span class="status-tag active">ACTIVE</span>
+                                <span class="mission-code">OP-4471-ECLIPSE</span>
+                                <span class="mission-location">██████, ████</span>
+                            </div>
+                            <div class="feed-item">
+                                <span class="status-tag silenced">SILENCED</span>
+                                <span class="mission-code">OP-3392-VERITAS</span>
+                                <span class="mission-location">████████</span>
+                            </div>
+                            <div class="feed-item">
+                                <span class="status-tag active">ACTIVE</span>
+                                <span class="mission-code">OP-5512-PHANTOM</span>
+                                <span class="mission-location">ZÜRICH</span>
+                            </div>
+                            <div class="feed-item">
+                                <span class="status-tag active">ACTIVE</span>
+                                <span class="mission-code">OP-2234-SHADOW</span>
+                                <span class="mission-location">BERLIN</span>
+                            </div>
+                            <div class="feed-item">
+                                <span class="status-tag silenced">SILENCED</span>
+                                <span class="mission-code">OP-8891-NEXUS</span>
+                                <span class="mission-location">████, ████</span>
+                            </div>
+                        </div>
+                        <div class="cctv-feeds">
+                            <div class="cctv-control-panel">
+                                <div class="cctv-controls">
+                                    <label>FEED SELECT:</label>
+                                    <select class="feed-selector">
+                                        <option>FEED_A7</option>
+                                        <option>FEED_B3</option>
+                                        <option>FEED_C9</option>
+                                        <option>FEED_D1</option>
+                                    </select>
+                                    <button class="feed-toggle">■ KILL FEED</button>
+                                </div>
+                            </div>
+                            <div class="cctv-window">
+                                <div class="cctv-header">FEED_A7</div>
+                                <div class="cctv-blur"></div>
+                            </div>
+                            <div class="cctv-window">
+                                <div class="cctv-header">FEED_B3</div>
+                                <div class="cctv-blur"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BLACK WORDS -->
+            <section id="black-words-section" class="content-panel">
+                <div class="manifesto-container">
+                    <div class="manifesto-text flicker">
+                        <p>They tell you privacy is a setting.</p>
+                        <p>We tell you privacy is a war.</p>
+                    </div>
+                    <div class="manifesto-text flicker" style="animation-delay: 2s;">
+                        <p>Every camera is a confession.</p>
+                        <p>Every microphone, a prayer to the algorithm.</p>
+                    </div>
+                    <div class="manifesto-text flicker" style="animation-delay: 4s;">
+                        <p>We are not hackers.</p>
+                        <p>We are the consequence of your transparency.</p>
+                    </div>
+                    <div class="manifesto-text flicker" style="animation-delay: 6s;">
+                        <p>AEON does not apologize.</p>
+                        <p>AEON does not explain.</p>
+                        <p>AEON erases.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TERMINAL -->
+            <section id="terminal-section" class="content-panel">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <span>AEON_SECURE_SHELL v3.7.1</span>
+                        <span class="terminal-close">×</span>
+                    </div>
+                    <div class="terminal-output" id="terminal-output">
+                        <div class="terminal-line">Initializing secure connection...</div>
+                        <div class="terminal-line">Connected to AEON_MAINFRAME</div>
+                        <div class="terminal-line">Type 'help' for available commands</div>
+                        <div class="terminal-line">&nbsp;</div>
+                    </div>
+                    <div class="terminal-input-line">
+                        <span class="terminal-prompt">AEON&gt;</span>
+                        <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false">
+                        <span class="terminal-cursor">_</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- OPERATOR DOSSIER MODAL -->
+        <div id="operator-modal" class="modal hidden">
+            <div class="modal-close">×</div>
+            <div class="dossier-content">
+                <div class="dossier-header">
+                    <h2 class="operator-codename"></h2>
+                    <span class="operator-status"></span>
+                </div>
+                <div class="dossier-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">COMPLETION RATE</span>
+                        <div class="stat-bar">
+                            <div class="stat-fill" data-stat="completion"></div>
+                        </div>
+                        <span class="stat-value" data-stat="completion"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">STEALTH GRADE</span>
+                        <div class="stat-bar">
+                            <div class="stat-fill" data-stat="stealth"></div>
+                        </div>
+                        <span class="stat-value" data-stat="stealth"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">ETHICAL FLEXIBILITY</span>
+                        <div class="stat-bar">
+                            <div class="stat-fill" data-stat="ethics"></div>
+                        </div>
+                        <span class="stat-value" data-stat="ethics"></span>
+                    </div>
+                </div>
+                <div class="dossier-specializations">
+                    <h3>SPECIALIZATIONS</h3>
+                    <div class="specialization-tags"></div>
+                </div>
+                <div class="dossier-logs">
+                    <h3>CASE LOGS</h3>
+                    <div class="case-logs-container"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Audio Elements (hidden) -->
+    <div id="audio-container" style="display:none;">
+        <audio id="ambient-hum" loop></audio>
+        <audio id="hover-static"></audio>
+        <audio id="select-bass"></audio>
+        <audio id="glitch-sound"></audio>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

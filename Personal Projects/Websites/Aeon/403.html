@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCESS DENIED - AEON SERVICES</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000000;
+            color: #ff0055;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+        }
+        
+        .error-code {
+            font-size: 120px;
+            font-weight: 700;
+            letter-spacing: 20px;
+            text-shadow: 0 0 30px #ff0055;
+            animation: glitchError 2s infinite;
+        }
+        
+        .error-message {
+            font-size: 36px;
+            letter-spacing: 6px;
+            margin: 30px 0;
+        }
+        
+        .error-detail {
+            font-size: 16px;
+            color: #666666;
+            letter-spacing: 3px;
+            margin-bottom: 50px;
+        }
+        
+        .trace-info {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: #00ff88;
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #00ff88;
+            background: rgba(0, 255, 136, 0.05);
+            margin-top: 40px;
+        }
+        
+        .return-link {
+            margin-top: 40px;
+            padding: 15px 40px;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            text-decoration: none;
+            letter-spacing: 3px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .return-link:hover {
+            background: #00ff88;
+            color: #000000;
+            box-shadow: 0 0 20px #00ff88;
+        }
+        
+        @keyframes glitchError {
+            0%, 100% {
+                transform: translate(0);
+            }
+            10% {
+                transform: translate(-5px, 5px);
+            }
+            20% {
+                transform: translate(5px, -5px);
+            }
+            30% {
+                transform: translate(-5px, -5px);
+            }
+            40% {
+                transform: translate(5px, 5px);
+            }
+            50% {
+                transform: translate(0);
+            }
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #00ff88;
+            opacity: 0.1;
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    
+    <div class="error-code">403</div>
+    <div class="error-message">YOU DO NOT HAVE CLEARANCE</div>
+    <div class="error-detail">This trace has been logged.</div>
+    
+    <div class="trace-info">
+        UNAUTHORIZED ACCESS ATTEMPT<br>
+        TIMESTAMP: <span id="timestamp"></span><br>
+        IP ADDRESS: <span id="ip-address"></span><br>
+        DEVICE FINGERPRINT: <span id="fingerprint"></span><br>
+        STATUS: MONITORING
+    </div>
+    
+    <a href="index.html" class="return-link">RETURN TO AUTHORIZATION</a>
+    
+    <script>
+        // Update timestamp
+        const now = new Date();
+        document.getElementById('timestamp').textContent = now.toISOString();
+        
+        // Generate fake IP
+        const fakeIP = `${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
+        document.getElementById('ip-address').textContent = fakeIP;
+        
+        // Generate fake fingerprint
+        const chars = '0123456789ABCDEF';
+        let fingerprint = '';
+        for (let i = 0; i < 32; i++) {
+            fingerprint += chars[Math.floor(Math.random() * chars.length)];
+            if ((i + 1) % 8 === 0 && i !== 31) fingerprint += '-';
+        }
+        document.getElementById('fingerprint').textContent = fingerprint;
+    </script>
+</body>
+</html>

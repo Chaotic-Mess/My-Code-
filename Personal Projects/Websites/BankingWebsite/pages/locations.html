@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Locations - LUNA</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/locations.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <h1>LUNA</h1>
+                <div class="logo-orbit"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="wallets.html">Vault</a></li>
+                <li><a href="transactions.html">Transfers</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="support.html">Support</a></li>
+                <li><a href="locations.html" class="active">Locations</a></li>
+            </ul>
+            <div class="theme-switch">
+                <input type="checkbox" id="theme-toggle" checked>
+                <label for="theme-toggle" class="switch">
+                    <span class="sun"><i class="fas fa-sun"></i></span>
+                    <span class="moon"><i class="fas fa-moon"></i></span>
+                </label>
+            </div>
+        </nav>
+    </header>
+
+    <main class="locations-main">
+        <section class="locations-hero">
+            <h1>Global Network</h1>
+            <p>Find LUNA banking centers and ATMs across 150+ countries</p>
+            <div class="location-stats">
+                <div class="stat">
+                    <span class="stat-value">2500+</span>
+                    <span class="stat-label">Banking Centers</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">10000+</span>
+                    <span class="stat-label">ATMs</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">150+</span>
+                    <span class="stat-label">Countries</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="map-section">
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="location-search">
+                    <input type="text" placeholder="Enter your location" id="location-input">
+                    <button class="search-btn">Find Nearest Center</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="location-types">
+            <h2>Our Locations</h2>
+            <div class="type-grid">
+                <div class="type-card">
+                    <div class="type-icon banking"></div>
+                    <h3>Banking Centers</h3>
+                    <p>Full-service locations with both AI and human staff</p>
+                    <ul>
+                        <li>Account services</li>
+                        <li>Financial consulting</li>
+                        <li>Investment guidance</li>
+                        <li>Quantum secure rooms</li>
+                    </ul>
+                </div>
+
+                <div class="type-card">
+                    <div class="type-icon quantum"></div>
+                    <h3>Quantum Terminals</h3>
+                    <p>Self-service banking with quantum security</p>
+                    <ul>
+                        <li>Instant transfers</li>
+                        <li>Currency exchange</li>
+                        <li>Account management</li>
+                        <li>Biometric verification</li>
+                    </ul>
+                </div>
+
+                <div class="type-card">
+                    <div class="type-icon atm"></div>
+                    <h3>Smart ATMs</h3>
+                    <p>Advanced ATMs with AI assistance</p>
+                    <ul>
+                        <li>Cardless transactions</li>
+                        <li>Multi-currency support</li>
+                        <li>Video banking</li>
+                        <li>24/7 availability</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-locations">
+            <h2>Featured Locations</h2>
+            <div class="location-grid">
+                <div class="location-card">
+                    <div class="location-image hq"></div>
+                    <div class="location-info">
+                        <h3>Global Headquarters</h3>
+                        <p>Silicon Valley, USA</p>
+                        <button class="location-btn">Get Directions</button>
+                    </div>
+                </div>
+
+                <div class="location-card">
+                    <div class="location-image europe"></div>
+                    <div class="location-info">
+                        <h3>European Hub</h3>
+                        <p>London, UK</p>
+                        <button class="location-btn">Get Directions</button>
+                    </div>
+                </div>
+
+                <div class="location-card">
+                    <div class="location-image asia"></div>
+                    <div class="location-info">
+                        <h3>Asian Center</h3>
+                        <p>Singapore</p>
+                        <button class="location-btn">Get Directions</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: support@lunabank.com</p>
+                <p>Phone: 1-800-LUNA</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LUNA Banking. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/locations.js"></script>
+</body>
+</html>
+
