@@ -15,6 +15,7 @@ To economists, it’s a paradox: a financial empire that refuses to exploit.
 ```
 BankingWebsite/
 ├── index.html              # Main landing page
+├── 404.html                # 404 page
 │
 ├── pages/                  # All additional HTML pages
 │   ├── wallets.html        # Digital Vault - Card management
@@ -25,6 +26,8 @@ BankingWebsite/
 │   ├── about.html          # Company information
 │   ├── privacy.html        # Privacy policy
 │   └── terms.html          # Terms of service
+|   └──support/             # Support center subdirectory
+|        └── [support pages]# Additional help pages
 │
 ├── css/
 │   ├── style.css           # Global styles & theme variables
@@ -34,6 +37,7 @@ BankingWebsite/
 │   ├── support.css         # Support page styles
 │   ├── locations.css       # Locations page styles
 │   ├── about.css           # About page styles
+│   ├── 404.css             # 404 page styles
 │   └── legal.css           # Privacy & Terms page styles
 │
 ├── js/
@@ -43,14 +47,14 @@ BankingWebsite/
 │   ├── transactions.js     # Transaction page functionality
 │   ├── services.js         # Services page functionality
 │   ├── support.js          # Support page functionality
+│   ├── 404.js              # 404 page functionality
 │   └── locations.js        # Interactive map functionality
 │
 ├── video/
 │   ├── luna-card-1.mp4     # Background video 1 (15s)
 │   └── luna-card-2.mp4     # Background video 2 (10s)
-│
-└── support/                # Support center subdirectory
-    └── [support pages]     # Additional help pages
+│   └── luna-card-3.mp4     # Background video 3 (10s)
+
 ```
 
 ## Features
@@ -94,4 +98,5 @@ BankingWebsite/
 ---
 
 **Built with 🌙 for the future of banking**
+
 
