@@ -1,6 +1,14 @@
 # LUNA Banking Website
 
-A futuristic banking website with quantum-themed design, AI features, and light/dark mode support.
+A futuristic banking website with quantum-themed design, (Mock) AI features, and light/dark mode support.
+
+## Lore?
+Motto: “We don’t own your money. You do.”
+The world’s first hybrid banking system — staffed by both humans and AI.
+It operates on fairness algorithms designed to balance institutional and personal gain.
+Low-interest, high-approval loans; immediate account generation; special programs for students, elders, and new families.
+To the public, it’s a bank.
+To economists, it’s a paradox: a financial empire that refuses to exploit.
 
 ## Project Structure
 
@@ -59,57 +67,6 @@ BankingWebsite/
 - **Smooth Crossfade**: 1s fade transition between videos
 - **Duration-Aware**: Respects each video's individual duration (15s / 10s)
 
-### Pages
-
-#### Home (index.html)
-- Hero section with video background
-- Next-Gen Banking features showcase
-- Global presence statistics
-- Interactive feature cards
-
-#### Vault (wallets.html)
-- Card carousel display
-- Balance information
-- Recent transactions
-- Quick actions
-
-#### Transfers (transactions.html)
-- Transaction dashboard
-- Incoming/Outgoing summaries
-- Transfer history with filters
-- Pagination
-
-#### Services (services.html)
-- Personal banking services
-- Business solutions
-- Special programs (Seniors, New Parents, Education)
-- NOVA AI advisor
-- Quantum Credit System
-
-#### Support (support.html)
-- AI assistant chat option
-- Human expert connection
-- Quick help categories
-- Knowledge base search
-- Global support centers
-
-#### Locations (locations.html)
-- Interactive Leaflet.js map
-- Location search
-- Banking center types
-- Featured locations
-
-#### ℹAbout (about.html)
-- Company mission
-- Journey timeline
-- Leadership team
-- Future vision
-
-#### Legal (privacy.html, terms.html)
-- Privacy policy
-- Terms of service
-- Contact information
-
 ## Technologies Used
 
 - **HTML5**: Semantic markup
@@ -127,13 +84,6 @@ BankingWebsite/
 - **Responsive**: Mobile-first approach (to be expanded)
 - **Progressive Enhancement**: Works without JS, enhanced with it
 
-## Getting Started
-
-1. Ensure all video files are in the `video/` directory
-2. Open `index.html` in a modern browser
-3. Toggle theme using the sun/moon icon in the navbar
-4. Explore all pages via the navigation menu
-
 ## Notes
 
 - Theme preference is saved to localStorage
@@ -141,16 +91,7 @@ BankingWebsite/
 - Leaflet.js CDN required for locations map
 - Font Awesome CDN for icons
 
-## Future Enhancements
-
-- [ ] Mobile responsive breakpoints
-- [ ] Additional animations and micro-interactions
-- [ ] Form validation for support pages
-- [ ] Backend integration ready
-- [ ] PWA capabilities
-- [ ] Performance optimizations
-- [ ] Analytics integration
-
 ---
 
 **Built with 🌙 for the future of banking**
+
