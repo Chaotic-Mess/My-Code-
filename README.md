@@ -1,6 +1,9 @@
 # My Projects Portfolio  
 
 A collection of interactive web and programming projects — showcasing algorithms, simulations, AI systems, and academic work.
+> A curated collection of projects, utilities, and experiments showcasing development across AI, web applications, algorithms, and more.
+
+## [**TABLE OF CONTENTS! - Interactive Portfolio**](https://chaotic-mess.github.io/My-Code-/TableOfContentPreview)
 
 ---
 
