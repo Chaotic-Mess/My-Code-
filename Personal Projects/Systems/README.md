@@ -8,20 +8,18 @@ Algorithmic visualizers and computational systems.
 
 ## Projects
 
-### [Video to ASCII Converter](../VideoToASCII/)
+### [Video to ASCII Converter](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/Systems/VideoToASCII)
 Real-time video-to-ASCII art converter that transforms webcam or video input into dynamic ASCII animations.
 
 **Features:**
 - Real-time video processing
 - Multiple ASCII character sets
 - Adjustable resolution and contrast
-- Webcam and video file support
-
-**[View Live Demo](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/VideoToASCII/)**
+- Webcam and video file support 
 
 ---
 
-### [Pathfinding System](../PathfindingSystem/)
+### [Pathfinding System](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/Systems/PathfindingSystem)
 Interactive visualization of popular pathfinding algorithms with customizable grids and obstacles.
 
 **Algorithms:**
@@ -34,13 +32,11 @@ Interactive visualization of popular pathfinding algorithms with customizable gr
 - Real-time algorithm visualization
 - Custom obstacle placement
 - Performance metrics
-- Step-by-step execution
-
-**[View Live Demo](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/PathfindingSystem/)**
+- Step-by-step execution 
 
 ---
 
-### [Sorting Algorithm Visualizer](../SortingVisualizer/)
+### [Sorting Algorithm Visualizer](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/Systems/SortingVisualizer)
 Visual representation of common sorting algorithms with audio feedback and speed controls.
 
 **Algorithms:**
@@ -57,8 +53,6 @@ Visual representation of common sorting algorithms with audio feedback and speed
 - Adjustable speed and array size
 - Algorithm comparison mode
 
-**[View Live Demo](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/SortingVisualizer/)**
-
 ---
 
 ## Tech Stack
@@ -71,3 +65,4 @@ Visual representation of common sorting algorithms with audio feedback and speed
 ---
 
 **[← Back to Personal Projects](../README.md)** | **[← Back to Main Portfolio](../../README.md)**
+
