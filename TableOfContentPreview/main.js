@@ -464,7 +464,7 @@ document.addEventListener('mousemove', debounce((e) => {
         
         card.style.transform = `perspective(1000px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg) translateY(-5px)`;
     });
-}, 5));
+}, 10));
 
 // Reset card transforms when mouse leaves
 document.addEventListener('mouseleave', () => {
