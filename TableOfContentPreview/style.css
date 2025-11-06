@@ -1,0 +1,512 @@
+/* ===================================
+   Color Palette (from Japanese Landscape)
+   =================================== */
+:root {
+    --color-primary: #765D67;
+    --color-secondary: #6D3C52;
+    --color-accent: #4B2138;
+    --color-dark: #1B0C1A;
+    --color-medium: #2D222F;
+    --color-light: #FADCD5;
+    
+    --gradient-primary: linear-gradient(135deg, var(--color-accent) 0%, var(--color-dark) 100%);
+    --gradient-card: linear-gradient(135deg, rgba(118, 93, 103, 0.1) 0%, rgba(75, 33, 56, 0.1) 100%);
+    
+    --sidebar-width: 280px;
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===================================
+   Reset & Base Styles
+   =================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--color-dark);
+    color: var(--color-light);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ===================================
+   Sidebar Navigation
+   =================================== */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: rgba(27, 12, 26, 0.95);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(118, 93, 103, 0.2);
+    padding: 3rem 2rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-light);
+    letter-spacing: 0.2em;
+    margin-bottom: 4rem;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    list-style: none;
+    flex: 1;
+}
+
+.nav-links li {
+    margin-bottom: 1.5rem;
+}
+
+.nav-link {
+    color: rgba(250, 220, 213, 0.6);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: var(--transition-smooth);
+    display: block;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--color-secondary);
+    transition: var(--transition-smooth);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--color-light);
+}
+
+.nav-link:hover::before,
+.nav-link.active::before {
+    width: 1rem;
+}
+
+.scroll-indicator {
+    margin-top: auto;
+    opacity: 0.6;
+}
+
+.scroll-text {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-light);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.scroll-line {
+    width: 2px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--color-secondary), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* ===================================
+   Main Content Area
+   =================================== */
+.main-content {
+    margin-left: var(--sidebar-width);
+    position: relative;
+    z-index: 1;
+}
+
+.section {
+    min-height: 100vh;
+    padding: 6rem 4rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* ===================================
+   Hero Section
+   =================================== */
+.hero-section {
+    justify-content: center;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    color: var(--color-light);
+}
+
+.title-line {
+    display: block;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fadeInUp 1s ease-out forwards;
+}
+
+.title-line:nth-child(1) { animation-delay: 0.2s; }
+.title-line:nth-child(2) { animation-delay: 0.4s; }
+.title-line:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: rgba(250, 220, 213, 0.7);
+    max-width: 600px;
+    animation: fadeInUp 1s ease-out 0.8s backwards;
+}
+
+/* ===================================
+   Section Headers
+   =================================== */
+.section-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    margin-bottom: 1rem;
+    color: var(--color-light);
+    position: relative;
+    display: inline-block;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--color-secondary);
+}
+
+.section-intro {
+    font-size: 1.2rem;
+    color: rgba(250, 220, 213, 0.7);
+    margin-bottom: 3rem;
+}
+
+/* ===================================
+   Project Grid & Cards
+   =================================== */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.project-card {
+    background: var(--gradient-card);
+    border: 1px solid rgba(118, 93, 103, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-secondary), var(--color-accent));
+    transform: scaleX(0);
+    transition: var(--transition-smooth);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-secondary);
+    box-shadow: 0 10px 40px rgba(118, 93, 103, 0.2);
+}
+
+.project-card:hover::before {
+    transform: scaleX(1);
+}
+
+.project-card.highlight {
+    border-color: var(--color-secondary);
+}
+
+.project-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-light);
+}
+
+.project-card p {
+    color: rgba(250, 220, 213, 0.8);
+    margin-bottom: 1.5rem;
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tag {
+    background: rgba(118, 93, 103, 0.3);
+    color: var(--color-light);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(118, 93, 103, 0.5);
+}
+
+.feature-list {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.feature-list li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    color: rgba(250, 220, 213, 0.8);
+}
+
+.feature-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-secondary);
+}
+
+/* ===================================
+   Project Feature (Large Cards)
+   =================================== */
+.project-feature {
+    margin-top: 3rem;
+}
+
+.project-feature h3 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-light);
+}
+
+.feature-description {
+    font-size: 1.2rem;
+    color: rgba(250, 220, 213, 0.8);
+    margin-bottom: 2rem;
+}
+
+.version-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.version-card {
+    background: var(--gradient-card);
+    border: 1px solid rgba(118, 93, 103, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: var(--transition-smooth);
+}
+
+.version-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-secondary);
+}
+
+.version-number {
+    display: inline-block;
+    background: var(--color-secondary);
+    color: var(--color-light);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.version-card h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-light);
+}
+
+.version-card p {
+    color: rgba(250, 220, 213, 0.8);
+    margin-bottom: 1rem;
+}
+
+/* ===================================
+   Course Grid
+   =================================== */
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.course-card {
+    background: var(--gradient-card);
+    border: 1px solid rgba(118, 93, 103, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: var(--transition-smooth);
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-secondary);
+}
+
+.course-card h3 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-secondary);
+}
+
+.course-info {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(118, 93, 103, 0.3);
+    color: rgba(250, 220, 213, 0.6);
+    font-size: 0.9rem;
+}
+
+/* ===================================
+   3D Model Viewer
+   =================================== */
+.model-viewer {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: calc(100% - var(--sidebar-width));
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#canvas3d {
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+}
+
+/* ===================================
+   Footer
+   =================================== */
+.footer {
+    background: rgba(27, 12, 26, 0.8);
+    border-top: 1px solid rgba(118, 93, 103, 0.2);
+    padding: 3rem 4rem;
+    text-align: center;
+}
+
+.footer p {
+    color: rgba(250, 220, 213, 0.7);
+    margin-bottom: 0.5rem;
+}
+
+.footer-note {
+    font-size: 0.9rem;
+    color: rgba(250, 220, 213, 0.5);
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 0px;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+        transition: var(--transition-smooth);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .model-viewer {
+        width: 100%;
+    }
+    
+    .section {
+        padding: 4rem 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .project-grid,
+    .version-cards,
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+/* ===================================
+   Scroll Animations
+   =================================== */
+.section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
