@@ -10,8 +10,19 @@ class ScrollDriven3DViewer {
         this.position = { x: 0, y: 0, z: 0 };
         this.scale = 1;
         
+        // Toggle between procedural geometry and STL
+        this.useSTL = true;  
+        this.stlPath = 'Simple_Mask.stl';
+        this.modelLoaded = false;
+        
         this.setupCanvas();
-        this.createGeometry();
+        
+        if (this.useSTL) {
+            this.loadSTL(this.stlPath);
+        } else {
+            this.createGeometry();
+        }
+        
         this.animate();
         
         window.addEventListener('resize', () => this.setupCanvas());
@@ -28,6 +39,106 @@ class ScrollDriven3DViewer {
         
         this.centerX = rect.width / 2;
         this.centerY = rect.height / 2;
+    }
+    
+    async loadSTL(path) {
+        try {
+            const response = await fetch(path);
+            const arrayBuffer = await response.arrayBuffer();
+            
+            // Parse binary STL
+            const dataView = new DataView(arrayBuffer);
+            
+            // Skip 80 byte header
+            const triangleCount = dataView.getUint32(80, true);
+            
+            this.vertices = [];
+            this.faces = [];
+            const vertexMap = new Map();
+            let vertexIndex = 0;
+            
+            // Read triangles
+            for (let i = 0; i < triangleCount; i++) {
+                const offset = 84 + i * 50;
+                
+                // Skip normal (12 bytes)
+                // Read 3 vertices
+                for (let j = 0; j < 3; j++) {
+                    const vOffset = offset + 12 + j * 12;
+                    const x = dataView.getFloat32(vOffset, true);
+                    const y = dataView.getFloat32(vOffset + 4, true);
+                    const z = dataView.getFloat32(vOffset + 8, true);
+                    
+                    // Create unique vertex key
+                    const key = `${x.toFixed(6)},${y.toFixed(6)},${z.toFixed(6)}`;
+                    
+                    if (!vertexMap.has(key)) {
+                        this.vertices.push({ x, y, z });
+                        vertexMap.set(key, vertexIndex);
+                        vertexIndex++;
+                    }
+                }
+                
+                // Create face with vertex indices
+                const faceIndices = [];
+                for (let j = 0; j < 3; j++) {
+                    const vOffset = offset + 12 + j * 12;
+                    const x = dataView.getFloat32(vOffset, true);
+                    const y = dataView.getFloat32(vOffset + 4, true);
+                    const z = dataView.getFloat32(vOffset + 8, true);
+                    const key = `${x.toFixed(6)},${y.toFixed(6)},${z.toFixed(6)}`;
+                    faceIndices.push(vertexMap.get(key));
+                }
+                
+                this.faces.push(faceIndices);
+            }
+            
+            // Center and scale the model
+            this.normalizeModel();
+            this.modelLoaded = true;
+            
+            console.log(`STL loaded: ${this.vertices.length} vertices, ${this.faces.length} faces`);
+        } catch (error) {
+            console.error('Error loading STL:', error);
+            console.log('Falling back to procedural geometry');
+            this.createGeometry();
+        }
+    }
+    
+    normalizeModel() {
+        if (this.vertices.length === 0) return;
+        
+        // Find bounding box
+        let minX = Infinity, minY = Infinity, minZ = Infinity;
+        let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
+        
+        this.vertices.forEach(v => {
+            minX = Math.min(minX, v.x);
+            minY = Math.min(minY, v.y);
+            minZ = Math.min(minZ, v.z);
+            maxX = Math.max(maxX, v.x);
+            maxY = Math.max(maxY, v.y);
+            maxZ = Math.max(maxZ, v.z);
+        });
+        
+        // Center the model
+        const centerX = (minX + maxX) / 2;
+        const centerY = (minY + maxY) / 2;
+        const centerZ = (minZ + maxZ) / 2;
+        
+        // Scale to fit ~200 units
+        const sizeX = maxX - minX;
+        const sizeY = maxY - minY;
+        const sizeZ = maxZ - minZ;
+        const maxSize = Math.max(sizeX, sizeY, sizeZ);
+        const scaleFactor = 200 / maxSize;
+        
+        // Apply transformations
+        this.vertices = this.vertices.map(v => ({
+            x: (v.x - centerX) * scaleFactor,
+            y: (v.y - centerY) * scaleFactor,
+            z: (v.z - centerZ) * scaleFactor
+        }));
     }
     
     createGeometry() {
@@ -72,6 +183,8 @@ class ScrollDriven3DViewer {
                 this.faces.push([b, d, c]);
             }
         }
+        
+        this.modelLoaded = true;
     }
     
     updateFromScroll() {
@@ -130,6 +243,12 @@ class ScrollDriven3DViewer {
     
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // Only render if model is loaded
+        if (!this.modelLoaded || this.vertices.length === 0) {
+            requestAnimationFrame(() => this.animate());
+            return;
+        }
         
         // Project all vertices
         const projected = this.vertices.map(v => this.project(v));
@@ -326,7 +445,7 @@ function debounce(func, wait) {
 }
 
 // ===================================
-// Easter Eggs & Interactions
+// Interactions
 // ===================================
 
 // Add subtle parallax to cards
@@ -345,7 +464,7 @@ document.addEventListener('mousemove', debounce((e) => {
         
         card.style.transform = `perspective(1000px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg) translateY(-5px)`;
     });
-}, 10));
+}, 5));
 
 // Reset card transforms when mouse leaves
 document.addEventListener('mouseleave', () => {
