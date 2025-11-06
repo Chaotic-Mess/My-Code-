@@ -250,39 +250,57 @@ class ScrollDriven3DViewer {
             return;
         }
         
-        // Project all vertices
+        // Project all vertices (do this once per frame)
         const projected = this.vertices.map(v => this.project(v));
         
-        // Sort faces by average z depth
-        const sortedFaces = this.faces.map(face => {
-            const avgZ = (projected[face[0]].z + projected[face[1]].z + projected[face[2]].z) / 3;
-            return { face, avgZ };
-        }).sort((a, b) => a.avgZ - b.avgZ);
-        
-        // Draw faces
-        sortedFaces.forEach(({ face, avgZ }) => {
+        // Pre-calculate face data with z-depth
+        const faceData = new Array(this.faces.length);
+        for (let i = 0; i < this.faces.length; i++) {
+            const face = this.faces[i];
             const p1 = projected[face[0]];
             const p2 = projected[face[1]];
             const p3 = projected[face[2]];
+            const avgZ = (p1.z + p2.z + p3.z) / 3;
             
+            // Backface culling - skip faces facing away
+            const dx1 = p2.x - p1.x;
+            const dy1 = p2.y - p1.y;
+            const dx2 = p3.x - p1.x;
+            const dy2 = p3.y - p1.y;
+            const crossZ = dx1 * dy2 - dy1 * dx2;
+            
+            if (crossZ > 0) { // Only render front-facing triangles
+                faceData[i] = { p1, p2, p3, avgZ };
+            }
+        }
+        
+        // Filter out null entries and sort by Z
+        const visibleFaces = faceData.filter(f => f !== undefined).sort((a, b) => a.avgZ - b.avgZ);
+        
+        // Batch render using Path2D for better performance
+        visibleFaces.forEach(({ p1, p2, p3, avgZ }) => {
             // Calculate lighting based on depth
             const brightness = Math.max(0, Math.min(1, (avgZ + 200) / 400));
             const alpha = 0.6 * brightness;
             
+            // Use colors from palette
+            const hue = 330; // Pink/purple range
+            this.ctx.fillStyle = `hsla(${hue}, 30%, ${30 + brightness * 40}%, ${alpha})`;
+            
+            // Draw triangle
             this.ctx.beginPath();
             this.ctx.moveTo(p1.x, p1.y);
             this.ctx.lineTo(p2.x, p2.y);
             this.ctx.lineTo(p3.x, p3.y);
             this.ctx.closePath();
-            
-            // Use colors from palette
-            const hue = 330; // Pink/purple range
-            this.ctx.fillStyle = `hsla(${hue}, 30%, ${30 + brightness * 40}%, ${alpha})`;
             this.ctx.fill();
             
-            this.ctx.strokeStyle = `hsla(${hue}, 40%, ${40 + brightness * 30}%, ${alpha * 0.5})`;
-            this.ctx.lineWidth = 0.5;
-            this.ctx.stroke();
+            // Only draw strokes on every Nth face to reduce overhead
+            if (visibleFaces.length < 1000 || Math.random() < 0.3) {
+                this.ctx.strokeStyle = `hsla(${hue}, 40%, ${40 + brightness * 30}%, ${alpha * 0.5})`;
+                this.ctx.lineWidth = 0.5;
+                this.ctx.stroke();
+            }
         });
         
         requestAnimationFrame(() => this.animate());
