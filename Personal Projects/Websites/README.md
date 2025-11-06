@@ -8,7 +8,7 @@ Interactive web applications.
 
 ## Projects
 
-### [Aeon](./Aeon/)
+### [Aeon](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/Websites/Aeon)
 *"Visibility is weakness. Legacy is digital. You were never private."*
 
 A cinematic, interactive experience showcasing 37 elite operators for hire. This isn't a website; it's a digital manifestation of power in the shadows.
@@ -18,11 +18,9 @@ A cinematic, interactive experience showcasing 37 elite operators for hire. This
 - Responsive design
 - Easy to customize
 
-**[View Live Demo](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/Websites/Aeon/)**
-
 ---
 
-### [LUNA Banking](./BankingWebsite/)
+### [LUNA Banking](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/Websites/BankingWebsite)
 *"We don’t own your money. You do."*
 
 The world’s first hybrid banking system — staffed by both humans and AI, operating on fairness algorithms designed to balance institutional and personal gain.
@@ -31,8 +29,6 @@ The world’s first hybrid banking system — staffed by both humans and AI, ope
 - Professional design
 - Interactive elements
 - Responsive layout
-
-**[View Live Demo](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/Websites/BankingWebsite/)**
 
 ---
 
@@ -45,3 +41,4 @@ The world’s first hybrid banking system — staffed by both humans and AI, ope
 ---
 
 **[← Back to Personal Projects](../README.md)** | **[← Back to Main Portfolio](../../README.md)**
+
