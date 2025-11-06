@@ -8,20 +8,18 @@ Creative visual projects and interactive demonstrations.
 
 ## Projects
 
-### [3D Solar System](../3D_SolarSystem/)
+### [3D Solar System](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/Showcase/3D_SolarSystem)
 An interactive 3D simulation of our solar system with realistic planetary motion.
 
 **Features:**
 - Real-time 3D rendering with Three.js
 - Accurate orbital mechanics
 - Interactive camera controls
-- Planet information on hover
-
-**[View Live Demo](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/3D_SolarSystem/)**
+- Planet information on hover 
 
 ---
 
-### [Farm Drone Game](../FarmDroneGame/)
+### [Farm Drone Game](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/Showcase/FarmDroneGame)
 A puzzle game where you program a drone using a custom scripting language to automate farm tasks.
 
 **Features:**
@@ -29,8 +27,6 @@ A puzzle game where you program a drone using a custom scripting language to aut
 - Level-based progression system
 - Visual feedback and animations
 - Educational gameplay mechanics
-
-**[View Live Demo](https://chaotic-mess.github.io/My-Code-/Personal%20Projects/FarmDroneGame/)**
 
 ---
 
@@ -44,3 +40,4 @@ A puzzle game where you program a drone using a custom scripting language to aut
 ---
 
 **[← Back to Personal Projects](../README.md)** | **[← Back to Main Portfolio](../../README.md)**
+
