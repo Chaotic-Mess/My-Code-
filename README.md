@@ -5,9 +5,7 @@ A collection of interactive web and programming projects — showcasing algorith
 
 ## [**TABLE OF CONTENTS! - Interactive Portfolio**](https://chaotic-mess.github.io/My-Code-/TableOfContentPreview)
 
----
-
-## Quick Navigation
+OR
 
 ### [Helpful Utilities](./Helpful%20Utilities/README.md)
 Browser-powered tools for productivity and downloads — YouTube downloader, GitHub directory downloader, and Brightspace scraper.
