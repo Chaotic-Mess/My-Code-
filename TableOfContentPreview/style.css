@@ -170,6 +170,98 @@ html {
     justify-content: center;
 }
 
+/* VS Code Banner */
+.vscode-banner {
+    margin-top: 3rem;
+    padding: 1rem;
+    background: rgba(30, 30, 30, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    width: fit-content;
+    transition: var(--transition-smooth);
+}
+
+.vscode-banner:hover {
+    transform: translateY(-5px);
+    background: rgba(30, 30, 30, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.vscode-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.vscode-logo {
+    width: 40px;
+    height: 40px;
+}
+
+.vscode-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9rem;
+}
+
+.vscode-text span {
+    opacity: 0.7;
+}
+
+/* Technology Banner */
+.tech-banner {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(27, 12, 26, 0.8);
+    border: 1px solid rgba(118, 93, 103, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    transition: var(--transition-smooth);
+}
+
+.tech-banner:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-secondary);
+    box-shadow: 0 10px 40px rgba(118, 93, 103, 0.2);
+}
+
+.tech-icons {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.tech-category {
+    flex: 1;
+    min-width: 200px;
+}
+
+.tech-category h3 {
+    font-size: 1.2rem;
+    color: var(--color-light);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.icon-group {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.icon-group img {
+    width: 40px;
+    height: 40px;
+    transition: var(--transition-smooth);
+    filter: grayscale(20%) opacity(0.8);
+}
+
+.icon-group img:hover {
+    transform: translateY(-5px);
+    filter: grayscale(0%) opacity(1);
+}
+
 .hero-title {
     font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 300;
