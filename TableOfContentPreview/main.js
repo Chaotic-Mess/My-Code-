@@ -15,6 +15,11 @@ class ScrollDriven3DViewer {
         this.stlPath = 'Simple_Mask.stl';
         this.modelLoaded = false;
         
+        // STL orientation adjustments
+        this.flipX = false;  // Flip horizontally
+        this.flipY = true;   // Flip vertically (upside down)
+        this.flipZ = false;  // Flip depth
+        
         this.setupCanvas();
         
         if (this.useSTL) {
@@ -135,9 +140,9 @@ class ScrollDriven3DViewer {
         
         // Apply transformations
         this.vertices = this.vertices.map(v => ({
-            x: (v.x - centerX) * scaleFactor,
-            y: (v.y - centerY) * scaleFactor,
-            z: (v.z - centerZ) * scaleFactor
+            x: (v.x - centerX) * scaleFactor * (this.flipX ? -1 : 1),
+            y: (v.y - centerY) * scaleFactor * (this.flipY ? -1 : 1),
+            z: (v.z - centerZ) * scaleFactor * (this.flipZ ? -1 : 1)
         }));
     }
     
