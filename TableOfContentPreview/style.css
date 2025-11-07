@@ -226,15 +226,14 @@ html {
     box-shadow: 0 10px 40px rgba(118, 93, 103, 0.2);
 }
 
-.tech-icons {
+.tech-stack {
     display: flex;
-    gap: 3rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .tech-category {
     flex: 1;
-    min-width: 200px;
 }
 
 .tech-category h3 {
@@ -242,24 +241,36 @@ html {
     color: var(--color-light);
     margin-bottom: 1rem;
     opacity: 0.8;
+    position: relative;
 }
 
-.icon-group {
+.tech-category h3::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background: var(--color-secondary);
+}
+
+.badge-group {
     display: flex;
-    gap: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     align-items: center;
 }
 
-.icon-group img {
-    width: 40px;
-    height: 40px;
+.badge-group img {
+    height: 28px;
     transition: var(--transition-smooth);
-    filter: grayscale(20%) opacity(0.8);
+    filter: brightness(0.9);
 }
 
-.icon-group img:hover {
-    transform: translateY(-5px);
-    filter: grayscale(0%) opacity(1);
+.badge-group img:hover {
+    transform: translateY(-2px);
+    filter: brightness(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .hero-title {
