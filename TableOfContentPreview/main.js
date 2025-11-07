@@ -449,6 +449,42 @@ document.addEventListener('DOMContentLoaded', () => {
             lastScrollY = currentScrollY;
         }
     }, { passive: true });
+
+    // Inject project action buttons into cards
+    function addCardButtons() {
+        const cards = document.querySelectorAll('.project-card, .version-card, .course-card');
+
+        cards.forEach(card => {
+            // Avoid duplicating
+            if (card.querySelector('.card-actions')) return;
+
+            const actions = document.createElement('div');
+            actions.className = 'card-actions';
+
+            const fileLink = document.createElement('a');
+            fileLink.className = 'btn btn-blue';
+            // Use data-files or fallback to '#'
+            fileLink.href = card.dataset.files || '#';
+            fileLink.target = '_blank';
+            fileLink.rel = 'noopener noreferrer';
+            fileLink.textContent = 'Go to Project Files';
+
+            const siteLink = document.createElement('a');
+            siteLink.className = 'btn btn-outline';
+            // Use data-website or fallback to '#'
+            siteLink.href = card.dataset.website || '#';
+            siteLink.target = '_blank';
+            siteLink.rel = 'noopener noreferrer';
+            siteLink.textContent = 'Go to Project Website';
+
+            actions.appendChild(fileLink);
+            actions.appendChild(siteLink);
+            card.appendChild(actions);
+        });
+    }
+
+    // Run once on load to inject buttons
+    addCardButtons();
 });
 
 // ===================================
@@ -487,7 +523,7 @@ document.addEventListener('mousemove', debounce((e) => {
         
         card.style.transform = `perspective(1000px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg) translateY(-5px)`;
     });
-}, 10));
+}, 25));
 
 // Reset card transforms when mouse leaves
 document.addEventListener('mouseleave', () => {
