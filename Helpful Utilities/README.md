@@ -12,6 +12,7 @@
 | **YouTube Downloader** | Download videos & audio in any quality | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Youtube_Downloader) | ![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white) | 
 | **Directory Downloader** | Grab entire GitHub directories as ZIP | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Directory_Downloader) | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
 | **Brightspace Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper) | ![Brightspace](https://img.shields.io/badge/Brightspace-F36C21?style=for-the-badge) |
+| **Moodle Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Moodle_Scraper) | ![Moodle](https://img.shields.io/badge/Moodle-F36C21?style=for-the-badge) |
 
 ---
 
