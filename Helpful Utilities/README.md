@@ -1,4 +1,4 @@
-# 🛠️ Helpful Utilities
+# Helpful Utilities
 
 > **Your browser-powered toolkit for productivity, downloads, and automation**  
 > No installs. No tracking. No BS. Just clean, modern web tools that actually work.
