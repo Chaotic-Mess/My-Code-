@@ -110,6 +110,8 @@
   S("Scanning course structure…");
   
   const courseName = san(document.querySelector('.page-header-headings h1')?.textContent || 
+                         document.querySelector('h1.h2')?.textContent || 
+                         document.querySelector('.page-context-header h1')?.textContent ||
                          document.querySelector('h1')?.textContent || 
                          `Course_${courseId}`);
   
@@ -118,25 +120,83 @@
 
   const sections = [];
   
-  // Moodle typically uses li.section for each section/topic
-  document.querySelectorAll('li.section[id^="section-"]').forEach(sec => {
-    const sectionId = sec.id;
-    const sectionTitle = san(sec.querySelector('.sectionname')?.textContent?.trim() || 
-                            sec.querySelector('h3')?.textContent?.trim() || 
-                            'Untitled Section');
+  // Modern Moodle can use various selectors for sections
+  const sectionSelectors = [
+    'li.section[id^="section-"]',           // Classic format
+    'li[data-for="section"]',               // Data attribute format
+    '.course-section',                      // Generic course section
+    'div[role="region"][aria-label*="opic"]' // Accessibility-based
+  ];
+  
+  let sectionElements = [];
+  for (const selector of sectionSelectors) {
+    sectionElements = [...document.querySelectorAll(selector)];
+    if (sectionElements.length > 0) {
+      log(`Using selector: ${selector}`);
+      break;
+    }
+  }
+  
+  if (sectionElements.length === 0) {
+    log("No sections found with standard selectors, scanning entire page...");
+    // Fallback: scan the entire main content area
+    const mainContent = document.querySelector('#region-main, .course-content, main, [role="main"]');
+    if (mainContent) {
+      sectionElements = [mainContent];
+    }
+  }
+  
+  sectionElements.forEach((sec, idx) => {
+    const sectionTitle = san(
+      sec.querySelector('.sectionname')?.textContent?.trim() || 
+      sec.querySelector('h3')?.textContent?.trim() || 
+      sec.querySelector('h2')?.textContent?.trim() ||
+      sec.querySelector('[data-for="section_title"]')?.textContent?.trim() ||
+      sec.getAttribute('aria-label') ||
+      `Section_${idx + 1}`
+    );
     
     const activities = [];
     
-    // Find all activity links within this section
-    sec.querySelectorAll('.activity, .activityinstance').forEach(act => {
-      const link = act.querySelector('a');
-      if (!link) return;
-      
+    // Multiple activity selectors for different Moodle versions
+    const activitySelectors = [
+      '.activity',
+      '.activityinstance',
+      'li.modtype_resource',
+      'li[class*="modtype_"]',
+      '.aalink',
+      'a[href*="/mod/"]'
+    ];
+    
+    const activityElements = new Set();
+    
+    activitySelectors.forEach(selector => {
+      sec.querySelectorAll(selector).forEach(el => {
+        // Find the actual link element
+        const link = el.tagName === 'A' ? el : el.querySelector('a');
+        if (link) activityElements.add(link);
+      });
+    });
+    
+    activityElements.forEach(link => {
       const href = abs(link.getAttribute('href'));
       if (!href) return;
       
-      const title = san(link.textContent?.trim() || link.getAttribute('title')?.trim() || 'Resource');
-      const actType = act.className.match(/modtype_(\w+)/)?.[1] || 'resource';
+      // Skip course/section navigation links
+      if (/\/course\/(view|edit)\.php/i.test(href) || href.includes('#section-')) return;
+      
+      const title = san(
+        link.querySelector('.instancename')?.textContent?.trim() ||
+        link.textContent?.trim() || 
+        link.getAttribute('title')?.trim() || 
+        link.getAttribute('aria-label')?.trim() ||
+        'Resource'
+      );
+      
+      // Try to determine activity type from URL or class
+      const actType = href.match(/\/mod\/(\w+)\//)?.[1] || 
+                     link.closest('[class*="modtype_"]')?.className.match(/modtype_(\w+)/)?.[1] ||
+                     'resource';
       
       activities.push({
         title,
@@ -150,6 +210,7 @@
         title: sectionTitle,
         activities
       });
+      log(`Section "${sectionTitle}": ${activities.length} activities`);
     }
   });
 
@@ -169,18 +230,38 @@
       const html = await res.text();
       const d = new DOMParser().parseFromString(html, "text/html");
       
-      // Look for all links to files
-      const nodes = d.querySelectorAll("a[href], source[src], iframe[src], embed[src], object[data], video source");
+      // Look for all links to files - more comprehensive search
+      const nodes = d.querySelectorAll("a[href], source[src], iframe[src], embed[src], object[data], video source, video[src], audio[src]");
       
       for (const n of nodes) {
         const raw = abs(n.getAttribute("href") || n.getAttribute("src") || n.getAttribute("data") || "");
         if (!raw) continue;
         
         if (looksFile(raw) || /\/pluginfile\.php\//i.test(raw)) {
-          const title = san((n.textContent || n.title || "").trim().slice(0, 80) || "file");
-          results.push({ url: raw, title });
+          // Better title extraction
+          let title = san((n.textContent || "").trim().slice(0, 80));
+          if (!title || title.length < 3) {
+            title = san((n.getAttribute('title') || n.getAttribute('alt') || n.getAttribute('aria-label') || "").trim());
+          }
+          if (!title || title.length < 3) {
+            // Try to extract filename from URL
+            const urlMatch = raw.match(/\/([^/?]+\.[a-z0-9]{2,6})(?:\?|$)/i);
+            title = urlMatch ? urlMatch[1] : "file";
+          }
+          results.push({ url: raw, title: san(title) });
         }
       }
+      
+      // Also look for Moodle-specific resource containers
+      d.querySelectorAll('.resourcecontent, .fileuploadsubmission').forEach(container => {
+        container.querySelectorAll('a[href*="pluginfile"]').forEach(link => {
+          const href = abs(link.getAttribute('href'));
+          if (href && looksFile(href)) {
+            const title = san(link.textContent?.trim() || "file");
+            results.push({ url: href, title });
+          }
+        });
+      });
       
       return results;
     } catch (e) {
@@ -292,30 +373,57 @@
         for (const activity of section.activities) {
           const filesToDownload = [];
           
-          // Check if it's a direct file link
-          if (looksFile(activity.url)) {
+          // Check if it's a direct pluginfile link
+          if (/\/pluginfile\.php\//i.test(activity.url) || looksFile(activity.url)) {
             filesToDownload.push({ url: activity.url, title: activity.title });
           }
           // Check if it's a resource/folder page
-          else if (/\/mod\/(resource|folder)\/view\.php/i.test(activity.url)) {
-            // Try to extract the actual file URL
-            const res = await fetch(activity.url, { credentials: "same-origin" });
-            if (res.ok) {
-              const html = await res.text();
-              const d = new DOMParser().parseFromString(html, "text/html");
-              
-              // Look for pluginfile links or download buttons
-              const fileLinks = [...d.querySelectorAll('a[href*="pluginfile.php"], a.btn-primary[href]')];
-              for (const link of fileLinks) {
-                const href = abs(link.getAttribute('href'));
-                if (href && looksFile(href)) {
-                  filesToDownload.push({ url: href, title: activity.title });
+          else if (/\/mod\/(resource|folder|assign|page|book)\/view\.php/i.test(activity.url)) {
+            log(`Fetching: ${activity.url}`);
+            try {
+              const res = await fetch(activity.url, { credentials: "same-origin" });
+              if (res.ok) {
+                const html = await res.text();
+                const d = new DOMParser().parseFromString(html, "text/html");
+                
+                // Look for various file link patterns in Moodle
+                const selectors = [
+                  'a[href*="pluginfile.php"]',
+                  '.resourceworkaround a',
+                  '.resourcecontent a',
+                  'object[data*="pluginfile"]',
+                  'embed[src*="pluginfile"]',
+                  'video source[src*="pluginfile"]',
+                  'audio source[src*="pluginfile"]'
+                ];
+                
+                const foundLinks = new Set();
+                
+                selectors.forEach(sel => {
+                  d.querySelectorAll(sel).forEach(el => {
+                    const href = abs(el.getAttribute('href') || el.getAttribute('src') || el.getAttribute('data'));
+                    if (href && (looksFile(href) || /pluginfile\.php/i.test(href))) {
+                      foundLinks.add(href);
+                    }
+                  });
+                });
+                
+                if (foundLinks.size > 0) {
+                  foundLinks.forEach(href => {
+                    filesToDownload.push({ url: href, title: activity.title });
+                  });
+                } else if (doDeep) {
+                  // Deep scan if no direct links found
+                  const embedded = await deepScanPage(activity.url);
+                  filesToDownload.push(...embedded);
                 }
               }
+            } catch (e) {
+              log(`Error fetching ${activity.url}: ${e.message}`);
             }
           }
-          // Deep scan for embedded files
-          else if (doDeep && isModPage(activity.url)) {
+          // Deep scan for other module types if enabled
+          else if (doDeep) {
             log(`Deep scanning: ${activity.url}`);
             const embedded = await deepScanPage(activity.url);
             filesToDownload.push(...embedded);
@@ -326,12 +434,13 @@
             for (const file of filesToDownload) {
               const success = await saveLink(sectionDir, file.title, file.url, allowSet);
               if (success) filesDownloaded++;
-              await sleep(100);
+              await sleep(150); // Slightly longer delay to be respectful
             }
           } else {
             // Create shortcut if no files found
+            log(`No files found for: ${activity.title}`);
             zip.file(`${sectionDir}${san(activity.title)}.url`, `[InternetShortcut]\nURL=${activity.url}\n`);
-            skipped.push({ title: activity.title, url: activity.url, type: "Shortcut", reason: "Not a file link" });
+            skipped.push({ title: activity.title, url: activity.url, type: "Shortcut", reason: "No downloadable files found" });
           }
           
           done++;
