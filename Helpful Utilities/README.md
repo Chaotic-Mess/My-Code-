@@ -13,6 +13,48 @@
 | **Directory Downloader** | Grab entire GitHub directories as ZIP | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Directory_Downloader) | ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
 | **Brightspace Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper) | ![Brightspace](https://img.shields.io/badge/Brightspace-F36C21?style=for-the-badge) |
 | **Moodle Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Moodle_Scraper) | ![Moodle](https://img.shields.io/badge/Moodle-F36C21?style=for-the-badge) |
+| **Storage Scanner** | Analyze disk usage and find space hogs | [Download Tool](https://github.com/chaotic-mess/My-Code-/tree/main/ComputerStorageScanner) | ![Storage](https://img.shields.io/badge/Storage-10B981?style=for-the-badge) |
+
+---
+
+# ***Storage Scanner***
+
+**Beautiful, interactive tool to analyze your computer's storage and identify the largest folders.**
+
+**[Download it here](https://github.com/chaotic-mess/My-Code-/tree/main/ComputerStorageScanner)**
+
+### Features
+
+- **Zero dependencies** — Pure Python, no pip installs required
+- **Interactive web interface** — Modern dark theme with live folder navigation
+- **Smart optimization** — Automatically eliminates redundant parent/child scans
+- **Configurable depth** — Control how deep to search (1-10 levels)
+- **Real-time progress** — Live terminal showing scan status
+- **Detailed reports** — Beautiful HTML analysis of top 10 heaviest folders
+- **Microsoft detection** — Identifies system folders with safety warnings
+- **Read-only** — Never modifies or deletes anything
+
+### How to Use
+
+1. Download and run `storage_scanner.py`
+2. Browser opens automatically to folder selection interface
+3. Check boxes next to folders you want to analyze
+4. Adjust scan depth (lower = faster, higher = more granular)
+5. Click "Scan Selected Folders"
+6. Watch live terminal as scan progresses
+7. Report opens automatically with top 10 results
+
+### Under the Hood
+
+Built with Python's standard library only — uses `http.server` for the web interface and `os.walk()` for directory traversal. The frontend polls the backend every 500ms for progress updates. All path optimization happens client-side before scanning starts.
+
+### Pro Tips
+
+- Select specific folders instead of entire drives for faster results
+- Reduce depth to 2-3 for quick overview scans
+- Microsoft-tagged folders show warnings before deletion
+- Clickable folder links open directly in your file explorer
+- Smart path optimization prevents duplicate scanning
 
 ---
 
@@ -145,6 +187,3 @@ No ads. No paywalls. No data collection. Just tools that work.
 <div align="center">
 
 </div>
----
-
-
