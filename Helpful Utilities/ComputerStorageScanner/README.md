@@ -2,8 +2,6 @@
 
 A beautiful, interactive storage analysis tool that helps you identify the largest folders on your computer. Built with pure Python (no third-party dependencies) and a modern web interface.
 
-![Storage Scanner Interface](https://via.placeholder.com/800x450/0a0a0f/34d399?text=Storage+Scanner+Interface)
-
 ## Features
 
 - **Zero Dependencies**: Pure Python implementation using only standard library modules
@@ -226,3 +224,4 @@ This project is open source and available under the MIT License.
 - Interface design inspired by modern dark-themed web applications
 - Built with Python's robust standard library
 - No external dependencies for maximum portability
+
