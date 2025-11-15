@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storage Report — Top 10 Heaviest Folders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding: 40px 20px;
+        }
+        
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .shadow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3), transparent);
+            top: -10%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+        
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(15, 23, 42, 0.6), transparent);
+            bottom: -10%;
+            right: -5%;
+            animation-delay: 2s;
+        }
+        
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.3), transparent);
+            top: 50%;
+            right: 10%;
+            animation-delay: 4s;
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            animation: fadeIn 1s ease-out;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 0%, #34d399 50%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 0 80px rgba(16, 185, 129, 0.5);
+        }
+        
+        p.footer {
+            text-align: center;
+            font-size: 0.95em;
+            color: #6b7280;
+            margin-top: 40px;
+            letter-spacing: 0.05em;
+            animation: fadeIn 1s ease-out 0.5s backwards;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            animation: fadeIn 1s ease-out 0.3s backwards;
+        }
+        
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(16, 185, 129, 0.1);
+        }
+        
+        th {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            font-weight: 700;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        tr {
+            transition: all 0.2s;
+        }
+        
+        tr:hover {
+            background: rgba(16, 185, 129, 0.05);
+        }
+        
+        td {
+            color: #e5e7eb;
+        }
+        
+        a {
+            color: #34d399;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        a:hover {
+            color: #10b981;
+            text-decoration: underline;
+        }
+
+        a::after {
+            content: '↗';
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+        
+        .banner {
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.8em;
+            font-weight: 700;
+            margin-right: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+        }
+        
+        td:nth-child(1) { 
+            width: 5%; 
+            font-weight: 700; 
+            text-align: center; 
+            color: #10b981;
+            font-size: 1.1em;
+        }
+        td:nth-child(2) { 
+            width: 40%; 
+            font-family: ui-monospace, monospace;
+            font-size: 0.9em;
+        }
+        td:nth-child(3) { 
+            width: 15%; 
+            font-weight: 700;
+            color: #34d399;
+        }
+        td:nth-child(4) { 
+            width: 40%; 
+            font-size: 0.9em;
+            color: #9ca3af;
+        }
+
+        strong {
+            color: #ef4444;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            .container {
+                padding: 25px 20px;
+            }
+            th, td {
+                padding: 12px 10px;
+                font-size: 0.85em;
+            }
+            td:nth-child(2) {
+                font-size: 0.75em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-layer">
+        <div class="shadow-orb orb-1"></div>
+        <div class="shadow-orb orb-2"></div>
+        <div class="shadow-orb orb-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+    
+    <div class="container">
+        <h1>TOP 10 HEAVIEST FOLDERS</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Folder Path</th>
+                    <th>Size</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{report_rows}}
+            </tbody>
+        </table>
+        <p class="footer">Report generated on: {{generation_date}} • Storage Scanner v1.0</p>
+    </div>
+</body>
+</html>
