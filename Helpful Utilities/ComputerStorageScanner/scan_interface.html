@@ -467,7 +467,7 @@
         <div id="status-bar">Loading drives...</div>
         <div id="depth-control">
             <label for="max-depth">Maximum Folder Depth:</label>
-            <input type="number" id="max-depth" value="3" min="1" max="10">
+            <input type="number" id="max-depth" value="1" min="1" max="15">
             <button id="reload-btn">Reload with New Depth</button>
             <span style="margin-left: 15px; color: #7f8c8d; font-size: 0.9em;">Higher depth = longer load time</span>
         </div>
@@ -757,16 +757,31 @@
                     statusDiv.style.display = 'block';
 
                     // Poll for progress updates
+                    let lastProgress = '';
                     const progressInterval = setInterval(() => {
-                        fetch('/progress')
+                        fetch('/progress?' + Date.now())
                             .then(res => res.json())
                             .then(progress => {
                                 if (progress.current && progress.total) {
-                                    addTerminalLine(`Processing: ${progress.current}/${progress.total} - ${progress.folder}`);
+                                    const progressText = `Processing: ${progress.current}/${progress.total} - ${progress.folder}`;
+                                    // Only add if it's different from the last one
+                                    if (progressText !== lastProgress) {
+                                        addTerminalLine(progressText);
+                                        lastProgress = progressText;
+                                    }
+                                    
+                                    // Check if scan is complete
+                                    if (progress.folder === 'Complete' && progress.current === progress.total) {
+                                        clearInterval(progressInterval);
+                                        addTerminalLine('Scan complete! Generating report...', 'info');
+                                        addTerminalLine('Report saved: storage_report.html', 'info');
+                                        addTerminalLine('Opening report in browser...', 'info');
+                                        statusDiv.textContent = "Scan complete! Report has been generated and opened in a new tab.";
+                                    }
                                 }
                             })
                             .catch(() => { });
-                    }, 500);
+                    }, 200);
 
                     fetch('/scan', {
                         method: 'POST',
@@ -777,14 +792,12 @@
                     })
                         .then(response => response.json())
                         .then(data => {
-                            clearInterval(progressInterval);
-                            if (data.status === 'success') {
-                                addTerminalLine('Scan complete! Generating report...', 'info');
-                                addTerminalLine(`Report saved: ${data.report}`, 'info');
-                                addTerminalLine('Opening report in browser...', 'info');
-                                statusDiv.textContent = `Scan complete! Report '${data.report}' has been generated and opened in a new tab. You can now close this window.`;
+                            if (data.status === 'started') {
+                                // Scan started successfully, progress polling will handle completion
+                                console.log('Scan started in background');
                             } else {
-                                addTerminalLine('ERROR: Scan failed', 'error');
+                                clearInterval(progressInterval);
+                                addTerminalLine('ERROR: Scan failed to start', 'error');
                                 statusDiv.textContent = 'An error occurred during the scan.';
                                 scanBtn.disabled = false;
                             }
