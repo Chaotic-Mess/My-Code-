@@ -142,6 +142,9 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
                 progress_data = scan_progress.copy()
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
+            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            self.send_header('Pragma', 'no-cache')
+            self.send_header('Expires', '0')
             self.end_headers()
             self.wfile.write(json.dumps(progress_data).encode('utf-8'))
             return
@@ -156,45 +159,58 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
 
             print(f"Received scan request for: {scan_paths}")
 
-            all_folders = []
-            for path in scan_paths:
-                print(f"Scanning subdirectories of {path}...")
-                try:
-                    for entry in os.scandir(path):
-                        if entry.is_dir():
-                            all_folders.append(entry.path)
-                except OSError as e:
-                    print(f"Could not scan {path}: {e}")
-
-            folder_sizes = []
-            # Simple progress for terminal
-            total_folders = len(all_folders)
-            with progress_lock:
-                scan_progress['total'] = total_folders
-                scan_progress['current'] = 0
-            
-            for i, folder in enumerate(all_folders):
-                with progress_lock:
-                    scan_progress['current'] = i + 1
-                    scan_progress['folder'] = folder
-                
-                print(f"Calculating size for: {folder} ({i+1}/{total_folders})")
-                size = get_folder_size(folder)
-                if size > 0:
-                    folder_sizes.append((size, folder))
-
-            print("\nScan complete. Sorting results...")
-            folder_sizes.sort(key=lambda x: x[0], reverse=True)
-            top_10 = folder_sizes[:10]
-
-            print("Generating HTML report...")
-            generate_html_report(top_10)
-            
-            self.send_response(200)
+            # Send immediate response and run scan in background
+            self.send_response(202)  # 202 Accepted
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            self.wfile.write(json.dumps({'status': 'success', 'report': 'storage_report.html'}).encode('utf-8'))
-            print(f"Report 'storage_report.html' has been generated and opened.")
+            self.wfile.write(json.dumps({'status': 'started'}).encode('utf-8'))
+
+            # Run scan in a separate thread so progress endpoint can respond
+            def run_scan():
+                all_folders = []
+                for path in scan_paths:
+                    print(f"Scanning subdirectories of {path}...")
+                    try:
+                        for entry in os.scandir(path):
+                            if entry.is_dir():
+                                all_folders.append(entry.path)
+                    except OSError as e:
+                        print(f"Could not scan {path}: {e}")
+
+                folder_sizes = []
+                total_folders = len(all_folders)
+                with progress_lock:
+                    scan_progress['total'] = total_folders
+                    scan_progress['current'] = 0
+                    scan_progress['folder'] = ''
+                
+                for i, folder in enumerate(all_folders):
+                    with progress_lock:
+                        scan_progress['current'] = i + 1
+                        scan_progress['folder'] = folder
+                    
+                    print(f"Calculating size for: {folder} ({i+1}/{total_folders})")
+                    size = get_folder_size(folder)
+                    if size > 0:
+                        folder_sizes.append((size, folder))
+
+                print("\nScan complete. Sorting results...")
+                folder_sizes.sort(key=lambda x: x[0], reverse=True)
+                top_10 = folder_sizes[:10]
+
+                print("Generating HTML report...")
+                generate_html_report(top_10)
+                
+                # Mark scan as complete
+                with progress_lock:
+                    scan_progress['current'] = total_folders
+                    scan_progress['total'] = total_folders
+                    scan_progress['folder'] = 'Complete'
+                
+                print(f"Report 'storage_report.html' has been generated and opened.")
+
+            scan_thread = threading.Thread(target=run_scan, daemon=True)
+            scan_thread.start()
             return
 
 def main():
