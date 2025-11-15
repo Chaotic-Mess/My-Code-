@@ -506,10 +506,7 @@ function debounce(func, wait) {
 
 // Add subtle parallax to cards
 document.addEventListener('mousemove', debounce((e) => {
-    const cards = document.querySelectorAll('.project-card, .version-card, .course-card');
-    const mouseX = e.clientX / window.innerWidth - 0.5;
-    const mouseY = e.clientY / window.innerHeight - 0.5;
-    
+    const cards = document.querySelectorAll('.project-card, .version-card, .course-card'); 
     cards.forEach(card => {
         const rect = card.getBoundingClientRect();
         const cardX = rect.left + rect.width / 2;
@@ -520,7 +517,7 @@ document.addEventListener('mousemove', debounce((e) => {
         
         card.style.transform = `perspective(1000px) rotateY(${deltaX}deg) rotateX(${-deltaY}deg) translateY(-5px)`;
     });
-}, 5));
+}, 50));
 
 // Reset card transforms when mouse leaves
 document.addEventListener('mouseleave', () => {
