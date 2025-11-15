@@ -18,24 +18,24 @@ A beautiful, interactive storage analysis tool that helps you identify the large
 ### Selection Interface
 The scanner presents an interactive tree view of your drives and folders. Expand any directory to see its contents, select multiple folders, and configure scan depth.
 
-![Folder Selection](https://via.placeholder.com/800x450/0a0a0f/34d399?text=Folder+Selection+View)
+![Folder Selection](https://github.com/Chaotic-Mess/My-Code-/blob/main/Helpful%20Utilities/ComputerStorageScanner/demoImages/Startimage.png)
 
 ### Live Scanning
 Watch real-time progress as the scanner analyzes your storage. The terminal display shows which folders are being processed.
 
-![Scanning Progress](https://via.placeholder.com/800x450/0a0a0f/10b981?text=Live+Scanning+Progress)
+![Scanning Progress](https://github.com/Chaotic-Mess/My-Code-/blob/main/Helpful%20Utilities/ComputerStorageScanner/demoImages/Scanimage.png)
 
 ### Analysis Report
 View your top 10 heaviest folders with direct links, size information, and safety notes about each directory.
 
-![Analysis Report](https://via.placeholder.com/800x450/0a0a0f/059669?text=Storage+Report)
+![Analysis Report](https://github.com/Chaotic-Mess/My-Code-/blob/main/Helpful%20Utilities/ComputerStorageScanner/demoImages/Finalimage.png)
 
 ## Installation
 
 ### Requirements
 
 - Python 3.7 or higher
-- Windows, macOS, or Linux
+- Windows (I haven't tested anything else)
 - Modern web browser (Chrome, Firefox, Safari, Edge)
 
 ### Setup
@@ -163,7 +163,7 @@ ComputerStorageScanner/
 ├── storage_scanner.py      # Main Python application and web server
 ├── scan_interface.html     # Interactive folder selection interface
 ├── report_template.html    # HTML template for scan reports
-├── storage_report.html     # Generated report (created after scan)
+├── storage_report.html     # Generated report (created after scan, always safe to delete if you want to)
 └── README.md              # This file
 ```
 
@@ -210,18 +210,6 @@ However, always exercise caution:
 - Review the report before manually deleting any folders
 - System folders are marked with warnings
 - Some folders may be required by applications or the OS
+ 
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Acknowledgments
-
-- Interface design inspired by modern dark-themed web applications
-- Built with Python's robust standard library
-- No external dependencies for maximum portability
 
