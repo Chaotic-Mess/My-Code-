@@ -36,7 +36,7 @@
 
 ### How to Use
 
-1. Download and run `storage_scanner.py`
+1. Download and run `storage_scanner.py` with `report_template.html` and `scan_interface.html` in the same directory
 2. Browser opens automatically to folder selection interface
 3. Check boxes next to folders you want to analyze
 4. Adjust scan depth (lower = faster, higher = more granular)
