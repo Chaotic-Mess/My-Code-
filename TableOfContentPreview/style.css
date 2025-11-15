@@ -605,8 +605,8 @@ html {
     width: 100%;
     padding: 0.75rem 1rem;
     margin-bottom: 1.5rem;
-    background: rgba(109, 60, 82, 0.3);
-    border: 1px solid rgba(118, 93, 103, 0.5);
+    background: linear-gradient(135deg, rgba(118, 93, 103, 0.2) 0%, rgba(109, 60, 82, 0.2) 100%);
+    border: 1px solid rgba(118, 93, 103, 0.4);
     border-radius: 8px;
     color: var(--color-light);
     font-size: 0.9rem;
@@ -618,29 +618,54 @@ html {
     justify-content: center;
     gap: 0.5rem;
     backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.model-toggle-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(250, 220, 213, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.model-toggle-btn:hover::before {
+    left: 100%;
 }
 
 .model-toggle-btn:hover {
-    background: rgba(109, 60, 82, 0.6);
+    background: linear-gradient(135deg, rgba(118, 93, 103, 0.4) 0%, rgba(109, 60, 82, 0.4) 100%);
     border-color: var(--color-secondary);
     transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(118, 93, 103, 0.2);
 }
 
 .model-toggle-btn:active {
     transform: translateX(2px);
+    box-shadow: 0 2px 8px rgba(118, 93, 103, 0.3);
 }
 
 .toggle-icon {
     font-size: 1.1rem;
-    transition: transform 0.3s ease;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .model-toggle-btn:hover .toggle-icon {
-    transform: rotate(180deg);
+    transform: rotate(360deg);
+}
+
+.model-toggle-btn:active .toggle-icon {
+    transform: rotate(180deg) scale(0.9);
 }
 
 .toggle-text {
     letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
 }
 
 /* ===================================

@@ -11,7 +11,7 @@ class ScrollDriven3DViewer {
         this.scale = 1;
         
         // Toggle between procedural geometry and STL
-        this.useSTL = true;  
+        this.useSTL = false;  // Start with procedural geometry
         this.stlPath = 'Simple_Mask.stl';
         this.modelLoaded = false;
         this.toggleButton = document.getElementById('toggleModel');
