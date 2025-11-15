@@ -600,6 +600,52 @@ html {
     opacity: 0.4;
 }
 
+/* Model Toggle Button */
+.model-toggle-btn {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(27, 12, 26, 0.9);
+    border: 1px solid rgba(118, 93, 103, 0.5);
+    border-radius: 8px;
+    color: var(--color-light);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: var(--transition-smooth);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.model-toggle-btn:hover {
+    background: rgba(109, 60, 82, 0.9);
+    border-color: var(--color-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(118, 93, 103, 0.4);
+}
+
+.model-toggle-btn:active {
+    transform: translateY(0);
+}
+
+.toggle-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.model-toggle-btn:hover .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.toggle-text {
+    letter-spacing: 0.05em;
+}
+
 /* ===================================
    Footer
    =================================== */

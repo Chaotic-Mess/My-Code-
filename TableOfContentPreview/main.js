@@ -14,6 +14,7 @@ class ScrollDriven3DViewer {
         this.useSTL = true;  
         this.stlPath = 'Simple_Mask.stl';
         this.modelLoaded = false;
+        this.toggleButton = document.getElementById('toggleModel');
         
         // STL orientation adjustments
         this.flipX = false;  // Flip horizontally
@@ -21,6 +22,7 @@ class ScrollDriven3DViewer {
         this.flipZ = false;  // Flip depth
         
         this.setupCanvas();
+        this.setupToggleButton();
         
         if (this.useSTL) {
             this.loadSTL(this.stlPath);
@@ -44,6 +46,37 @@ class ScrollDriven3DViewer {
         
         this.centerX = rect.width / 2;
         this.centerY = rect.height / 2;
+    }
+    
+    setupToggleButton() {
+        if (this.toggleButton) {
+            this.updateToggleButtonText();
+            this.toggleButton.addEventListener('click', () => this.toggleModelType());
+        }
+    }
+    
+    updateToggleButtonText() {
+        if (this.toggleButton) {
+            const textElement = this.toggleButton.querySelector('.toggle-text');
+            if (textElement) {
+                textElement.textContent = this.useSTL ? 'STL Model' : 'Procedural';
+            }
+        }
+    }
+    
+    toggleModelType() {
+        this.useSTL = !this.useSTL;
+        this.modelLoaded = false;
+        this.vertices = [];
+        this.faces = [];
+        
+        this.updateToggleButtonText();
+        
+        if (this.useSTL) {
+            this.loadSTL(this.stlPath);
+        } else {
+            this.createGeometry();
+        }
     }
     
     async loadSTL(path) {
