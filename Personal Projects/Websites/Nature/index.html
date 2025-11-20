@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Earth - Natural Wonders Interactive Globe</title>
+    <meta name="description" content="Discover Earth's most incredible natural wonders. Explore volcanoes, mountains, and breathtaking landmarks in stunning 3D.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="info-panel">
+        <h1>Explore Earth</h1>
+        <p>Discover our planet's most incredible natural wonders! Click on the glowing pins to learn about legendary volcanoes and majestic mountains across the globe.</p>
+        <div id="location-info"></div>
+    </div>
+    
+    <div id="stats-panel">
+        <h2>Discovery Stats</h2>
+        <div class="stat-item">
+            <span class="stat-label">Total Locations</span>
+            <span class="stat-value">27</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Volcanoes</span>
+            <span class="stat-value" style="color: #ef4444;">12</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Mountains</span>
+            <span class="stat-value" style="color: #34d399;">15</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Continents</span>
+            <span class="stat-value">7</span>
+        </div>
+    </div>
+    
+    <div id="controls">
+        <button id="rotate-toggle">Pause Rotation</button>
+        <button id="reset-view">Reset View</button>
+    </div>
+    
+    <div id="canvas-container"></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{LOCATION_NAME}} - Explore Earth</title>
+    <link rel="stylesheet" href="../location-style.css">
+</head>
+<body>
+    <header class="hero" style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('{{HERO_IMAGE}}');">
+        <nav class="nav-bar">
+            <a href="../index.html" class="logo">← Back to Globe</a>
+            <div class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#facts">Facts</a>
+                <a href="#explore">Explore</a>
+            </div>
+        </nav>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <span class="category">{{CATEGORY}}</span>
+                <h1 class="hero-title">{{DISPLAY_TITLE}}</h1>
+                <p class="subtitle">{{SUBTITLE}}</p>
+                <div class="scroll-indicator">
+                    <span>Scroll Down</span>
+                    <div class="scroll-arrow">↓</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="overview" class="content-section">
+            <div class="container">
+                <h2>Overview</h2>
+                <div class="overview-grid">
+                    <div class="overview-text">
+                        <p>{{DESCRIPTION}}</p>
+                        <p>{{EXTENDED_DESCRIPTION}}</p>
+                    </div>
+                    <div class="overview-stats">
+                        <div class="stat-card">
+                            <span class="stat-label">Location</span>
+                            <span class="stat-value">{{COUNTRY}}</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Elevation</span>
+                            <span class="stat-value">{{ELEVATION}}</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Coordinates</span>
+                            <span class="stat-value">{{LATITUDE}}, {{LONGITUDE}}</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Type</span>
+                            <span class="stat-value">{{TYPE}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="facts" class="facts-section">
+            <div class="container">
+                <h2>Key Facts</h2>
+                <div class="facts-grid">
+                    {{FACTS_LIST}}
+                </div>
+            </div>
+        </section>
+
+        <section id="explore" class="gallery-section">
+            <div class="container">
+                <h2>Explore More</h2>
+                <div class="gallery-grid">
+                    {{GALLERY_IMAGES}}
+                </div>
+                <div class="external-links">
+                    <a href="{{WIKI_URL}}" target="_blank" class="ext-link">📚 Wikipedia</a>
+                    <a href="https://www.google.com/maps?q={{LATITUDE}},{{LONGITUDE}}" target="_blank" class="ext-link">🗺️ View on Maps</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Explore Earth - Discover Natural Wonders</p>
+            <a href="../index.html">Back to Interactive Globe</a>
+        </div>
+    </footer>
+</body>
+</html>
