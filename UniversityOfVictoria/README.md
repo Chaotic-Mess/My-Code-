@@ -4,6 +4,12 @@
 
 Academic coursework in Computer Science — C and C++
 
+![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
+
+#[CSC116 EXAM STUDY WEBSITE](https://chaotic-mess.github.io/My-Code-/UniversityOfVictoria/CSC116/ExamStudy)
+
+
+
 ---
 
 ## Courses
@@ -68,4 +74,5 @@ C projects and exercises exploring fundamental programming concepts.
 ---
 
 **[← Back to Main Portfolio](../README.md)**
+
 
