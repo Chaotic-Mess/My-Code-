@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Characters</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <link rel="stylesheet" href="../../styles.css" />
+    <script src="../../settings.js"></script>
+    <style>
+        .info-box {
+            background: #f5d74f;
+            color: #1f1a00;
+            border: 1px solid #d4b63a;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin: 12px 0;
+            font-weight: 600;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .output-box {
+            background: #0f1720;
+            border: 1px solid #2b3644;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin: 10px 0 6px;
+            font-family: "JetBrains Mono", Consolas, "SFMono-Regular", monospace;
+            color: #e8f0ff;
+            white-space: pre;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">CSC 116 Exam Study</div>
+            <nav class="nav" aria-label="Primary">
+                <a href="../../index.html">Home</a>
+                <a href="../../settings.html" class="settings-link">Settings</a>
+                <a href="../Information/checklist.html">Checklist</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Characters</h1>
+            <p>char type, character functions, and ASCII operations.</p>
+        </section>
+
+        <section class="panel">
+            <h2>char type basics</h2>
+            <p>Store and manipulate individual characters.</p>
+            <div class="code-block"><pre><span class="kw">#include</span> &lt;iostream&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">char</span> letter = <span class="st">'A'</span>;
+    <span class="kw">char</span> digit = <span class="st">'5'</span>;
+    <span class="kw">char</span> special = <span class="st">'!'</span>;
+    std::cout &lt;&lt; letter &lt;&lt; digit &lt;&lt; special &lt;&lt; <span class="st">"\n"</span>;
+}</pre></div>
+            <div class="output-box">A5!</div>
+            <ul>
+                <li>Single quotes <code>'A'</code> denote a char; double quotes <code>"A"</code> denote a string.</li>
+                <li>Chars are integers under the hood; you can perform arithmetic on them.</li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>ASCII values and arithmetic</h2>
+            <p>Understand character encoding and offset operations.</p>
+            <div class="code-block"><pre><span class="kw">#include</span> &lt;iostream&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">char</span> c = <span class="st">'A'</span>;
+    std::cout &lt;&lt; <span class="st">"ASCII of 'A': "</span> &lt;&lt; (<span class="kw">int</span>)c &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Next char: "</span> &lt;&lt; (c + <span class="nb\">1</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Difference 'Z' - 'A': "</span> &lt;&lt; (<span class="st">'Z'</span> - <span class="st">'A'</span>) &lt;&lt; <span class="st">"\n"</span>;
+}</pre></div>
+            <div class="output-box">ASCII of 'A': 65
+Next char: B
+Difference 'Z' - 'A': 25</div>
+            <div class="info-box">
+                Casting a char to int reveals its ASCII value. Arithmetic on chars works because they are just integers.
+            </div>
+            <ul>
+                <li>Use this to find character offsets (e.g., distance between 'A' and 'Z').</li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>Character classification (&lt;cctype&gt;)</h2>
+            <p>Test properties of characters.</p>
+            <div class="code-block"><pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cctype&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">char</span> c = <span class="st">'5'</span>;
+    std::cout &lt;&lt; (std::isdigit(c) ? <span class="st">"digit"</span> : <span class="st">"not digit"</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; (std::isalpha(<span class="st">'A'</span>) ? <span class="st">"letter"</span> : <span class="st">"not letter"</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; (std::isspace(<span class="st">' '</span>) ? <span class="st">"space"</span> : <span class="st">"not space"</span>) &lt;&lt; <span class="st">"\n"</span>;
+}</pre></div>
+            <div class="output-box">digit
+letter
+space</div>
+            <ul>
+                <li><code>std::isdigit()</code>, <code>std::isalpha()</code>, <code>std::isalnum()</code>, <code>std::isspace()</code>, etc.</li>
+                <li>Returns non-zero (true) or zero (false).</li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>Case conversion</h2>
+            <p>Convert between uppercase and lowercase.</p>
+            <div class="code-block"><pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cctype&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">char</span> lower = <span class="st">'a'</span>;
+    <span class="kw">char</span> upper = <span class="st">'Z'</span>;
+    std::cout &lt;&lt; std::toupper(lower) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; std::tolower(upper) &lt;&lt; <span class="st">"\n"</span>;
+}</pre></div>
+            <div class="output-box">A
+z</div>
+            <ul>
+                <li><code>std::toupper()</code> and <code>std::tolower()</code> return the converted char.</li>
+                <li>Non-letter characters are returned unchanged.</li>
+                <li>Example: <a href="../../Codes/14-string_to_lower.cpp">14-string_to_lower.cpp</a></li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>Iterating over string characters</h2>
+            <p>Process each character in a string individually.</p>
+            <div class="code-block"><pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+<span class="kw">#include</span> &lt;cctype&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::string</span> text = <span class="st">"HeLLo"</span>;
+    <span class="kw">for</span> (<span class="kw">char</span> c : text) {
+        std::cout &lt;&lt; std::tolower(c);
+    }
+    std::cout &lt;&lt; <span class="st">"\n"</span>;
+}</pre></div>
+            <div class="output-box">hello</div>
+            <ul>
+                <li>Range-based for loops let you modify or inspect each character.</li>
+                <li>You can also use indexed loops: <code>for (int i = 0; i &lt; text.length(); i++)</code></li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© 2025 Minimal</small>
+        </div>
+    </footer>
+</body>
+
+</html>

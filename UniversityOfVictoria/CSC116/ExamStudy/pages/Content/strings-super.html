@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Strings</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <link rel="stylesheet" href="../../styles.css" />
+    <script src="../../settings.js"></script>
+    <style>
+        .info-box {
+            background: #f5d74f;
+            color: #1f1a00;
+            border: 1px solid #d4b63a;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin: 12px 0;
+            font-weight: 600;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .output-box {
+            background: #0f1720;
+            border: 1px solid #2b3644;
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin: 10px 0 6px;
+            font-family: "JetBrains Mono", Consolas, "SFMono-Regular", monospace;
+            color: #e8f0ff;
+            white-space: pre;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">CSC 116 Exam Study</div>
+            <nav class="nav" aria-label="Primary">
+                <a href="../../index.html">Home</a>
+                <a href="../../settings.html" class="settings-link">Settings</a>
+                <a href="../Information/checklist.html">Checklist</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Strings</h1>
+            <p>std::string fundamentals, operations, and common patterns.</p>
+        </section>
+
+        <section class="panel">
+            <h2>std::string basics</h2>
+            <p>Declare, initialize, and concatenate strings.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::string</span> greeting = <span class="st">"Hello"</span>;
+    <span class="ty">std::string</span> name = <span class="st">"Ada"</span>;
+    <span class="ty">std::string</span> message = greeting + <span class="st">", "</span> + name;
+    std::cout &lt;&lt; message &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">Hello, Ada</div>
+            <ul>
+                <li>Use <code>+</code> to concatenate strings.</li>
+                <li>Strings are mutable; you can modify them after creation.</li>
+                <li>Example: <a href="../../Codes/08-strings.cpp">08-strings.cpp</a></li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>Indexing and .at()</h2>
+            <p>Access individual characters safely and unsafely.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw\">#include</span> &lt;string&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::string</span> word = <span class="st">"code"</span>;
+    std::cout &lt;&lt; word[<span class="nb">0</span>] &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; word.at(<span class="nb">1</span>) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">c
+                o</div>
+            <div class="info-box">
+                <code>[]</code> is faster but does not check bounds. <code>.at()</code> throws
+                <code>std::out_of_range</code> if the index is invalid.
+            </div>
+            <ul>
+                <li>Use <code>.at()</code> when you need safety.</li>
+                <li>Use <code>[]</code> when performance is critical and you know the index is valid.</li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>Length and iteration</h2>
+            <p>Measure strings and loop through characters.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::string</span> text = <span class="st">"hello"</span>;
+    std::cout &lt;&lt; <span class="st">"Length: "</span> &lt;&lt; text.length() &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">for</span> (<span class="kw">char</span> c : text) {
+        std::cout &lt;&lt; c &lt;&lt; <span class="st">"\n"</span>;
+    }
+}</pre>
+            </div>
+            <div class="output-box">Length: 5
+                h
+                e
+                l
+                l
+                o</div>
+            <ul>
+                <li>Use <code>.length()</code> or <code>.size()</code> (both do the same thing).</li>
+                <li>Range-based for loops are the cleanest way to iterate.</li>
+                <li>Example: <a href="../../Codes/14-string_to_lower.cpp">14-string_to_lower.cpp</a></li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>Comparison and substring</h2>
+            <p>Compare strings and extract parts.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::string</span> a = <span class="st">"apple"</span>;
+    <span class="ty">std::string</span> b = <span class="st">"apple"</span>;
+    <span class="ty">std::string</span> c = <span class="st">"banana"</span>;
+    std::cout &lt;&lt; (a == b ? <span class="st">"equal"</span> : <span class="st">"not equal"</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; (a &lt; c ? <span class="st">"a before c"</span> : <span class="st">"c before a"</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; a.substr(<span class="nb">0</span>, <span class="nb">3</span>) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">equal
+                a before c
+                app</div>
+            <ul>
+                <li>Use <code>==</code> and <code>&lt;</code> for comparison (lexicographic).</li>
+                <li><code>.substr(pos, len)</code> returns a substring starting at <code>pos</code> for <code>len</code>
+                    characters.</li>
+                <li>Example: <a href="../../Codes/15-longest_word.cpp">15-longest_word.cpp</a></li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>find() and replace()</h2>
+            <p>Search for substrings and make replacements.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::string</span> text = <span class="st">"hello world"</span>;
+    <span class="ty">std::string::size_type</span> pos = text.find(<span class="st">"world"</span>);
+    <span class="kw">if</span> (pos != <span class="ty">std::string</span>::npos) {
+        std::cout &lt;&lt; <span class="st">"Found at: "</span> &lt;&lt; pos &lt;&lt; <span class="st">"\n"</span>;
+    }
+}</pre>
+            </div>
+            <div class="output-box">Found at: 6</div>
+            <ul>
+                <li><code>.find()</code> returns the position of the first occurrence, or <code>std::string::npos</code>
+                    if not found.</li>
+                <li>Use <code>.replace()</code> to modify parts of a string.</li>
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>Vectors of strings</h2>
+            <p>Store and manipulate collections of strings.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty\">std::vector</span>&lt;<span class="ty">std::string</span>&gt; words = {<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"cherry"</span>};
+    <span class="kw">for</span> (<span class="kw">const</span> <span class="kw">auto</span>&amp; w : words) {
+        std::cout &lt;&lt; w &lt;&lt; <span class="st">"\n"</span>;
+    }
+}</pre>
+            </div>
+            <div class="output-box">apple
+                banana
+                cherry</div>
+            <ul>
+                <li>Combine <code>std::vector</code> and <code>std::string</code> for flexible text data.</li>
+                <li>Example: <a href="../../Codes/09-string_vectors.cpp">09-string_vectors.cpp</a></li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© 2025 CSC116 Study Tool by Zac M. </small> <a href="https://github.com/Chaotic-Mess/My-Code-">
+                Github Page</a>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>CSC 116 Checklist</title>
+
+    <link rel="stylesheet" href="../../styles.css" />
+    <script src="../../settings.js"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">CSC 116 Exam Study</div>
+            <nav class="nav" aria-label="Primary">
+                <a href="../../index.html">Home</a>
+                <a href="../../settings.html">Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>CSC116 Checklist</h1>
+        <p>C++ Fundamentals & Applications — Exam Scope</p>
+
+        <!-- Toggle -->
+        <div class="panel" style="display:flex; gap:12px; align-items:center;">
+            <strong>Mode:</strong>
+            <button id="simple-btn" class="btn btn-primary">Simple</button>
+            <button id="detailed-btn" class="btn">Detailed</button>
+        </div>
+
+        <!-- ================= SIMPLE CHECKLIST (DEFAULT) ================= -->
+        <section id="simple-checklist">
+
+            <section class="panel">
+                <h2>Core C++ Language</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> Variables & fundamental types</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Expressions & operator precedence</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Control flow (if, switch, loops)</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Functions</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Parameter passing (value, reference, const
+                        reference)</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Scope & lifetime</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> const correctness</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Standard Library</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> &lt;iostream&gt;</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> &lt;string&gt;</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> &lt;vector&gt;</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> &lt;map&gt;</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> &lt;set&gt;</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> &lt;algorithm&gt;</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> &lt;numeric&gt;</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> &lt;stdexcept&gt;</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Strings</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> std::string basics</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Indexing vs .at()</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Concatenation & comparison</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Iteration</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Containers</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> std::vector</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> std::map</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> std::set</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Choosing the correct container</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Basic performance intuition</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Iterators</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> begin() / end()</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Dereferencing (*it)</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Iterator-based loops</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Invalid iterators (conceptually)</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Algorithms</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> find</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> count</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> sort</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> accumulate</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Using algorithms instead of loops</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Lambdas</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> Lambda syntax</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Parameters</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Capture by value</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Capture by reference</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Lambdas with algorithms</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Structs & Classes</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> struct vs class</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Member variables & functions</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> public vs private</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> const member functions</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Constructors</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> Constructors</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Initializer lists</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Multiple constructors</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Operator Overloading</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> operator==</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> operator&lt;</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> operator&lt;&lt;</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Member vs non-member operators</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Exceptions</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> try / catch</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> throw</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Standard exceptions</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Control flow with exceptions</li>
+                </ul>
+            </section>
+
+            <section class="panel">
+                <h2>Templates</h2>
+                <ul class="checklist-list">
+                    <li><input type="checkbox" class="checklist-checkbox"> Function templates</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Class templates (basic)</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Type deduction</li>
+                    <li><input type="checkbox" class="checklist-checkbox"> Compile-time errors (conceptually)</li>
+                </ul>
+            </section>
+        </section>
+
+        <!-- ================= DETAILED CHECKLIST ================= -->
+        <section id="detailed-checklist" style="display:none;">
+            <form id="checklist-form">
+
+                <!-- ================= Tier 1 ================= -->
+                <section class="panel">
+                    <h2>Tier 1 — Non-Negotiable Core</h2>
+
+                    <h3>1. C++ Basics & Code Reading</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Read C++ code and predict output
+                            line-by-line
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Identify compile-time, runtime, and logic
+                            errors</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain operator precedence in
+                            expressions
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Know when implicit type conversion
+                            happens
+                        </li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre><span class="kw">int</span> x = <span class="nb">5</span>;
+<span class="ty">double</span> y = x / <span class="nb">2</span>;
+std::cout &lt;&lt; y;</pre>
+                    </div>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You know exactly why this prints what it prints.
+                    </label>
+
+                    <h3>2. Functions & Parameter Passing</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Write functions with correct signatures
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain pass-by-value vs
+                            pass-by-reference
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Use <span class="code-ref">const
+                                T&amp;</span> appropriately</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Know when a function can and cannot
+                            modify
+                            arguments</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre><span class="kw">void</span> f(<span class="kw">const</span> <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt;&amp; v);
+    <span class="kw">void</span> g(<span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt;&amp; v);
+    </pre>
+                    </div>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You can explain why these are different and when to use each.
+                    </label>
+
+                    <h3>3. Control Flow</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Write and trace if / else, for, while,
+                            do-while</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Choose the correct loop type</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Identify off-by-one errors</li>
+                    </ul>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You can trace a loop without skipping steps or guessing.
+                    </label>
+                </section>
+
+                <!-- ================= Tier 2 ================= -->
+                <section class="panel">
+                    <h2>Tier 2 — Containers & Data Structures</h2>
+
+                    <h3>4. std::vector</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Declare, initialize, modify, and iterate
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain <span class="code-ref">[]</span>
+                            vs
+                            <span class="code-ref">.at()</span>
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Understand <span
+                                class="code-ref">size()</span> vs <span class="code-ref">capacity()</span>
+                            (conceptually)
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Use range-based for loops</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain iterator invalidation at a high
+                            level
+                        </li>
+                    </ul>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You know what happens if <span class="code-ref">.at()</span> goes out of bounds.
+                    </label>
+
+                    <h3>5. Other Standard Containers</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Use <span
+                                class="code-ref">std::map</span>
+                            and <span class="code-ref">std::set</span></li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain key-value pairs, uniqueness, and
+                            ordering</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Choose the correct container for a
+                            problem
+                        </li>
+                    </ul>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You can explain why a map is better than a vector in some cases.
+                    </label>
+
+                    <h3>6. Iterators</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Use <span class="code-ref">begin()</span>
+                            /
+                            <span class="code-ref">end()</span>
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Write loops using iterators</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Understand what <span
+                                class="code-ref">*it</span> means</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Recognize invalid iterator usage</li>
+                    </ul>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You understand why <span class="code-ref">end()</span> is not dereferenceable.
+                    </label>
+                </section>
+
+                <!-- ================= Tier 3 ================= -->
+                <section class="panel">
+                    <h2>Tier 3 — Algorithms & Modern C++</h2>
+
+                    <h3>7. Standard Algorithms</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Use <span class="code-ref">find</span>,
+                            <span class="code-ref">count</span>, <span class="code-ref">sort</span>, <span
+                                class="code-ref">accumulate</span>
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Replace loops with algorithms</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain algorithm intent</li>
+                    </ul>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You can identify the correct algorithm without trial-and-error.
+                    </label>
+
+                    <h3>8. Lambdas</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Write lambdas with parameters</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Capture variables by value <span
+                                class="code-ref">[x]</span> and reference <span class="code-ref">[&amp;x]</span></li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain lambda lifetime</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Use lambdas with algorithms</li>
+                    </ul>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You know when capturing by reference is dangerous.
+                    </label>
+                </section>
+
+                <!-- ================= Tier 4 ================= -->
+                <section class="panel">
+                    <h2>Tier 4 — Object-Oriented Programming</h2>
+
+                    <h3>9. Structs, Classes & Encapsulation</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Define <span
+                                class="code-ref">struct</span>
+                            and <span class="code-ref">class</span></li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain <span
+                                class="code-ref">public</span>
+                            vs <span class="code-ref">private</span></li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Write member functions</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Use <span class="code-ref">const</span>
+                            member functions correctly</li>
+                    </ul>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You know why <span class="code-ref">const</span> goes after the function signature.
+                    </label>
+
+                    <h3>10. Constructors</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Write constructors</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Use initializer lists</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain why initializer lists are
+                            preferred
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Write multiple constructors</li>
+                    </ul>
+
+                    <div class="code-block">
+                        <pre><span class="ty">MyClass</span>(<span class="kw">int</span> x) : value(x) {}</pre>
+                    </div>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You know why this is better than assigning inside the body.
+                    </label>
+
+                    <h3>11. Operator Overloading</h3>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Overload <span
+                                class="code-ref">==</span>,
+                            <span class="code-ref">&lt;</span>, <span class="code-ref">&lt;&lt;</span>
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Know when operators should be free
+                            functions
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Use <span class="code-ref">const</span>
+                            correctly</li>
+                    </ul>
+
+                    <label class="checklist-spacer">
+                        <input type="checkbox" class="checklist-checkbox">
+                        You understand why <span class="code-ref">operator&lt;&lt;</span> is almost always non-member.
+                    </label>
+                </section>
+
+                <!-- ================= Tier 5–7 ================= -->
+                <!-- Exceptions, Templates, Recursion follow same pattern (already clean) -->
+
+                <section class="mindset">
+                    <h2>Final Reality Check</h2>
+                    <ul class="checklist-list">
+                        <li><input type="checkbox" class="checklist-checkbox"> Trace code without running it</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Explain why something is wrong, not just
+                            fix
+                            it</li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Recognize container and algorithm
+                            patterns
+                        </li>
+                        <li><input type="checkbox" class="checklist-checkbox"> Reason instead of memorizing</li>
+                    </ul>
+                </section>
+
+            </form>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© 2025 CSC116 Study Tool by Zac M. </small> <a href="https://github.com/Chaotic-Mess/My-Code-">
+                Github Page</a>
+        </div>
+    </footer>
+
+    <script>
+        const simpleBtn = document.getElementById('simple-btn');
+        const detailedBtn = document.getElementById('detailed-btn');
+        const simple = document.getElementById('simple-checklist');
+        const detailed = document.getElementById('detailed-checklist');
+
+        simpleBtn.onclick = () => {
+            simple.style.display = 'block';
+            detailed.style.display = 'none';
+            simpleBtn.classList.add('btn-primary');
+            detailedBtn.classList.remove('btn-primary');
+        };
+
+        detailedBtn.onclick = () => {
+            simple.style.display = 'none';
+            detailed.style.display = 'block';
+            detailedBtn.classList.add('btn-primary');
+            simpleBtn.classList.remove('btn-primary');
+        };
+
+        // Save checklist state to localStorage and restore on load (both simple & detailed)
+        (function () {
+            const STORAGE_KEY = 'cppChecklistState';
+            const allCheckboxes = document.querySelectorAll('input[type=checkbox]');
+
+            // Restore state
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                try {
+                    const checked = JSON.parse(saved);
+                    allCheckboxes.forEach((box, i) => {
+                        box.checked = !!checked[i];
+                    });
+                } catch { }
+            }
+
+            // Save state on change
+            allCheckboxes.forEach(box => {
+                box.addEventListener('change', () => {
+                    const state = Array.from(allCheckboxes).map(b => b.checked);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                });
+            });
+        })();
+
+    </script>
+</body>
+
+</html>
