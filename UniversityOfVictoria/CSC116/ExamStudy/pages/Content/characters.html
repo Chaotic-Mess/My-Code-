@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Characters</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link" aria-current="page">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="../Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="../../settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <aside class="quick-nav">
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="#faq">Fundamentals FAQ</a></li>
+            <li><a href="#char-basics">char type basics</a></li>
+            <li><a href="#ascii">ASCII values and arithmetic</a></li>
+            <li><a href="#classification">Character classification (&lt;cctype&gt;)</a></li>
+            <li><a href="#case-conversion">Case conversion</a></li>
+            <li><a href="#iterating">Iterating over string characters</a></li>
+        </ul>
+    </aside>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Characters</h1>
+            <p>char type, character functions, and ASCII operations.</p>
+        </section>
+
+        <section class="panel" id="faq">
+            <h2>Fundamentals FAQ</h2>
+            <ul>
+                <li><strong>Header?</strong> <code>&lt;cctype&gt;</code> for character tests and case conversion;
+                    <code>&lt;string&gt;</code> if working with std::string.
+                </li>
+                <li><strong>Why <code>std::</code>?</strong> All cctype functions live in <code>std</code>; call
+                    <code>std::isalpha</code>, <code>std::tolower</code>, etc.
+                </li>
+                <li><strong>Signed/unsigned chars?</strong> Cast to <code>unsigned char</code> before passing to
+                    <code>std::tolower</code>/<code>isalpha</code> if the value might be negative.
+                </li>
+                <li><strong>Return values?</strong> Classification functions return non-zero for true, zero for false;
+                    case conversion returns the converted char (as int).</li>
+                <li><strong>ASCII vs Unicode?</strong> Examples assume ASCII. These functions are locale-aware but not
+                    full Unicode processing.</li>
+                <li><strong>Escape characters?</strong> Common ones: <code>'\n'</code> newline, <code>'\t'</code> tab,
+                    <code>'\\'</code> backslash, <code>'\''</code> single quote.
+                </li>
+                <li><strong>Iterating strings?</strong> Use range-for; avoid modifying string size while iterating
+                    unless using indices.</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="char-basics">
+            <h2>char type basics</h2>
+            <p>Store and manipulate individual characters.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">char</span> letter = <span class="st">'A'</span>;
+    <span class="kw">char</span> digit = <span class="st">'5'</span>;
+    <span class="kw">char</span> special = <span class="st">'!'</span>;
+    std::cout &lt;&lt; letter &lt;&lt; digit &lt;&lt; special &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">A5!</div>
+            <ul>
+                <li>Single quotes <code>'A'</code> denote a char; double quotes <code>"A"</code> denote a string.</li>
+                <li>Chars are integers under the hood; you can perform arithmetic on them.</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="ascii">
+            <h2>ASCII values and arithmetic</h2>
+            <p>Understand character encoding and offset operations.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">char</span> c = <span class="st">'A'</span>;
+    std::cout &lt;&lt; <span class="st">"ASCII of 'A': "</span> &lt;&lt; (<span class="kw">int</span>)c &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Next char: "</span> &lt;&lt; (c + <span class="nb\">1</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Difference 'Z' - 'A': "</span> &lt;&lt; (<span class="st">'Z'</span> - <span class="st">'A'</span>) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">ASCII of 'A': 65
+                Next char: B
+                Difference 'Z' - 'A': 25</div>
+            <div class="info-box">
+                Casting a char to int reveals its ASCII value. Arithmetic on chars works because they are just integers.
+            </div>
+            <ul>
+                <li>Use this to find character offsets (e.g., distance between 'A' and 'Z').</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="classification">
+            <h2>Character classification (&lt;cctype&gt;)</h2>
+            <p>Test properties of characters.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cctype&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">char</span> c = <span class="st">'5'</span>;
+    std::cout &lt;&lt; (std::isdigit(c) ? <span class="st">"digit"</span> : <span class="st">"not digit"</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; (std::isalpha(<span class="st">'A'</span>) ? <span class="st">"letter"</span> : <span class="st">"not letter"</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; (std::isspace(<span class="st">' '</span>) ? <span class="st">"space"</span> : <span class="st">"not space"</span>) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">digit
+                letter
+                space</div>
+            <ul>
+                <li><code>std::isdigit()</code>, <code>std::isalpha()</code>, <code>std::isalnum()</code>,
+                    <code>std::isspace()</code>, etc.
+                </li>
+                <li>Returns non-zero (true) or zero (false).</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="case-conversion">
+            <h2>Case conversion</h2>
+            <p>Convert between uppercase and lowercase.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cctype&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">char</span> lower = <span class="st">'a'</span>;
+    <span class="kw">char</span> upper = <span class="st">'Z'</span>;
+    std::cout &lt;&lt; std::toupper(lower) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; std::tolower(upper) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">A
+                z</div>
+            <ul>
+                <li><code>std::toupper()</code> and <code>std::tolower()</code> return the converted char.</li>
+                <li>Non-letter characters are returned unchanged.</li>
+                <li>Example: <a href="../../Codes/14-string_to_lower.cpp">14-string_to_lower.cpp</a></li>
+            </ul>
+        </section>
+
+        <section class="panel" id="iterating">
+            <h2>Iterating over string characters</h2>
+            <p>Process each character in a string individually.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+<span class="kw">#include</span> &lt;cctype&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::string</span> text = <span class="st">"HeLLo"</span>;
+    <span class="kw">for</span> (<span class="kw">char</span> c : text) {
+        std::cout &lt;&lt; std::tolower(c);
+    }
+    std::cout &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">hello</div>
+            <ul>
+                <li>Range-based for loops let you modify or inspect each character.</li>
+                <li>You can also use indexed loops: <code>for (int i = 0; i &lt; text.length(); i++)</code></li>
+            </ul>
+        </section>
+
+        <div class="info-box"
+            style="margin-top: 40px; text-align: center; background: var(--accent); color: var(--bg); padding: 20px; border-radius: 12px;">
+            <strong>Ready to test yourself?</strong><br>
+            <a href="../Quizzes/quiz-characters.html"
+                style="color: var(--bg); text-decoration: none; font-weight: 600;">Take the Characters Quiz →</a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

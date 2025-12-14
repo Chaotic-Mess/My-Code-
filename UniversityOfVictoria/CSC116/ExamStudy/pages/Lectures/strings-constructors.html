@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>String Constructors & Methods - CSC 116 Study Guide</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+</head>
+
+<body>
+<header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link" aria-current="page">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="../Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="../../settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="quick-nav" aria-label="Quick Navigation">
+        <h3>Quick Navigation</h3>
+        <ul>
+            <a href="#constructors">Constructors</a>
+            <a href="#sizing">Size & Length</a>
+            <a href="#accessing">Accessing Elements</a>
+            <a href="#modifying">Modifying Strings</a>
+            <a href="#conversions">Conversions</a>
+            <a href="#faq">FAQ</a>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <h1>String Constructors & Methods</h1>
+        <p>Deep dive into <code>std::string</code> initialization, manipulation, and conversion.</p>
+
+        <div class="info-box">
+            <strong>Related Topics:</strong> See <a href="../Content/strings.html">Strings Basics</a> for fundamentals,
+            and <a href="../Content/classes.html">Classes</a> for constructor mechanics.
+        </div>
+
+        <!-- ==================== CONSTRUCTORS ==================== -->
+        <section id="constructors" class="panel">
+            <h2>String Constructors</h2>
+            <p><code>std::string</code> is a class with multiple constructors. Understanding which constructor is called
+                determines how your string is initialized.</p>
+
+            <h3>Default Constructor</h3>
+            <pre><code class="language-cpp"><span class="cm">// Creates an empty string</span>
+<span class="ty">std::string</span> s1;
+<span class="ty">std::string</span> s2{};  <span class="cm">// same, but explicit</span>
+
+std::cout &lt;&lt; s1.<span class="fn">size</span>() &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 0</span></code></pre>
+
+            <h3>String Literal Constructor</h3>
+            <pre><code class="language-cpp"><span class="cm">// Constructs from C-style string (char array)</span>
+<span class="ty">std::string</span> s3 = <span class="st">"hello"</span>;
+<span class="ty">std::string</span> s4{<span class="st">"world"</span>};
+<span class="ty">std::string</span> s5(<span class="st">"C++"</span>);
+
+std::cout &lt;&lt; s3 &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// hello</span></code></pre>
+
+            <h3>Copy Constructor</h3>
+            <pre><code class="language-cpp"><span class="cm">// Creates a copy of another string</span>
+<span class="ty">std::string</span> original = <span class="st">"data"</span>;
+<span class="ty">std::string</span> copy1 = original;
+<span class="ty">std::string</span> copy2{original};
+
+copy1[<span class="nb">0</span>] = <span class="st">'D'</span>;
+std::cout &lt;&lt; original &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "data" (unchanged)</span>
+std::cout &lt;&lt; copy1 &lt;&lt; <span class="st">'\n'</span>;     <span class="cm">// "Data" (independent)</span></code></pre>
+
+            <h3>Substring Constructor</h3>
+            <pre><code class="language-cpp"><span class="cm">// Construct from a portion of another string</span>
+<span class="ty">std::string</span> base = <span class="st">"programming"</span>;
+<span class="ty">std::string</span> sub1(base, <span class="nb">0</span>, <span class="nb">7</span>);  <span class="cm">// "program" (start at 0, length 7)</span>
+<span class="ty">std::string</span> sub2(base, <span class="nb">3</span>, <span class="nb">4</span>);  <span class="cm">// "gram"    (start at 3, length 4)</span>
+
+std::cout &lt;&lt; sub1 &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// program</span></code></pre>
+
+            <h3>Fill Constructor</h3>
+            <pre><code class="language-cpp"><span class="cm">// Construct string with n copies of a character</span>
+<span class="ty">std::string</span> stars(<span class="nb">10</span>, <span class="st">'*'</span>);  <span class="cm">// "**********"</span>
+<span class="ty">std::string</span> dashes(<span class="nb">5</span>, <span class="st">'-'</span>); <span class="cm">// "-----"</span>
+
+std::cout &lt;&lt; stars &lt;&lt; <span class="st">'\n'</span>;</code></pre>
+
+            <div class="callout callout-warning">
+                <strong>Common Mistake:</strong>
+                <pre><code class="language-cpp"><span class="ty">std::string</span> s(<span class="nb">5</span>);  <span class="cm">// ERROR: no matching constructor</span>
+<span class="ty">std::string</span> s(<span class="nb">5</span>, <span class="st">'x'</span>);  <span class="cm">// OK: "xxxxx"</span></code></pre>
+                You must provide a character when using the fill constructor.
+            </div>
+        </section>
+
+        <!-- ==================== SIZE & LENGTH ==================== -->
+        <section id="sizing" class="panel">
+            <h2>Size & Length</h2>
+            <p>Both methods return the number of characters in the string. They are identical.</p>
+
+            <pre><code class="language-cpp"><span class="ty">std::string</span> name = <span class="st">"Alice"</span>;
+
+std::cout &lt;&lt; name.<span class="fn">size</span>() &lt;&lt; <span class="st">'\n'</span>;    <span class="cm">// 5</span>
+std::cout &lt;&lt; name.<span class="fn">length</span>() &lt;&lt; <span class="st">'\n'</span>; <span class="cm">// 5 (same result)</span>
+
+<span class="cm">// Common usage in loops</span>
+<span class="kw">for</span> (<span class="ty">size_t</span> i = <span class="nb">0</span>; i &lt; name.<span class="fn">size</span>(); ++i) {
+    std::cout &lt;&lt; name[i] &lt;&lt; <span class="st">' '</span>;
+}
+<span class="cm">// Output: A l i c e</span></code></pre>
+
+            <div class="callout callout-info">
+                <strong>Why two identical methods?</strong> <code>size()</code> is consistent with other STL containers
+                like <code>vector</code>. <code>length()</code> exists for familiarity with other string libraries.
+                Use whichever you prefer.
+            </div>
+
+            <h3>Empty Check</h3>
+            <pre><code class="language-cpp"><span class="ty">std::string</span> s1;
+<span class="ty">std::string</span> s2 = <span class="st">"data"</span>;
+
+<span class="kw">if</span> (s1.<span class="fn">empty</span>()) {
+    std::cout &lt;&lt; <span class="st">"s1 is empty\n"</span>;  <span class="cm">// prints</span>
+}
+
+<span class="kw">if</span> (s2.<span class="fn">size</span>() == <span class="nb">0</span>) {  <span class="cm">// same as empty(), but less clear</span>
+    std::cout &lt;&lt; <span class="st">"s2 is empty\n"</span>;
+}</code></pre>
+        </section>
+
+        <!-- ==================== ACCESSING ==================== -->
+        <section id="accessing" class="panel">
+            <h2>Accessing Elements</h2>
+
+            <h3>Operator[] (Unchecked Access)</h3>
+            <p>Fast, but <strong>no bounds checking</strong>. Accessing out-of-range is undefined behavior.</p>
+
+            <pre><code class="language-cpp"><span class="ty">std::string</span> word = <span class="st">"code"</span>;
+
+std::cout &lt;&lt; word[<span class="nb">0</span>] &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 'c'</span>
+std::cout &lt;&lt; word[<span class="nb">3</span>] &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 'e'</span>
+
+word[<span class="nb">0</span>] = <span class="st">'C'</span>;  <span class="cm">// modify: "Code"</span>
+
+<span class="cm">// DANGER: undefined behavior (no error thrown)</span>
+<span class="ty">char</span> bad = word[<span class="nb">10</span>];  <span class="cm">// may crash, may return garbage</span></code></pre>
+
+            <h3>.at() (Checked Access)</h3>
+            <p>Slightly slower, but <strong>throws exception</strong> if index is out of range.</p>
+
+            <pre><code class="language-cpp"><span class="ty">std::string</span> word = <span class="st">"safe"</span>;
+
+std::cout &lt;&lt; word.<span class="fn">at</span>(<span class="nb">0</span>) &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 's'</span>
+
+<span class="kw">try</span> {
+    <span class="ty">char</span> bad = word.<span class="fn">at</span>(<span class="nb">10</span>);  <span class="cm">// throws std::out_of_range</span>
+} <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::out_of_range</span>&amp; e) {
+    std::cout &lt;&lt; <span class="st">"Error: "</span> &lt;&lt; e.<span class="fn">what</span>() &lt;&lt; <span class="st">'\n'</span>;
+}</code></pre>
+
+            <div class="comparison">
+                <div class="comp-col">
+                    <h4>operator[]</h4>
+                    <ul>
+                        <li>✅ Faster</li>
+                        <li>✅ Use in loops when bounds are known</li>
+                        <li>⚠️ No error checking</li>
+                        <li>⚠️ Undefined behavior if out of range</li>
+                    </ul>
+                </div>
+                <div class="comp-col">
+                    <h4>.at()</h4>
+                    <ul>
+                        <li>✅ Safe</li>
+                        <li>✅ Throws exception on invalid index</li>
+                        <li>⚠️ Slightly slower (bounds check)</li>
+                        <li>⚠️ Use when index comes from user input</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Front & Back</h3>
+            <pre><code class="language-cpp"><span class="ty">std::string</span> s = <span class="st">"hello"</span>;
+
+std::cout &lt;&lt; s.<span class="fn">front</span>() &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 'h' (same as s[0])</span>
+std::cout &lt;&lt; s.<span class="fn">back</span>() &lt;&lt; <span class="st">'\n'</span>;   <span class="cm">// 'o' (same as s[s.size()-1])</span></code></pre>
+        </section>
+
+        <!-- ==================== MODIFYING ==================== -->
+        <section id="modifying" class="panel">
+            <h2>Modifying Strings</h2>
+
+            <h3>Operator+= (Append)</h3>
+            <p>Adds content to the end of a string.</p>
+
+            <pre><code class="language-cpp"><span class="ty">std::string</span> msg = <span class="st">"Hello"</span>;
+
+msg += <span class="st">" world"</span>;  <span class="cm">// append string literal</span>
+std::cout &lt;&lt; msg &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "Hello world"</span>
+
+msg += <span class="st">'!'</span>;  <span class="cm">// append single character</span>
+std::cout &lt;&lt; msg &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "Hello world!"</span>
+
+<span class="ty">std::string</span> name = <span class="st">" Alice"</span>;
+msg += name;  <span class="cm">// append another string</span>
+std::cout &lt;&lt; msg &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "Hello world! Alice"</span></code></pre>
+
+            <h3>Operator+ (Concatenation)</h3>
+            <p>Creates a new string by combining existing ones.</p>
+
+            <pre><code class="language-cpp"><span class="ty">std::string</span> first = <span class="st">"C++"</span>;
+<span class="ty">std::string</span> second = <span class="st">" Programming"</span>;
+
+<span class="ty">std::string</span> full = first + second;
+std::cout &lt;&lt; full &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "C++ Programming"</span>
+
+<span class="cm">// Chaining</span>
+<span class="ty">std::string</span> sentence = <span class="st">"I "</span> + <span class="st">"love "</span> + first + <span class="st">"!"</span>;
+<span class="cm">// ERROR: can't add two literals directly</span>
+
+<span class="cm">// Fix: ensure at least one operand is std::string</span>
+<span class="ty">std::string</span> sentence = <span class="ty">std::string</span>{<span class="st">"I"</span>} + <span class="st">" love "</span> + first + <span class="st">"!"</span>;
+std::cout &lt;&lt; sentence &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "I love C++!"</span></code></pre>
+
+            <div class="callout callout-warning">
+                <strong>Common Error:</strong>
+                <pre><code class="language-cpp"><span class="ty">std::string</span> s = <span class="st">"hello"</span> + <span class="st">" world"</span>;  <span class="cm">// ERROR!</span></code></pre>
+                You cannot add two C-string literals. At least one operand must be <code>std::string</code>.
+            </div>
+
+            <h3>.push_back() (Add Single Character)</h3>
+            <pre><code class="language-cpp"><span class="ty">std::string</span> s = <span class="st">"abc"</span>;
+
+s.<span class="fn">push_back</span>(<span class="st">'d'</span>);
+s.<span class="fn">push_back</span>(<span class="st">'e'</span>);
+
+std::cout &lt;&lt; s &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "abcde"</span>
+
+<span class="cm">// Common pattern: building strings in loops</span>
+<span class="ty">std::string</span> vowels;
+<span class="kw">for</span> (<span class="ty">char</span> c : {<span class="st">'a'</span>, <span class="st">'e'</span>, <span class="st">'i'</span>, <span class="st">'o'</span>, <span class="st">'u'</span>}) {
+    vowels.<span class="fn">push_back</span>(c);
+}
+std::cout &lt;&lt; vowels &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "aeiou"</span></code></pre>
+
+            <h3>Other Useful Modifiers</h3>
+            <pre><code class="language-cpp"><span class="ty">std::string</span> s = <span class="st">"hello"</span>;
+
+<span class="cm">// .append() - same as +=, but more flexible</span>
+s.<span class="fn">append</span>(<span class="st">" world"</span>);
+
+<span class="cm">// .insert() - insert at position</span>
+s.<span class="fn">insert</span>(<span class="nb">5</span>, <span class="st">","</span>);  <span class="cm">// "hello, world"</span>
+
+<span class="cm">// .erase() - remove characters</span>
+s.<span class="fn">erase</span>(<span class="nb">5</span>, <span class="nb">1</span>);  <span class="cm">// remove 1 char at position 5: "hello world"</span>
+
+<span class="cm">// .clear() - empty the string</span>
+s.<span class="fn">clear</span>();
+std::cout &lt;&lt; s.<span class="fn">size</span>() &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 0</span></code></pre>
+        </section>
+
+        <!-- ==================== CONVERSIONS ==================== -->
+        <section id="conversions" class="panel">
+            <h2>Conversions</h2>
+
+            <h3>String to Number: std::stoi()</h3>
+            <p>Converts a string to an integer. Throws <code>std::invalid_argument</code> if conversion fails.</p>
+
+            <pre><code class="language-cpp">#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+<span class="ty">std::string</span> num_str = <span class="st">"42"</span>;
+<span class="ty">int</span> value = <span class="ty">std</span>::<span class="fn">stoi</span>(num_str);
+
+std::cout &lt;&lt; value + <span class="nb">10</span> &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 52</span>
+
+<span class="cm">// Handles leading/trailing whitespace</span>
+<span class="ty">int</span> v2 = <span class="ty">std</span>::<span class="fn">stoi</span>(<span class="st">"  123  "</span>);  <span class="cm">// 123</span>
+
+<span class="cm">// Stops at first non-digit</span>
+<span class="ty">int</span> v3 = <span class="ty">std</span>::<span class="fn">stoi</span>(<span class="st">"99bottles"</span>);  <span class="cm">// 99</span>
+
+<span class="kw">try</span> {
+    <span class="ty">int</span> bad = <span class="ty">std</span>::<span class="fn">stoi</span>(<span class="st">"hello"</span>);  <span class="cm">// throws std::invalid_argument</span>
+} <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::invalid_argument</span>&amp; e) {
+    std::cout &lt;&lt; <span class="st">"Invalid number\n"</span>;
+}</code></pre>
+
+            <h4>Related Functions</h4>
+            <ul>
+                <li><code>std::stol()</code> → <code>long</code></li>
+                <li><code>std::stoll()</code> → <code>long long</code></li>
+                <li><code>std::stof()</code> → <code>float</code></li>
+                <li><code>std::stod()</code> → <code>double</code></li>
+            </ul>
+
+            <h3>Number to String: std::to_string()</h3>
+            <p>Converts numeric types to strings.</p>
+
+            <pre><code class="language-cpp">#include &lt;string&gt;
+
+<span class="ty">int</span> age = <span class="nb">25</span>;
+<span class="ty">std::string</span> msg = <span class="st">"You are "</span> + <span class="ty">std</span>::<span class="fn">to_string</span>(age) + <span class="st">" years old."</span>;
+std::cout &lt;&lt; msg &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "You are 25 years old."</span>
+
+<span class="ty">double</span> pi = <span class="nb">3.14159</span>;
+<span class="ty">std::string</span> pi_str = <span class="ty">std</span>::<span class="fn">to_string</span>(pi);
+std::cout &lt;&lt; pi_str &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "3.141590" (default precision)</span></code></pre>
+
+            <h3>Character Case: std::tolower() & std::toupper()</h3>
+            <p>These work on <strong>individual characters</strong>, not strings. They're in
+                <code>&lt;cctype&gt;</code>.
+            </p>
+
+            <pre><code class="language-cpp">#include &lt;cctype&gt;
+#include &lt;string&gt;
+
+<span class="ty">char</span> upper = <span class="st">'A'</span>;
+<span class="ty">char</span> lower = <span class="ty">std</span>::<span class="fn">tolower</span>(upper);
+std::cout &lt;&lt; lower &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 'a'</span>
+
+<span class="cm">// Convert entire string to lowercase</span>
+<span class="ty">std::string</span> name = <span class="st">"ALICE"</span>;
+<span class="kw">for</span> (<span class="ty">char</span>&amp; c : name) {
+    c = <span class="ty">std</span>::<span class="fn">tolower</span>(c);
+}
+std::cout &lt;&lt; name &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "alice"</span>
+
+<span class="cm">// Or using a loop with index</span>
+<span class="ty">std::string</span> word = <span class="st">"hello"</span>;
+<span class="kw">for</span> (<span class="ty">size_t</span> i = <span class="nb">0</span>; i &lt; word.<span class="fn">size</span>(); ++i) {
+    word[i] = <span class="ty">std</span>::<span class="fn">toupper</span>(word[i]);
+}
+std::cout &lt;&lt; word &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// "HELLO"</span></code></pre>
+
+            <div class="callout callout-warning">
+                <strong>Common Mistake:</strong> <code>std::tolower()</code> and <code>std::toupper()</code> return
+                <code>int</code>, not <code>char</code>. Assign back to <code>char</code> to use as a character.
+            </div>
+        </section>
+
+        <!-- ==================== FAQ ==================== -->
+        <section id="faq" class="panel">
+            <h2>Fundamentals FAQ</h2>
+
+            <details>
+                <summary>Why does <code>std::string</code> have both <code>size()</code> and <code>length()</code>?
+                </summary>
+                <p>Both return the same value. <code>size()</code> exists for consistency with other STL containers
+                    (like <code>std::vector</code>), while <code>length()</code> is more intuitive for strings. Use
+                    whichever you prefer.</p>
+            </details>
+
+            <details>
+                <summary>What's the difference between <code>[]</code> and <code>.at()</code>?</summary>
+                <p><code>operator[]</code> is faster but has no bounds checking—accessing an invalid index causes
+                    undefined behavior. <code>.at()</code> performs bounds checking and throws
+                    <code>std::out_of_range</code> if the index is invalid. Use <code>[]</code> in performance-critical
+                    loops where you know the index is valid, and <code>.at()</code> when the index comes from user
+                    input or is uncertain.
+                </p>
+            </details>
+
+            <details>
+                <summary>Can I add two string literals with <code>+</code>?</summary>
+                <p>No. <code>"hello" + "world"</code> will cause a compile error because both operands are C-style
+                    strings (char arrays), not <code>std::string</code> objects. At least one operand must be
+                    <code>std::string</code>:
+                </p>
+                <pre><code class="language-cpp"><span class="ty">std::string</span> s = <span class="ty">std::string</span>{<span class="st">"hello"</span>} + <span class="st">" world"</span>;  <span class="cm">// OK</span></code></pre>
+            </details>
+
+            <details>
+                <summary>What happens if <code>std::stoi()</code> receives non-numeric input?</summary>
+                <p>It throws <code>std::invalid_argument</code>. Always use a try-catch block when converting
+                    user-provided strings:</p>
+                <pre><code class="language-cpp"><span class="kw">try</span> {
+    <span class="ty">int</span> n = <span class="ty">std</span>::<span class="fn">stoi</span>(user_input);
+} <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::invalid_argument</span>&amp;) {
+    std::cout &lt;&lt; <span class="st">"Not a valid number\n"</span>;
+}</code></pre>
+            </details>
+
+            <details>
+                <summary>How do I convert an entire string to lowercase?</summary>
+                <p><code>std::tolower()</code> works on individual characters, so loop through the string:</p>
+                <pre><code class="language-cpp"><span class="ty">std::string</span> s = <span class="st">"HELLO"</span>;
+<span class="kw">for</span> (<span class="ty">char</span>&amp; c : s) {
+    c = <span class="ty">std</span>::<span class="fn">tolower</span>(c);
+}
+<span class="cm">// s is now "hello"</span></code></pre>
+                <p>The reference (<code>&amp;</code>) is important—it modifies the original string.</p>
+            </details>
+
+            <details>
+                <summary>What's the difference between <code>+=</code> and <code>.push_back()</code>?</summary>
+                <p><code>operator+=</code> can append strings, string literals, or single characters.
+                    <code>.push_back()</code> only appends a single character. For single characters, they're
+                    equivalent:
+                </p>
+                <pre><code class="language-cpp">s += <span class="st">'x'</span>;  <span class="cm">// OK</span>
+s.<span class="fn">push_back</span>(<span class="st">'x'</span>);  <span class="cm">// also OK</span></code></pre>
+            </details>
+
+            <details>
+                <summary>Why does my string have extra digits after using <code>std::to_string()</code> on a double?
+                </summary>
+                <p><code>std::to_string()</code> uses default precision (typically 6 decimal places):</p>
+                <pre><code class="language-cpp"><span class="ty">std</span>::<span class="fn">to_string</span>(<span class="nb">3.14</span>);  <span class="cm">// "3.140000"</span></code></pre>
+                <p>To control precision, use <code>std::ostringstream</code> with <code>std::fixed</code> and
+                    <code>std::setprecision</code>.
+                </p>
+            </details>
+
+            <details>
+                <summary>Can I compare strings with <code>==</code>?</summary>
+                <p>Yes! <code>std::string</code> overloads <code>==</code>, <code>!=</code>, <code>&lt;</code>,
+                    <code>&gt;</code>, etc., for lexicographic comparison:
+                </p>
+                <pre><code class="language-cpp"><span class="ty">std::string</span> a = <span class="st">"apple"</span>;
+<span class="ty">std::string</span> b = <span class="st">"banana"</span>;
+
+<span class="kw">if</span> (a &lt; b) {  <span class="cm">// true (lexicographically)</span>
+    std::cout &lt;&lt; <span class="st">"a comes before b\n"</span>;
+}</code></pre>
+            </details>
+
+            <details>
+                <summary>How do I check if a string is empty?</summary>
+                <p>Use <code>.empty()</code>, which is clearer than checking size:</p>
+                <pre><code class="language-cpp"><span class="kw">if</span> (s.<span class="fn">empty</span>()) {  <span class="cm">// preferred</span>
+    std::cout &lt;&lt; <span class="st">"String is empty\n"</span>;
+}
+
+<span class="kw">if</span> (s.<span class="fn">size</span>() == <span class="nb">0</span>) {  <span class="cm">// also works, but less idiomatic</span>
+    std::cout &lt;&lt; <span class="st">"String is empty\n"</span>;
+}</code></pre>
+            </details>
+
+            <details>
+                <summary>What's the difference between a C-string (<code>char*</code>) and <code>std::string</code>?
+                </summary>
+                <p>C-strings are null-terminated character arrays with manual memory management and limited operations.
+                    <code>std::string</code> is a class that manages memory automatically and provides rich
+                    functionality (concatenation, searching, resizing, etc.). Always prefer <code>std::string</code> in
+                    modern C++.
+                </p>
+            </details>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links"> 
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description"
+        content="Provided final practice examination with syntactically correct C++ questions and solutions. Printable and interactive." />
+    <title>Provided Final Practice Examination</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+
+    <link rel="stylesheet" href="../../styles.css" />
+    <script src="../../settings.js"></script>
+
+    <style>
+        @media print {
+            * {
+                color: black !important;
+                background: white !important;
+                box-shadow: none !important;
+                border-color: black !important;
+            }
+
+            header,
+            nav,
+            footer,
+            .btn {
+                display: none !important;
+            }
+
+            section.panel {
+                page-break-inside: avoid;
+                break-after: page;
+                margin: 0 !important;
+                padding: 12px !important;
+            }
+
+            section.panel:last-of-type {
+                break-after: auto;
+            }
+
+            .code-block {
+                font-size: 11px !important;
+                padding: 8px !important;
+                margin: 8px 0 !important;
+            }
+
+            .code-block pre {
+                margin: 0 !important;
+                line-height: 1.4;
+            }
+
+            .solution {
+                display: block !important;
+                max-height: none !important;
+                opacity: 1 !important;
+                margin: 8px 0 !important;
+            }
+
+            h2 {
+                font-size: 18px !important;
+                margin: 0 0 8px 0 !important;
+            }
+
+            h3 {
+                font-size: 14px !important;
+                margin: 8px 0 4px 0 !important;
+            }
+
+            p {
+                margin: 4px 0 !important;
+                font-size: 12px;
+            }
+
+            ul,
+            li {
+                margin: 2px 0 !important;
+                font-size: 12px;
+            }
+
+            .container {
+                max-width: 100% !important;
+            }
+        }
+
+        .solution {
+            display: none;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease;
+        }
+
+        .solution.show {
+            display: block;
+            max-height: 2000px;
+            opacity: 1;
+            animation: slideDown 0.4s ease forwards;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .warning {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .btn-solutions {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-solutions:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 140, 255, 0.3);
+        }
+
+        .btn-solutions.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="../Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="../../settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79-.527-1.79-3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l-.292-.159a.873.873 0 0 1 1.255.52l-.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+<br>
+<br>
+<br>
+<br>
+
+    <main class="container">
+        <h1>CSC 116 Practice Final – Fall 2022 (A)</h1>
+        <p><strong>CSC 116 – FALL 2022<br>
+                FUNDAMENTALS OF PROGRAMMING WITH ENGINEERING APPLICATIONS II<br>
+                PRACTICE FINAL EXAMINATION<br>
+                UNIVERSITY OF VICTORIA</strong></p>
+
+        <p>
+            <strong>Date:</strong> Fall 2022<br>
+            <strong>CRN:</strong> 00000<br>
+            <strong>Instructor:</strong> B. Bird
+        </p>
+
+        <div class="panel" style="display:flex; gap:12px;">
+            <button class="btn btn-primary" onclick="window.print()">Print (B/W)</button>
+            <button class="btn btn-solutions" id="solutions-toggle" onclick="toggleSolutions()">Show Solutions</button>
+        </div>
+
+        <section class="panel">
+            <h2>Exam Instructions</h2>
+            <ol>
+                <li>You have <strong>180 minutes (three hours)</strong> to complete this exam.</li>
+                <li>This is an <strong>open book exam</strong>. You may use any notes or books, but you are not
+                    permitted to use any electronic devices (including phones, calculators, smart watches or computers).
+                </li>
+                <li>The invigilators, at their discretion, may require you to hand in any of the notes or books you used
+                    during the exam when you hand in your test paper.</li>
+                <li>There are <strong>6 questions on 13 pages</strong>, including this cover page. Please verify that
+                    your copy has all pages and notify the invigilator immediately if any pages are missing.</li>
+                <li>Unless the question explicitly says otherwise, if you are asked to write a function, the return type
+                    and parameter types must be specified explicitly (i.e. <strong>without the auto keyword</strong>).
+                </li>
+            </ol>
+
+            <h3>Grading Table</h3>
+            <table style="border-collapse: collapse; margin: 16px 0;">
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <th style="padding: 8px; text-align: left;">Question</th>
+                    <th style="padding: 8px; text-align: center;">[Max. Marks]</th>
+                    <th style="padding: 8px; text-align: center;">Mark</th>
+                    <th style="padding: 8px; text-align: left;">Question</th>
+                    <th style="padding: 8px; text-align: center;">[Max. Marks]</th>
+                    <th style="padding: 8px; text-align: center;">Mark</th>
+                </tr>
+                <tr>
+                    <td style="padding: 8px;">1</td>
+                    <td style="padding: 8px; text-align: center;">[6]</td>
+                    <td style="padding: 8px;"></td>
+                    <td style="padding: 8px;">4</td>
+                    <td style="padding: 8px; text-align: center;">[5]</td>
+                    <td style="padding: 8px;"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px;">2</td>
+                    <td style="padding: 8px; text-align: center;">[8]</td>
+                    <td style="padding: 8px;"></td>
+                    <td style="padding: 8px;">5</td>
+                    <td style="padding: 8px; text-align: center;">[11]</td>
+                    <td style="padding: 8px;"></td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px;">3</td>
+                    <td style="padding: 8px; text-align: center;">[5]</td>
+                    <td style="padding: 8px;"></td>
+                    <td style="padding: 8px;">6</td>
+                    <td style="padding: 8px; text-align: center;">[15]</td>
+                    <td style="padding: 8px;"></td>
+                </tr>
+                <tr style="border-top: 2px solid var(--border); font-weight: bold;">
+                    <td colspan="5" style="padding: 8px;">Total</td>
+                    <td style="padding: 8px; text-align: center;">[50]</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- QUESTION 1 -->
+        <section class="panel">
+            <h2>Question 1 [6 marks]</h2>
+
+            <p>
+                Consider the syntactically correct C++ code below.
+            </p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+<span class="kw">#include</span> &lt;utility&gt;
+
+<span class="cm">/* Your code would be put here */</span>
+
+<span class="kw">int</span> main(){
+    <span class="ty">RankedPair</span>&lt;<span class="ty">std::string</span>&gt; P1 { <span class="st">"Pineapple"</span>, <span class="st">"Raspberry"</span> };
+    <span class="ty">RankedPair</span>&lt;<span class="ty">std::string</span>&gt; P2 { <span class="st">"Grapefruit"</span>, <span class="st">"Raspberry"</span> };
+    <span class="ty">RankedPair</span>&lt;<span class="kw">int</span>&gt; P3 { <span class="nb">6</span>, <span class="nb">10</span> };
+    <span class="ty">RankedPair</span>&lt;<span class="kw">double</span>&gt; P4 { <span class="nb">1.87</span>, <span class="nb">1.16</span> };
+
+    std::cout &lt;&lt; <span class="st">"P1: smallest = "</span> &lt;&lt; P1.smallest();
+    std::cout &lt;&lt; <span class="st">", largest = "</span> &lt;&lt; P1.largest() &lt;&lt; std::endl;
+    std::cout &lt;&lt; <span class="st">"P2: smallest = "</span> &lt;&lt; P2.smallest();
+    std::cout &lt;&lt; <span class="st">", largest = "</span> &lt;&lt; P2.largest() &lt;&lt; std::endl;
+    std::cout &lt;&lt; <span class="st">"P3: smallest = "</span> &lt;&lt; P3.smallest();
+    std::cout &lt;&lt; <span class="st">", largest = "</span> &lt;&lt; P3.largest() &lt;&lt; std::endl;
+    std::cout &lt;&lt; <span class="st">"P4: smallest = "</span> &lt;&lt; P4.smallest();
+    std::cout &lt;&lt; <span class="st">", largest = "</span> &lt;&lt; P4.largest() &lt;&lt; std::endl;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}
+</pre>
+            </div>
+
+            <p>
+                The class <code>RankedPair</code>, which must contain (at minimum) a constructor which takes two values,
+                a member function <code>smallest</code> which returns the smaller of the two values from the constructor
+                and a member function <code>largest</code> which returns the larger of the two values from the
+                constructor.
+            </p>
+
+            <p>
+                Note that "smaller" in the context of <code>std::string</code> objects refers to dictionary
+                (lexicographical) ordering.
+            </p>
+
+            <p>
+                Once it is implemented correctly, the program will generate the following output.
+            </p>
+
+            <div class="code-block">
+                <pre>P1: smallest = Pineapple, largest = Raspberry
+P2: smallest = Grapefruit, largest = Raspberry
+P3: smallest = 6, largest = 10
+P4: smallest = 1.16, largest = 1.87</pre>
+            </div>
+
+            <p>
+                Write any definition of the <code>RankedPair</code> class such that the complete program compiles and
+                produces the output shown. The <code>RankedPair</code> class should use the <code>&lt;</code> operator
+                to compute the ordering of its elements.
+            </p>
+
+            <p>
+                For full marks, your solution must function correctly even if the input values on the previous page are
+                changed.
+            </p>
+
+            <p>
+                <em>Hint: You have to use templates (and there is no clever solution that avoids them...).</em>
+            </p>
+
+            <div class="solution">
+                <h3>Solution</h3>
+                <div class="code-block" style="border-color: brown;">
+                    <pre>
+template&lt;typename T&gt;
+class RankedPair {
+    T a, b;
+public:
+    RankedPair(T x, T y) : a(x), b(y) {}
+    T smallest() const { return (a &lt; b) ? a : b; }
+    T largest() const { return (a &lt; b) ? b : a; }
+};
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTION 2 -->
+        <section class="panel">
+            <h2>Question 2 [8 marks]</h2>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+
+<span class="cm">/* Your code in part (a) would be put here */</span>
+
+<span class="kw">class</span> <span class="ty">Borscht</span>: <span class="kw">public</span> <span class="ty">Soup</span>{
+<span class="kw">public</span>:
+    <span class="fn">Borscht</span>(){
+        name = <span class="st">"Borscht"</span>;
+        main_ingredient = <span class="st">"Beets"</span>;
+    }
+};
+
+<span class="kw">class</span> <span class="ty">Chowder</span>: <span class="kw">public</span> <span class="ty">Soup</span>{
+<span class="kw">public</span>:
+    <span class="fn">Chowder</span>(<span class="ty">std::string</span> chowder_type){
+        name = chowder_type + <span class="st">" Chowder"</span>;
+        main_ingredient = chowder_type;
+    }
+};
+
+<span class="kw">class</span> <span class="ty">Minestrone</span>: <span class="kw">public</span> <span class="ty">Soup</span>{
+<span class="kw">public</span>:
+    <span class="fn">Minestrone</span>(){
+        name = <span class="st">"Minestrone"</span>;
+        main_ingredient = <span class="st">"Tomatoes"</span>;
+    }
+};
+
+<span class="kw">void</span> <span class="fn">print_soup</span>(<span class="ty">Soup</span>&amp; S){
+    std::cout &lt;&lt; <span class="st">"Soup: "</span> &lt;&lt; S.get_name() &lt;&lt; std::endl;
+    std::cout &lt;&lt; <span class="st">"Main ingredient: "</span> &lt;&lt; S.main_ingredient &lt;&lt; std::endl;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>(){
+    <span class="ty">Borscht</span> B {};
+    <span class="ty">Chowder</span> C1 {<span class="st">"Clam"</span>};
+    <span class="ty">Chowder</span> C2 {<span class="st">"Corn"</span>};
+    <span class="ty">Minestrone</span> M {};
+    print_soup(B);
+    print_soup(C1);
+    print_soup(C2);
+    print_soup(M);
+    <span class="kw">return</span> <span class="nb">0</span>;
+}
+</pre>
+            </div>
+
+            <p>
+                The class <code>Soup</code> (which is the superclass of the three classes shown) is missing.
+                Once it is implemented correctly, the program will generate the following output.
+            </p>
+
+            <div class="code-block">
+                <pre>Soup: Borscht
+Main ingredient: Beets
+Soup: Clam Chowder
+Main ingredient: Clam
+Soup: Corn Chowder
+Main ingredient: Corn
+Soup: Minestrone
+Main ingredient: Tomatoes</pre>
+            </div>
+
+            <p>
+                (a) Write any definition of the <code>Soup</code> class such that the complete program compiles and
+                produces the output shown.
+            </p>
+            <p>
+                (b) Why would a compile error occur if the declaration of <code>C2</code> (on line 37) was changed to
+                <code>Chowder C2;</code>?
+            </p>
+
+            <div class="solution">
+                <h3>Solution</h3>
+                <div class="code-block" style="border-color: brown;">
+                    <pre>
+class Soup {
+public:
+    std::string name;
+    std::string main_ingredient;
+
+    std::string get_name() const {
+        return name;
+    }
+};
+</pre>
+                </div>
+
+                <div class="code-block" style="border-color: brown;">
+                    (b) <code>Chowder</code> has no default constructor; it requires a string argument.
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTION 3 -->
+        <section class="panel">
+            <h2>Question 3 [5 marks]</h2>
+
+            <p>
+                What is the output of the following program?
+            </p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+
+<span class="kw">class</span> <span class="ty">BaseClass</span>{
+<span class="kw">public</span>:
+    <span class="fn">BaseClass</span>() { }
+    <span class="kw">void</span> <span class="fn">a_function</span>(){
+        std::cout &lt;&lt; <span class="st">"BaseClass A"</span> &lt;&lt; std::endl;
+    }
+    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">another_function</span>(){
+        std::cout &lt;&lt; <span class="st">"BaseClass B"</span> &lt;&lt; std::endl;
+    };
+};
+
+<span class="kw">class</span> <span class="ty">DerivedClass</span>: <span class="kw">public</span> <span class="ty">BaseClass</span>{
+<span class="kw">public</span>:
+    <span class="fn">DerivedClass</span>() { }
+    <span class="kw">void</span> <span class="fn">a_function</span>(){
+        std::cout &lt;&lt; <span class="st">"DerivedClass A"</span> &lt;&lt; std::endl;
+    }
+};
+
+<span class="kw">void</span> <span class="fn">F</span>(<span class="ty">BaseClass</span>&amp; Z){
+    Z.a_function();
+    Z.another_function();
+}
+
+<span class="kw">void</span> <span class="fn">G</span>(<span class="ty">DerivedClass</span>&amp; Z){
+    Z.a_function();
+    Z.another_function();
+}
+
+<span class="kw">int</span> <span class="fn">main</span>(){
+    <span class="ty">BaseClass</span> x {};
+    <span class="ty">DerivedClass</span> y {};
+    F(x);
+    F(y);
+    G(y);
+    <span class="kw">return</span> <span class="nb">0</span>;
+}
+</pre>
+            </div>
+
+            <div class="solution">
+                <h3>Solution</h3>
+                <div class="code-block" style="border-color: brown;">
+                    <pre>
+BaseClass A
+BaseClass B
+BaseClass A
+BaseClass B
+DerivedClass A
+BaseClass B
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTION 4 -->
+        <section class="panel">
+            <h2>Question 4 [5 marks]</h2>
+
+            <p>
+                What is the output of the following program?
+            </p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;memory&gt;
+
+<span class="kw">class</span> <span class="ty">Z</span>{
+<span class="kw">public</span>:
+    <span class="fn">Z</span>(<span class="kw">int</span> val): value {val} {
+        std::cout &lt;&lt; <span class="st">"Z constructor: "</span> &lt;&lt; value &lt;&lt; std::endl;
+    }
+    ~<span class="fn">Z</span>(){
+        std::cout &lt;&lt; <span class="st">"Z destructor: "</span> &lt;&lt; value &lt;&lt; std::endl;
+    }
+<span class="kw">private</span>:
+    <span class="kw">int</span> value;
+};
+
+<span class="kw">class</span> <span class="ty">ZPair</span>{
+<span class="kw">public</span>:
+    <span class="fn">ZPair</span>(){
+        right_z = std::make_shared&lt;<span class="ty">Z</span>&gt;(<span class="nb">6</span>);
+        left_z = std::make_shared&lt;<span class="ty">Z</span>&gt;(<span class="nb">10</span>);
+    }
+    <span class="kw">void</span> <span class="fn">go</span>(){
+        left_z = <span class="nb">nullptr</span>;
+        right_z = <span class="nb">nullptr</span>;
+        left_z = std::make_shared&lt;<span class="ty">Z</span>&gt;(<span class="nb">187</span>);
+    }
+    <span class="ty">std::shared_ptr</span>&lt;<span class="ty">Z</span>&gt; left_z, right_z;
+};
+
+<span class="kw">int</span> <span class="fn">main</span>(){
+    <span class="ty">ZPair</span> zp {};
+    std::cout &lt;&lt; <span class="st">"main (1)"</span> &lt;&lt; std::endl;
+    zp.go();
+    std::cout &lt;&lt; <span class="st">"main (2)"</span> &lt;&lt; std::endl;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}
+</pre>
+            </div>
+
+            <div class="solution">
+                <h3>Solution</h3>
+                <div class="code-block" style="border-color: brown;">
+                    <pre>
+Z constructor: 6
+Z constructor: 10
+main (1)
+Z destructor: 10
+Z destructor: 6
+Z constructor: 187
+main (2)
+Z destructor: 187
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTION 5 -->
+        <section class="panel">
+            <h2>Question 5 [11 marks]</h2>
+
+            <p>Consider the syntactically correct C++ code below.</p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+<span class="kw">#include</span> &lt;functional&gt;
+
+<span class="cm">/* foreach_if: Given a vector vec, a condition and a function F,
+               run F on all elements of the vector where the
+               condition evaluates to true. */</span>
+<span class="kw">template</span>&lt;<span class="kw">typename</span> T&gt;
+<span class="kw">void</span> <span class="fn">foreach_if</span>( <span class="ty">std::vector</span>&lt;T&gt;&amp; vec,
+                 <span class="ty">std::function</span>&lt; <span class="kw">bool</span>(T) &gt; condition,
+                 <span class="ty">std::function</span>&lt; <span class="kw">void</span>(T) &gt; F ){
+    <span class="kw">for</span>(<span class="kw">auto</span> x: vec){
+        <span class="kw">if</span>(condition(x))
+            F(x);
+    }
+}
+
+<span class="kw">int</span> <span class="fn">main</span>(){
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; Vi {<span class="nb">10</span>, <span class="nb">6</span>, <span class="nb">-6</span>, <span class="nb">10</span>, <span class="nb">100</span>, <span class="nb">17</span>};
+    <span class="ty">std::vector</span>&lt;<span class="ty">std::string</span>&gt; Vs {<span class="st">"Victoria"</span>,<span class="st">"Vancouver"</span>,<span class="st">"Duncan"</span>,<span class="st">"Sidney"</span>};
+    <span class="kw">int</span> sum {<span class="nb">0</span>};
+
+    <span class="kw">auto</span> Ci = [](<span class="kw">int</span> x){
+        <span class="kw">return</span> x &gt; <span class="nb">0</span> &amp;&amp; x &lt;= <span class="nb">10</span>;
+    };
+    <span class="kw">auto</span> Fi = [&amp;](<span class="kw">int</span> x){
+        sum += x;
+    };
+
+    <span class="kw">auto</span> Cs = [](<span class="ty">std::string</span> s){
+        <span class="kw">return</span> s.length() &lt;= <span class="nb">6</span>;
+    };
+    <span class="kw">auto</span> Fs = [&amp;](<span class="ty">std::string</span> s){
+        sum += s.length();
+    };
+
+    foreach_if&lt;<span class="kw">int</span>&gt;(Vi, Ci, Fi);
+    std::cout &lt;&lt; <span class="st">"Sum (1): "</span> &lt;&lt; sum &lt;&lt; std::endl;
+    foreach_if&lt;<span class="ty">std::string</span>&gt;(Vs, Cs, Fs);
+    std::cout &lt;&lt; <span class="st">"Sum (2): "</span> &lt;&lt; sum &lt;&lt; std::endl;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}
+</pre>
+            </div>
+
+            <p>(a) Give the complete output of the program.</p>
+
+            <p>(b) Implement the <code>foreach_ifnot</code> function below. You may <strong>not</strong> use any loops
+                (<code>for</code>, <code>while</code>, <code>do/while</code>, etc.) or any standard library functions
+                (e.g. <code>std::for_each</code>), but you <strong>may</strong> use the <code>foreach_if</code> function
+                on the previous page.</p>
+
+            <div class="code-block">
+                <pre><span class="cm">/* foreach_ifnot: Given a vector vec, a condition and a function F,
+                   run F on all elements of the vector where the
+                   condition evaluates to false. */</span>
+<span class="kw">template</span>&lt;<span class="kw">typename</span> T&gt;
+<span class="kw">void</span> <span class="fn">foreach_ifnot</span>( <span class="ty">std::vector</span>&lt;T&gt;&amp; vec,
+                    <span class="ty">std::function</span>&lt; <span class="kw">bool</span>(T) &gt; condition,
+                    <span class="ty">std::function</span>&lt; <span class="kw">void</span>(T) &gt; F ){
+}</pre>
+            </div>
+
+            <p>(c) Implement the <code>filter_element</code> function below. You may <strong>not</strong> use any loops,
+                any <code>if</code>-statements or any standard library functions, but you <strong>may</strong> use the
+                <code>foreach_if</code> function on the previous page.
+            </p>
+
+            <div class="code-block">
+                <pre><span class="cm">/* filter_element: Given a vector vec and a value z, return a new
+                   vector containing all elements of vec which are
+                   not equal to z. */</span>
+<span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; <span class="fn">filter_element</span>( <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt;&amp; vec, <span class="kw">int</span> z ){
+}</pre>
+            </div>
+
+            <div class="solution">
+                <h3>Solution</h3>
+                <div class="code-block" style="border-color: brown;">
+                    <pre>
+Sum (1): 26
+Sum (2): 41
+</pre>
+                </div>
+
+                <div class="code-block" style="border-color: brown;">
+                    <pre>
+template&lt;typename T&gt;
+void foreach_ifnot(std::vector&lt;T&gt;& vec,
+                   std::function&lt;bool(T)&gt; cond,
+                   std::function&lt;void(T)&gt; F){
+    foreach_if(vec, [&](T x){ return !cond(x); }, F);
+}
+
+std::vector&lt;int&gt; filter_element(std::vector&lt;int&gt;& vec, int z){
+    std::vector&lt;int&gt; out;
+    foreach_if(vec, [&](int x){ return x != z; },
+                    [&](int x){ out.push_back(x); });
+    return out;
+}
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUESTION 6 -->
+        <section class="panel">
+            <h2>Question 6 [15 marks]</h2>
+
+            <p>Consider the syntactically correct C++ code below.</p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;list&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+<span class="kw">#include</span> &lt;string&gt;
+
+<span class="cm">/* Your code would be put here */</span>
+
+<span class="kw">template</span>&lt;<span class="kw">typename</span> T&gt;
+<span class="kw">void</span> <span class="fn">print_queue</span>(<span class="ty">Queue</span>&lt;T&gt;&amp; Q){
+    <span class="kw">for</span>(<span class="kw">unsigned int</span> i {<span class="nb">0</span>}; i &lt; Q.size(); i++){
+        std::cout &lt;&lt; Q.get(i) &lt;&lt; <span class="st">" "</span>;
+    }
+    std::cout &lt;&lt; std::endl;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>(){
+    <span class="ty">Queue</span>&lt;<span class="kw">int</span>&gt; IQ {};
+    IQ.add(<span class="nb">6</span>);
+    IQ.add(<span class="nb">10</span>);
+    IQ.add(<span class="nb">6</span>);
+    IQ.add(<span class="nb">17</span>);
+    IQ.add(<span class="nb">6</span>);
+    IQ.add(<span class="nb">187</span>);
+
+    std::cout &lt;&lt; <span class="st">"Part 1"</span> &lt;&lt; std::endl;
+    print_queue(IQ);
+
+    <span class="kw">auto</span> element1 = IQ.remove();
+    std::cout &lt;&lt; <span class="st">"First element: "</span> &lt;&lt; element1 &lt;&lt; std::endl;
+    print_queue(IQ);
+
+    std::cout &lt;&lt; <span class="st">"Removing all occurrences of 6"</span> &lt;&lt; std::endl;
+    std::cout &lt;&lt; IQ.remove_all(<span class="nb">6</span>) &lt;&lt; <span class="st">" elements removed."</span> &lt;&lt; std::endl;
+    print_queue(IQ);
+
+    <span class="ty">Queue</span>&lt;<span class="ty">std::string</span>&gt; SQ {};
+    SQ.add(<span class="st">"Raspberry"</span>);
+    SQ.add(<span class="st">"Pear"</span>);
+    SQ.add(<span class="st">"Pineapple"</span>);
+    SQ.add(<span class="st">"Lemon"</span>);
+    SQ.add(<span class="st">"Pineapple"</span>);
+    SQ.add(<span class="st">"Pear"</span>);
+
+    std::cout &lt;&lt; <span class="st">"Part 2"</span> &lt;&lt; std::endl;
+    print_queue(SQ);
+
+    <span class="kw">auto</span> element2 = SQ.remove();
+    std::cout &lt;&lt; <span class="st">"First element: "</span> &lt;&lt; element2 &lt;&lt; std::endl;
+    print_queue(SQ);
+
+    std::cout &lt;&lt; <span class="st">"Removing all occurrences of Pineapple"</span> &lt;&lt; std::endl;
+    std::cout &lt;&lt; SQ.remove_all(<span class="st">"Pineapple"</span>) &lt;&lt; <span class="st">" elements removed."</span> &lt;&lt; std::endl;
+    print_queue(SQ);
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+
+            <p>Once implemented correctly, the program will generate the following output.</p>
+
+            <div class="code-block">
+                <pre>Part 1
+6 10 6 17 6 187
+First element: 6
+10 6 17 6 187
+Removing all occurrences of 6
+2 elements removed.
+10 17 187
+Part 2
+Raspberry Pear Pineapple Lemon Pineapple Pear
+First element: Raspberry
+Pear Pineapple Lemon Pineapple Pear
+Removing all occurrences of Pineapple
+2 elements removed.
+Pear Lemon Pear</pre>
+            </div>
+
+            <p>
+                The <code>Queue</code> class represents a queue data structure where elements are added at one end and
+                removed from the other.
+            </p>
+
+            <p>The <code>Queue</code> class must provide the following public member functions:</p>
+
+            <ul>
+                <li><code>add(x)</code> - Add element x to the queue</li>
+                <li><code>remove()</code> - Remove and return the first element</li>
+                <li><code>get(i)</code> - Return element at index i (throws <code>std::out_of_range</code> if invalid)
+                </li>
+                <li><code>remove_all(x)</code> - Remove all occurrences of x and return count removed</li>
+                <li><code>size()</code> - Return the number of elements</li>
+            </ul>
+
+            <p><strong>Constraints:</strong></p>
+            <ul>
+                <li>No more than <strong>5 non-constructor public members</strong></li>
+                <li>Any number of constructors and private members allowed</li>
+            </ul>
+
+            <p><strong>Put your implementation of the Queue class below (continuing on the next page if
+                    necessary).</strong></p>
+
+            <div class="solution">
+                <h3>Solution</h3>
+                <div class="code-block" style="border-color: brown;">
+                    <pre>
+template&lt;typename T&gt;
+class Queue {
+    std::vector&lt;T&gt; data;
+public:
+    void add(const T& x){ data.push_back(x); }
+    T remove(){
+        T v = data.front();
+        data.erase(data.begin());
+        return v;
+    }
+    T get(unsigned i) const{
+        if(i &gt;= data.size())
+            throw std::out_of_range("Invalid index");
+        return data[i];
+    }
+    unsigned size() const{ return data.size(); }
+    unsigned remove_all(const T& x){
+        unsigned c = 0;
+        auto it = data.begin();
+        while(it != data.end())
+            if(*it == x){ it = data.erase(it); c++; }
+            else ++it;
+        return c;
+    }
+};
+</pre>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel" style="text-align: center; font-size: 1.2rem; font-weight: bold; margin-top: 40px;">
+            <p>-- END OF EXAMINATION --</p>
+        </section>
+
+    </main>
+
+      <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links"> 
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        let solutionsVisible = false;
+
+        function toggleSolutions() {
+            solutionsVisible = !solutionsVisible;
+            const btn = document.getElementById('solutions-toggle');
+            const solutions = document.querySelectorAll('.solution');
+
+            solutions.forEach(sol => {
+                if (solutionsVisible) {
+                    sol.classList.add('show');
+                } else {
+                    sol.classList.remove('show');
+                }
+            });
+
+            btn.textContent = solutionsVisible ? 'Hide Solutions' : 'Show Solutions';
+            btn.classList.toggle('active', solutionsVisible);
+        }
+
+        function downloadHTML() {
+            const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'CSC116_Practice_Final_Fall2022A.html';
+            link.click();
+        }
+    </script>
+</body>
+
+</html>

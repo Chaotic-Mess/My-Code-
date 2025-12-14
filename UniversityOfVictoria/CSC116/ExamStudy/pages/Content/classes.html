@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Classes & Objects - CSC 116 Study Guide</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+</head>
+
+<body>
+<header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link" aria-current="page">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="../Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="../../settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <aside class="quick-nav">
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="#basics">Class Basics</a></li>
+            <li><a href="#constructors">Constructors</a></li>
+            <li><a href="#members">Member Functions</a></li>
+            <li><a href="#access">Access Control</a></li>
+            <li><a href="#const">Const &amp; Static</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+    </aside>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Classes &amp; Objects</h1>
+            <p>Master object-oriented programming fundamentals: creating classes, constructors, member functions, and
+                encapsulation.</p>
+        </section>
+
+        <div class="info-box">
+            <strong>Related Topics:</strong> See <a href="../Lectures/strings-constructors.html">String
+                Constructors</a> for real-world constructor examples.
+        </div>
+
+        <!-- ==================== CLASS BASICS ==================== -->
+        <section id="basics" class="panel">
+            <h2>Class Basics</h2>
+            <p>A <strong>class</strong> is a user-defined type that bundles data (member variables) and functions
+                (member functions) together.</p>
+
+            <h3>Defining a Class</h3>
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">public</span>:
+    <span class="cm">// Member variables (data)</span>
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+    <span class="cm">// Member function (behavior)</span>
+    <span class="ty">double</span> <span class="fn">area</span>() {
+        <span class="kw">return</span> width * height;
+    }
+};</code></pre>
+
+            <div class="callout callout-warning">
+                <strong>Don't forget the semicolon!</strong> Class definitions end with <code>;</code>
+            </div>
+
+            <h3>Creating Objects</h3>
+            <pre><code class="language-cpp"><span class="cm">// Create an object (instance) of Rectangle</span>
+<span class="ty">Rectangle</span> rect;
+rect.width = <span class="nb">5.0</span>;
+rect.height = <span class="nb">3.0</span>;
+
+std::cout &lt;&lt; rect.<span class="fn">area</span>() &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 15.0</span>
+
+<span class="cm">// Create another independent object</span>
+<span class="ty">Rectangle</span> square;
+square.width = <span class="nb">4.0</span>;
+square.height = <span class="nb">4.0</span>;
+
+std::cout &lt;&lt; square.<span class="fn">area</span>() &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 16.0</span></code></pre>
+
+            <h3>Struct vs Class</h3>
+            <p>In C++, <code>struct</code> and <code>class</code> are nearly identical. The only difference is default
+                access:</p>
+
+            <div class="comparison">
+                <div class="comp-col">
+                    <h4>struct</h4>
+                    <ul>
+                        <li>Members are <code>public</code> by default</li>
+                        <li>Often used for simple data containers</li>
+                    </ul>
+                    <pre><code class="language-cpp"><span class="kw">struct</span> <span class="ty">Point</span> {
+    <span class="ty">int</span> x;  <span class="cm">// public by default</span>
+    <span class="ty">int</span> y;
+};</code></pre>
+                </div>
+                <div class="comp-col">
+                    <h4>class</h4>
+                    <ul>
+                        <li>Members are <code>private</code> by default</li>
+                        <li>Preferred for encapsulation</li>
+                    </ul>
+                    <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Point</span> {
+    <span class="ty">int</span> x;  <span class="cm">// private by default</span>
+    <span class="ty">int</span> y;
+};</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONSTRUCTORS ==================== -->
+        <section id="constructors" class="panel">
+            <h2>Constructors</h2>
+            <p>A <strong>constructor</strong> is a special member function that runs when an object is created. It
+                initializes the object's data.</p>
+
+            <h3>Default Constructor</h3>
+            <p>Takes no parameters. If you don't write any constructor, the compiler generates a default one.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">public</span>:
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+    <span class="cm">// Default constructor</span>
+    <span class="fn">Rectangle</span>() {
+        width = <span class="nb">0.0</span>;
+        height = <span class="nb">0.0</span>;
+    }
+};
+
+<span class="ty">Rectangle</span> r;  <span class="cm">// calls default constructor</span>
+std::cout &lt;&lt; r.width &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 0.0</span></code></pre>
+
+            <h3>Parameterized Constructor</h3>
+            <p>Takes arguments to initialize member variables with specific values.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">public</span>:
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+    <span class="cm">// Parameterized constructor</span>
+    <span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) {
+        width = w;
+        height = h;
+    }
+};
+
+<span class="ty">Rectangle</span> rect(<span class="nb">5.0</span>, <span class="nb">3.0</span>);  <span class="cm">// width=5.0, height=3.0</span>
+<span class="ty">Rectangle</span> square{<span class="nb">4.0</span>, <span class="nb">4.0</span>};  <span class="cm">// uniform initialization</span></code></pre>
+
+            <div class="callout callout-warning">
+                <strong>Important:</strong> Once you define <em>any</em> constructor, the compiler no longer generates a
+                default constructor automatically. If you want both, you must define both.
+            </div>
+
+            <h3>Constructor Overloading</h3>
+            <p>You can have multiple constructors with different parameter lists.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">public</span>:
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+    <span class="cm">// Default constructor</span>
+    <span class="fn">Rectangle</span>() {
+        width = <span class="nb">1.0</span>;
+        height = <span class="nb">1.0</span>;
+    }
+
+    <span class="cm">// Parameterized constructor</span>
+    <span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) {
+        width = w;
+        height = h;
+    }
+
+    <span class="cm">// Square constructor (one parameter)</span>
+    <span class="fn">Rectangle</span>(<span class="ty">double</span> side) {
+        width = side;
+        height = side;
+    }
+};
+
+<span class="ty">Rectangle</span> r1;           <span class="cm">// calls default: 1x1</span>
+<span class="ty">Rectangle</span> r2(<span class="nb">5.0</span>, <span class="nb">3.0</span>);  <span class="cm">// calls parameterized: 5x3</span>
+<span class="ty">Rectangle</span> r3(<span class="nb">4.0</span>);      <span class="cm">// calls square: 4x4</span></code></pre>
+
+            <h3>Member Initializer List</h3>
+            <p>More efficient way to initialize members, especially for const members and references.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">public</span>:
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+    <span class="cm">// Using initializer list (preferred)</span>
+    <span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) : width(w), height(h) {
+        <span class="cm">// Body can be empty or contain additional logic</span>
+    }
+
+    <span class="cm">// Default values in initializer list</span>
+    <span class="fn">Rectangle</span>() : width(<span class="nb">1.0</span>), height(<span class="nb">1.0</span>) {}
+};</code></pre>
+
+            <div class="callout callout-info">
+                <strong>Best Practice:</strong> Use member initializer lists instead of assignment in the constructor
+                body. It's more efficient and required for const/reference members.
+            </div>
+
+            <h3>Copy Constructor</h3>
+            <p>Creates a new object as a copy of an existing one.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">public</span>:
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+    <span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) : width(w), height(h) {}
+
+    <span class="cm">// Copy constructor</span>
+    <span class="fn">Rectangle</span>(<span class="kw">const</span> <span class="ty">Rectangle</span>&amp; other) {
+        width = other.width;
+        height = other.height;
+    }
+};
+
+<span class="ty">Rectangle</span> original(<span class="nb">5.0</span>, <span class="nb">3.0</span>);
+<span class="ty">Rectangle</span> copy = original;  <span class="cm">// calls copy constructor</span>
+<span class="ty">Rectangle</span> copy2{original};  <span class="cm">// also calls copy constructor</span></code></pre>
+
+            <div class="callout callout-info">
+                <strong>Note:</strong> The compiler generates a default copy constructor that does member-wise copying.
+                You only need to define your own if you have dynamic memory or special copying requirements.
+            </div>
+        </section>
+
+        <!-- ==================== MEMBER FUNCTIONS ==================== -->
+        <section id="members" class="panel">
+            <h2>Member Functions</h2>
+            <p>Functions that belong to a class and operate on its data.</p>
+
+            <h3>Defining Member Functions</h3>
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">public</span>:
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+    <span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) : width(w), height(h) {}
+
+    <span class="cm">// Member function defined inside class</span>
+    <span class="ty">double</span> <span class="fn">area</span>() {
+        <span class="kw">return</span> width * height;
+    }
+
+    <span class="cm">// Declaration only (definition outside class)</span>
+    <span class="ty">double</span> <span class="fn">perimeter</span>();
+};
+
+<span class="cm">// Definition outside class (note scope resolution ::)</span>
+<span class="ty">double</span> <span class="ty">Rectangle</span>::<span class="fn">perimeter</span>() {
+    <span class="kw">return</span> <span class="nb">2</span> * (width + height);
+}</code></pre>
+
+            <h3>Calling Member Functions</h3>
+            <pre><code class="language-cpp"><span class="ty">Rectangle</span> rect(<span class="nb">5.0</span>, <span class="nb">3.0</span>);
+
+<span class="ty">double</span> a = rect.<span class="fn">area</span>();       <span class="cm">// 15.0</span>
+<span class="ty">double</span> p = rect.<span class="fn">perimeter</span>();  <span class="cm">// 16.0</span></code></pre>
+
+            <h3>The <code>this</code> Pointer</h3>
+            <p>Inside a member function, <code>this</code> is a pointer to the current object.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">public</span>:
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+    <span class="cm">// Using 'this' to avoid naming conflicts</span>
+    <span class="fn">Rectangle</span>(<span class="ty">double</span> width, <span class="ty">double</span> height) {
+        <span class="kw">this</span>-&gt;width = width;   <span class="cm">// member = parameter</span>
+        <span class="kw">this</span>-&gt;height = height;
+    }
+
+    <span class="cm">// Returning *this for method chaining</span>
+    <span class="ty">Rectangle</span>&amp; <span class="fn">setWidth</span>(<span class="ty">double</span> w) {
+        width = w;
+        <span class="kw">return</span> *<span class="kw">this</span>;
+    }
+
+    <span class="ty">Rectangle</span>&amp; <span class="fn">setHeight</span>(<span class="ty">double</span> h) {
+        height = h;
+        <span class="kw">return</span> *<span class="kw">this</span>;
+    }
+};
+
+<span class="ty">Rectangle</span> r(<span class="nb">0</span>, <span class="nb">0</span>);
+r.<span class="fn">setWidth</span>(<span class="nb">5.0</span>).<span class="fn">setHeight</span>(<span class="nb">3.0</span>);  <span class="cm">// method chaining</span></code></pre>
+
+            <h3>Getters & Setters</h3>
+            <p>Used to control access to private member variables.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">private</span>:
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+<span class="kw">public</span>:
+    <span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) : width(w), height(h) {}
+
+    <span class="cm">// Getters (accessors)</span>
+    <span class="ty">double</span> <span class="fn">getWidth</span>() <span class="kw">const</span> { <span class="kw">return</span> width; }
+    <span class="ty">double</span> <span class="fn">getHeight</span>() <span class="kw">const</span> { <span class="kw">return</span> height; }
+
+    <span class="cm">// Setters (mutators) with validation</span>
+    <span class="ty">void</span> <span class="fn">setWidth</span>(<span class="ty">double</span> w) {
+        <span class="kw">if</span> (w &gt; <span class="nb">0</span>) width = w;
+    }
+
+    <span class="ty">void</span> <span class="fn">setHeight</span>(<span class="ty">double</span> h) {
+        <span class="kw">if</span> (h &gt; <span class="nb">0</span>) height = h;
+    }
+};</code></pre>
+        </section>
+
+        <!-- ==================== ACCESS CONTROL ==================== -->
+        <section id="access" class="panel">
+            <h2>Access Control</h2>
+            <p>Access specifiers control which parts of your code can access class members.</p>
+
+            <h3>Access Specifiers</h3>
+            <div class="comparison">
+                <div class="comp-col">
+                    <h4>public</h4>
+                    <ul>
+                        <li>Accessible from anywhere</li>
+                        <li>Interface of the class</li>
+                    </ul>
+                </div>
+                <div class="comp-col">
+                    <h4>private</h4>
+                    <ul>
+                        <li>Only accessible within the class</li>
+                        <li>Default for <code>class</code></li>
+                        <li>Enforces encapsulation</li>
+                    </ul>
+                </div>
+                <div class="comp-col">
+                    <h4>protected</h4>
+                    <ul>
+                        <li>Accessible in class and derived classes</li>
+                        <li>Used in inheritance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Encapsulation Example</h3>
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">BankAccount</span> {
+<span class="kw">private</span>:
+    <span class="cm">// Hidden implementation details</span>
+    <span class="ty">double</span> balance;
+    <span class="ty">std::string</span> accountNumber;
+
+<span class="kw">public</span>:
+    <span class="cm">// Public interface</span>
+    <span class="fn">BankAccount</span>(<span class="ty">std::string</span> accNum) 
+        : balance(<span class="nb">0.0</span>), accountNumber(accNum) {}
+
+    <span class="ty">void</span> <span class="fn">deposit</span>(<span class="ty">double</span> amount) {
+        <span class="kw">if</span> (amount &gt; <span class="nb">0</span>) {
+            balance += amount;
+        }
+    }
+
+    <span class="ty">bool</span> <span class="fn">withdraw</span>(<span class="ty">double</span> amount) {
+        <span class="kw">if</span> (amount &gt; <span class="nb">0</span> &amp;&amp; amount &lt;= balance) {
+            balance -= amount;
+            <span class="kw">return</span> <span class="kw">true</span>;
+        }
+        <span class="kw">return</span> <span class="kw">false</span>;
+    }
+
+    <span class="ty">double</span> <span class="fn">getBalance</span>() <span class="kw">const</span> {
+        <span class="kw">return</span> balance;
+    }
+};
+
+<span class="ty">BankAccount</span> account(<span class="st">"12345"</span>);
+account.<span class="fn">deposit</span>(<span class="nb">100.0</span>);
+account.<span class="fn">withdraw</span>(<span class="nb">30.0</span>);
+
+<span class="cm">// account.balance = -1000; // ERROR: balance is private</span>
+std::cout &lt;&lt; account.<span class="fn">getBalance</span>() &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 70.0</span></code></pre>
+
+            <div class="callout callout-info">
+                <strong>Why Encapsulation?</strong>
+                <ul>
+                    <li><strong>Validation:</strong> Control how data is modified (e.g., prevent negative balances)</li>
+                    <li><strong>Flexibility:</strong> Change internal implementation without affecting users</li>
+                    <li><strong>Safety:</strong> Prevent accidental corruption of object state</li>
+                </ul>
+            </div>
+
+            <h3>Access Control in Practice</h3>
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Student</span> {
+<span class="kw">private</span>:
+    <span class="ty">std::string</span> name;
+    <span class="ty">int</span> studentID;
+    <span class="ty">double</span> gpa;
+
+    <span class="cm">// Private helper function</span>
+    <span class="ty">bool</span> <span class="fn">isValidGPA</span>(<span class="ty">double</span> g) {
+        <span class="kw">return</span> g &gt;= <span class="nb">0.0</span> &amp;&amp; g &lt;= <span class="nb">4.0</span>;
+    }
+
+<span class="kw">public</span>:
+    <span class="fn">Student</span>(<span class="ty">std::string</span> n, <span class="ty">int</span> id) 
+        : name(n), studentID(id), gpa(<span class="nb">0.0</span>) {}
+
+    <span class="ty">void</span> <span class="fn">setGPA</span>(<span class="ty">double</span> g) {
+        <span class="kw">if</span> (<span class="fn">isValidGPA</span>(g)) {
+            gpa = g;
+        }
+    }
+
+    <span class="ty">double</span> <span class="fn">getGPA</span>() <span class="kw">const</span> { <span class="kw">return</span> gpa; }
+    <span class="ty">std::string</span> <span class="fn">getName</span>() <span class="kw">const</span> { <span class="kw">return</span> name; }
+};</code></pre>
+        </section>
+
+        <!-- ==================== CONST & STATIC ==================== -->
+        <section id="const" class="panel">
+            <h2>Const & Static Members</h2>
+
+            <h3>Const Member Functions</h3>
+            <p>Promise not to modify the object. Required to call on <code>const</code> objects.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Rectangle</span> {
+<span class="kw">private</span>:
+    <span class="ty">double</span> width;
+    <span class="ty">double</span> height;
+
+<span class="kw">public</span>:
+    <span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) : width(w), height(h) {}
+
+    <span class="cm">// Const member functions (don't modify object)</span>
+    <span class="ty">double</span> <span class="fn">area</span>() <span class="kw">const</span> {
+        <span class="kw">return</span> width * height;
+    }
+
+    <span class="ty">double</span> <span class="fn">getWidth</span>() <span class="kw">const</span> { <span class="kw">return</span> width; }
+    <span class="ty">double</span> <span class="fn">getHeight</span>() <span class="kw">const</span> { <span class="kw">return</span> height; }
+
+    <span class="cm">// Non-const member function (modifies object)</span>
+    <span class="ty">void</span> <span class="fn">setWidth</span>(<span class="ty">double</span> w) {
+        width = w;
+    }
+};
+
+<span class="kw">const</span> <span class="ty">Rectangle</span> rect(<span class="nb">5.0</span>, <span class="nb">3.0</span>);
+std::cout &lt;&lt; rect.<span class="fn">area</span>() &lt;&lt; <span class="st">'\n'</span>;     <span class="cm">// OK: area() is const</span>
+<span class="cm">// rect.setWidth(10.0);  // ERROR: can't call non-const on const object</span></code></pre>
+
+            <div class="callout callout-info">
+                <strong>Best Practice:</strong> Mark all member functions that don't modify the object as
+                <code>const</code>. This allows them to be called on const objects and improves code safety.
+            </div>
+
+            <h3>Static Member Variables</h3>
+            <p>Shared by all objects of the class. Only one copy exists.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Student</span> {
+<span class="kw">private</span>:
+    <span class="ty">std::string</span> name;
+    <span class="kw">static</span> <span class="ty">int</span> studentCount;  <span class="cm">// shared by all Students</span>
+
+<span class="kw">public</span>:
+    <span class="fn">Student</span>(<span class="ty">std::string</span> n) : name(n) {
+        ++studentCount;
+    }
+
+    <span class="fn">~Student</span>() {  <span class="cm">// destructor</span>
+        --studentCount;
+    }
+
+    <span class="kw">static</span> <span class="ty">int</span> <span class="fn">getStudentCount</span>() {
+        <span class="kw">return</span> studentCount;
+    }
+};
+
+<span class="cm">// Must define static member outside class</span>
+<span class="ty">int</span> <span class="ty">Student</span>::studentCount = <span class="nb">0</span>;
+
+<span class="ty">Student</span> s1(<span class="st">"Alice"</span>);
+<span class="ty">Student</span> s2(<span class="st">"Bob"</span>);
+
+std::cout &lt;&lt; <span class="ty">Student</span>::<span class="fn">getStudentCount</span>() &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 2</span></code></pre>
+
+            <h3>Static Member Functions</h3>
+            <p>Can be called without an object. Cannot access non-static members.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Math</span> {
+<span class="kw">public</span>:
+    <span class="kw">static</span> <span class="ty">double</span> <span class="fn">square</span>(<span class="ty">double</span> x) {
+        <span class="kw">return</span> x * x;
+    }
+
+    <span class="kw">static</span> <span class="ty">double</span> <span class="fn">cube</span>(<span class="ty">double</span> x) {
+        <span class="kw">return</span> x * x * x;
+    }
+};
+
+<span class="cm">// Call without creating an object</span>
+std::cout &lt;&lt; <span class="ty">Math</span>::<span class="fn">square</span>(<span class="nb">5.0</span>) &lt;&lt; <span class="st">'\n'</span>;  <span class="cm">// 25.0</span>
+std::cout &lt;&lt; <span class="ty">Math</span>::<span class="fn">cube</span>(<span class="nb">3.0</span>) &lt;&lt; <span class="st">'\n'</span>;    <span class="cm">// 27.0</span></code></pre>
+        </section>
+
+        <!-- ==================== FAQ ==================== -->
+        <section id="faq" class="panel">
+            <h2>Fundamentals FAQ</h2>
+
+            <details>
+                <summary>What's the difference between a <code>struct</code> and a <code>class</code>?</summary>
+                <p>They're almost identical. The only difference is default access: <code>struct</code> members are
+                    <code>public</code> by default, while <code>class</code> members are <code>private</code> by
+                    default. In practice, use <code>struct</code> for simple data containers and <code>class</code>
+                    when you need encapsulation.
+                </p>
+            </details>
+
+            <details>
+                <summary>Why do I need a semicolon after a class definition?</summary>
+                <p>Historical C++ syntax inherited from C. The semicolon allows you to declare variables of the class
+                    type immediately after the definition (though this is rarely done). Forgetting it is a common
+                    compile error.</p>
+            </details>
+
+            <details>
+                <summary>What happens if I don't define a constructor?</summary>
+                <p>The compiler generates a default constructor that does nothing (leaves members uninitialized). Once
+                    you define <em>any</em> constructor, the compiler stops generating the default one automatically.
+                </p>
+            </details>
+
+            <details>
+                <summary>When should I use an initializer list vs assignment in the constructor body?</summary>
+                <p>Always prefer initializer lists. They're more efficient (direct initialization vs
+                    default-then-assign), and they're required for const members, reference members, and members
+                    without default constructors.</p>
+                <pre><code class="language-cpp"><span class="cm">// Preferred</span>
+<span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) : width(w), height(h) {}
+
+<span class="cm">// Less efficient</span>
+<span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) {
+    width = w;   <span class="cm">// default initialization then assignment</span>
+    height = h;
+}</code></pre>
+            </details>
+
+            <details>
+                <summary>What is <code>this</code>?</summary>
+                <p><code>this</code> is a pointer to the current object. It's useful when parameter names shadow member
+                    variables, or when you need to return the object itself (for method chaining).</p>
+            </details>
+
+            <details>
+                <summary>Why make member variables <code>private</code>?</summary>
+                <p>Encapsulation! Private members let you:</p>
+                <ul>
+                    <li>Validate data (e.g., ensure width > 0)</li>
+                    <li>Change internal representation without breaking external code</li>
+                    <li>Prevent accidental corruption of object state</li>
+                </ul>
+            </details>
+
+            <details>
+                <summary>What does <code>const</code> after a function mean?</summary>
+                <p>It marks the function as a "const member function," promising not to modify the object's state. You
+                    can only call const member functions on const objects. Mark all functions that don't modify the
+                    object as const.</p>
+            </details>
+
+            <details>
+                <summary>Can I call a member function inside a constructor?</summary>
+                <p>Yes! The object is being constructed, but member functions can be called during construction:</p>
+                <pre><code class="language-cpp"><span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) : width(w), height(h) {
+    <span class="kw">if</span> (<span class="fn">area</span>() &lt; <span class="nb">0</span>) {  <span class="cm">// calling member function</span>
+        width = height = <span class="nb">1.0</span>;
+    }
+}</code></pre>
+            </details>
+
+            <details>
+                <summary>What's the difference between a copy constructor and assignment operator?</summary>
+                <p>Copy constructor creates a <em>new</em> object from an existing one
+                    (<code>Rectangle r2 = r1;</code>). Assignment operator copies to an <em>already existing</em>
+                    object (<code>r2 = r1;</code>).</p>
+            </details>
+
+            <details>
+                <summary>When should I use <code>static</code> members?</summary>
+                <p>Use static member variables when data should be shared across all instances (e.g., counting total
+                    objects). Use static member functions for utility functions that don't need object state (e.g.,
+                    <code>Math::square()</code>).
+                </p>
+            </details>
+
+            <details>
+                <summary>Can a class have multiple constructors?</summary>
+                <p>Yes! This is called constructor overloading. Each constructor must have a different parameter list
+                    (different number or types of parameters).</p>
+            </details>
+
+            <details>
+                <summary>What happens when an object goes out of scope?</summary>
+                <p>The destructor (if defined) is called automatically, and memory is freed. Destructors are named
+                    <code>~ClassName()</code> and are used to clean up resources (close files, free memory, etc.).
+                </p>
+            </details>
+        </section>
+        <div class="info-box"
+            style="margin-top: 40px; text-align: center; background: var(--accent); color: var(--bg); padding: 20px; border-radius: 12px;">
+            <strong>Ready to test yourself?</strong><br>
+            <a href="../Quizzes/quiz-classes.html"
+                style="color: var(--bg); text-decoration: none; font-weight: 600;">Take the Classes Quiz →</a>
+        </div>
+    </main> 
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
