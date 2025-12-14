@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Time & Random Numbers</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../NoteStyles.css" />
+    <script src="../../settings.js"></script> 
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">CSC 116 Exam Study</div>
+            <nav class="nav" aria-label="Primary">
+                <a href="../../index.html">Home</a>
+                <a href="../../settings.html" class="settings-link">Settings</a>
+                <a href="../Information/checklist.html">Checklist</a>
+            </nav>
+        </div>
+    </header>
+
+    <aside class="quick-nav">
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="#std-time">std::time()</a></li>
+            <li><a href="#std-srand">std::srand()</a></li>
+            <li><a href="#std-rand">std::rand()</a></li>
+            <li><a href="#rand-max">RAND_MAX</a></li>
+            <li><a href="#seeding-pattern">Seeding Pattern</a></li>
+            <li><a href="#random-ranges">Random Ranges</a></li>
+            <li><a href="#random-doubles">Random Doubles</a></li>
+            <li><a href="#common-pitfalls">Common Pitfalls</a></li>
+        </ul>
+    </aside>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Time & Random Numbers</h1>
+            <p>Working with time values and generating pseudo-random numbers in C++.</p>
+        </section>
+
+        <section class="panel" id="std-time">
+            <h2>std::time()</h2>
+            <p>Returns the current time as a <code>time_t</code> value representing seconds since the Unix epoch (January 1, 1970).</p>
+            
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::time_t</span> current_time = <span class="ty">std::time</span>(<span class="nb">nullptr</span>);
+    std::cout &lt;&lt; <span class="st">"Seconds since epoch: "</span> &lt;&lt; current_time &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="cm">// Convert to readable format</span>
+    std::cout &lt;&lt; <span class="st">"Current time: "</span> &lt;&lt; <span class="ty">std::ctime</span>(&amp;current_time);
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Seconds since epoch: 1702491234
+Current time: Fri Dec 13 14:20:34 2025</div>
+
+            <h3>Key Points:</h3>
+            <ul>
+                <li>Pass <code>nullptr</code> (or <code>NULL</code>) to get current time</li>
+                <li>Returns a <code>time_t</code> integer value</li>
+                <li>Commonly used to seed random number generators</li>
+                <li>Use <code>std::ctime(&amp;t)</code> to convert to human-readable string</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>Header:</strong> <code>#include &lt;ctime&gt;</code><br>
+                <strong>Common use:</strong> Seeding random generators with <code>std::srand(std::time(nullptr))</code>
+            </div>
+        </section>
+
+        <section class="panel" id="std-srand">
+            <h2>std::srand()</h2>
+            <p>Seeds the pseudo-random number generator used by <code>std::rand()</code>. Different seeds produce different sequences of random numbers.</p>
+            
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="cm">// Seed with current time for "true" randomness</span>
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    
+    std::cout &lt;&lt; <span class="st">"Random number: "</span> &lt;&lt; <span class="ty">std::rand</span>() &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Another random: "</span> &lt;&lt; <span class="ty">std::rand</span>() &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Random number: 1804289383
+Another random: 846930886</div>
+
+            <h3>Seeding with Fixed Values:</h3>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+
+<span class="kw">int</span> main() {
+    <span class="cm">// Same seed = same sequence every time</span>
+    <span class="ty">std::srand</span>(<span class="nb">42</span>);
+    
+    std::cout &lt;&lt; <span class="ty">std::rand</span>() &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="ty">std::rand</span>() &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">1250203531
+1116302336</div>
+
+            <div class="warning-box">
+                <strong>Important:</strong> Only call <code>std::srand()</code> <strong>once</strong> at the beginning of your program. Calling it multiple times (especially in a loop) will reset the sequence and produce less random results.
+            </div>
+
+            <h3>Key Points:</h3>
+            <ul>
+                <li>Must be called before using <code>std::rand()</code> for unpredictable results</li>
+                <li>Using <code>std::time(nullptr)</code> as seed gives different results each run</li>
+                <li>Using a fixed seed (like <code>42</code>) makes output reproducible (useful for testing)</li>
+                <li>Call only once per program execution</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="std-rand">
+            <h2>std::rand()</h2>
+            <p>Generates a pseudo-random integer between <code>0</code> and <code>RAND_MAX</code>.</p>
+            
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nb">0</span>; i &lt; <span class="nb">5</span>; i++) {
+        std::cout &lt;&lt; <span class="ty">std::rand</span>() &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">1804289383
+846930886
+1681692777
+1714636915
+1957747793</div>
+
+            <h3>Key Points:</h3>
+            <ul>
+                <li>Returns a value from <code>0</code> to <code>RAND_MAX</code> (inclusive)</li>
+                <li>Requires seeding with <code>std::srand()</code> for unpredictability</li>
+                <li>Without seeding, produces the same sequence every run</li>
+                <li>Use modulo operator <code>%</code> to limit range (see examples below)</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>Header:</strong> <code>#include &lt;cstdlib&gt;</code><br>
+                <strong>Return type:</strong> <code>int</code><br>
+                <strong>Range:</strong> [0, RAND_MAX]
+            </div>
+        </section>
+
+        <section class="panel" id="rand-max">
+            <h2>RAND_MAX</h2>
+            <p>A constant representing the maximum value <code>std::rand()</code> can return. The exact value is implementation-defined but must be at least <code>32767</code>.</p>
+            
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+
+<span class="kw">int</span> main() {
+    std::cout &lt;&lt; <span class="st">"RAND_MAX on this system: "</span> &lt;&lt; <span class="ty">RAND_MAX</span> &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">RAND_MAX on this system: 2147483647</div>
+
+            <h3>Common Uses:</h3>
+            <ul>
+                <li>Checking the range of random numbers</li>
+                <li>Calculating random doubles in range [0, 1]: <code>(double)rand() / RAND_MAX</code></li>
+                <li>Understanding platform-specific random number limits</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>Typical value:</strong> 2147483647 (2³¹ - 1) on most modern systems<br>
+                <strong>Guaranteed minimum:</strong> 32767 (2¹⁵ - 1)
+            </div>
+        </section>
+
+        <section class="panel" id="seeding-pattern">
+            <h2>Complete Seeding Pattern</h2>
+            <p>The standard pattern for initializing random numbers at the start of your program.</p>
+            
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="cm">// Seed ONCE at program start</span>
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    
+    <span class="cm">// Now generate random numbers as needed</span>
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nb">0</span>; i &lt; <span class="nb">3</span>; i++) {
+        <span class="kw">int</span> random_num = <span class="ty">std::rand</span>();
+        std::cout &lt;&lt; <span class="st">"Random "</span> &lt;&lt; i &lt;&lt; <span class="st">": "</span> &lt;&lt; random_num &lt;&lt; <span class="st">"\n"</span>;
+    }
+    
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Random 0: 1804289383
+Random 1: 846930886
+Random 2: 1681692777</div>
+
+            <div class="warning-box">
+                <strong>DON'T DO THIS:</strong><br>
+                <pre style="background:#2d1515; padding:8px; border-radius:4px; margin-top:8px;"><span class="kw">for</span> (<span class="kw">int</span> i = <span class="nb">0</span>; i &lt; <span class="nb">10</span>; i++) {
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));  <span class="cm">// WRONG! Don't reseed in loop</span>
+    std::cout &lt;&lt; <span class="ty">std::rand</span>() &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+                This will produce the same or very similar numbers because time doesn't change fast enough between iterations.
+            </div>
+        </section>
+
+        <section class="panel" id="random-ranges">
+            <h2>Generating Random Numbers in a Range</h2>
+            <p>Use the modulo operator to constrain random values to specific ranges.</p>
+            
+            <h3>Random from 0 to N-1</h3>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    
+    <span class="cm">// Random number from 0 to 9</span>
+    <span class="kw">int</span> dice = <span class="ty">std::rand</span>() % <span class="nb">10</span>;
+    std::cout &lt;&lt; <span class="st">"Random 0-9: "</span> &lt;&lt; dice &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Random 0-9: 7</div>
+
+            <h3>Random from 1 to N</h3>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    
+    <span class="cm">// Simulate rolling a 6-sided die (1-6)</span>
+    <span class="kw">int</span> dice = (<span class="ty">std::rand</span>() % <span class="nb">6</span>) + <span class="nb">1</span>;
+    std::cout &lt;&lt; <span class="st">"Dice roll: "</span> &lt;&lt; dice &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Dice roll: 4</div>
+
+            <h3>Random from Min to Max</h3>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    
+    <span class="kw">int</span> min = <span class="nb">10</span>;
+    <span class="kw">int</span> max = <span class="nb">20</span>;
+    
+    <span class="cm">// Random number from min to max (inclusive)</span>
+    <span class="kw">int</span> value = min + (<span class="ty">std::rand</span>() % (max - min + <span class="nb">1</span>));
+    std::cout &lt;&lt; <span class="st">"Random 10-20: "</span> &lt;&lt; value &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Random 10-20: 17</div>
+
+            <div class="info-box">
+                <strong>Formula for range [min, max]:</strong><br>
+                <code>int value = min + (std::rand() % (max - min + 1));</code>
+            </div>
+        </section>
+
+        <section class="panel" id="random-doubles">
+            <h2>Generating Random Doubles</h2>
+            <p>Generate random floating-point numbers by dividing by <code>RAND_MAX</code>.</p>
+            
+            <h3>Random Double from 0.0 to 1.0</h3>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    
+    <span class="cm">// Random double in [0.0, 1.0]</span>
+    <span class="kw">double</span> random = (<span class="kw">double</span>)<span class="ty">std::rand</span>() / <span class="ty">RAND_MAX</span>;
+    std::cout &lt;&lt; <span class="st">"Random 0.0-1.0: "</span> &lt;&lt; random &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Random 0.0-1.0: 0.840188</div>
+
+            <h3>Random Double in Custom Range</h3>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    
+    <span class="kw">double</span> min = <span class="nb">5.0</span>;
+    <span class="kw">double</span> max = <span class="nb">10.0</span>;
+    
+    <span class="cm">// Random double from min to max</span>
+    <span class="kw">double</span> random = min + ((<span class="kw">double</span>)<span class="ty">std::rand</span>() / <span class="ty">RAND_MAX</span>) * (max - min);
+    std::cout &lt;&lt; <span class="st">"Random 5.0-10.0: "</span> &lt;&lt; random &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Random 5.0-10.0: 7.4201</div>
+
+            <div class="info-box">
+                <strong>Formula for range [min, max]:</strong><br>
+                <code>double value = min + ((double)std::rand() / RAND_MAX) * (max - min);</code>
+            </div>
+
+            <h3>Monte Carlo Example: Estimating π</h3>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdlib&gt;
+<span class="kw">#include</span> &lt;ctime&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    
+    <span class="kw">int</span> inside_circle = <span class="nb">0</span>;
+    <span class="kw">int</span> total_points = <span class="nb">1000000</span>;
+    
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nb">0</span>; i &lt; total_points; i++) {
+        <span class="cm">// Random point in unit square</span>
+        <span class="kw">double</span> x = (<span class="kw">double</span>)<span class="ty">std::rand</span>() / <span class="ty">RAND_MAX</span>;
+        <span class="kw">double</span> y = (<span class="kw">double</span>)<span class="ty">std::rand</span>() / <span class="ty">RAND_MAX</span>;
+        
+        <span class="cm">// Check if inside unit circle</span>
+        <span class="kw">if</span> (x * x + y * y &lt;= <span class="nb">1.0</span>) {
+            inside_circle++;
+        }
+    }
+    
+    <span class="kw">double</span> pi_estimate = <span class="nb">4.0</span> * inside_circle / total_points;
+    std::cout &lt;&lt; <span class="st">"Estimated π: "</span> &lt;&lt; pi_estimate &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Estimated π: 3.14167</div>
+        </section>
+
+        <section class="panel" id="common-pitfalls">
+            <h2>Common Pitfalls & Best Practices</h2>
+            
+            <h3>❌ Pitfall 1: Reseeding in Loops</h3>
+            <div class="code-block">
+                <pre><span class="cm">// WRONG: Produces same/similar numbers</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nb">0</span>; i &lt; <span class="nb">10</span>; i++) {
+    <span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+    std::cout &lt;&lt; <span class="ty">std::rand</span>() &lt;&lt; <span class="st">"\n"</span>;
+}
+
+<span class="cm">// CORRECT: Seed once, then generate</span>
+<span class="ty">std::srand</span>(<span class="ty">std::time</span>(<span class="nb">nullptr</span>));
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="nb">0</span>; i &lt; <span class="nb">10</span>; i++) {
+    std::cout &lt;&lt; <span class="ty">std::rand</span>() &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+
+            <h3>❌ Pitfall 2: Modulo Bias</h3>
+            <div class="warning-box">
+                Using modulo with <code>rand()</code> creates slight bias when <code>RAND_MAX + 1</code> is not evenly divisible by your range. For most educational purposes this is acceptable, but be aware it exists.
+            </div>
+
+            <h3>❌ Pitfall 3: Forgetting to Seed</h3>
+            <div class="code-block">
+                <pre><span class="cm">// Without seeding, same sequence every run</span>
+<span class="kw">int</span> main() {
+    <span class="cm">// No srand() call!</span>
+    std::cout &lt;&lt; <span class="ty">std::rand</span>() &lt;&lt; <span class="st">"\n"</span>;  <span class="cm">// Always same value</span>
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+
+            <h3>✅ Best Practices</h3>
+            <ul>
+                <li>Call <code>std::srand(std::time(nullptr))</code> <strong>once</strong> at program start</li>
+                <li>Include <code>&lt;cstdlib&gt;</code> for rand/srand, <code>&lt;ctime&gt;</code> for time</li>
+                <li>For modern C++ (C++11+), consider using <code>&lt;random&gt;</code> library instead</li>
+                <li>Test with fixed seeds (e.g., <code>srand(42)</code>) for reproducible debugging</li>
+                <li>Cast to <code>double</code> when dividing by <code>RAND_MAX</code></li>
+            </ul>
+
+            <div class="info-box">
+                <strong>Modern Alternative:</strong> C++11 introduced the <code>&lt;random&gt;</code> library with better random number generation. However, <code>rand()</code> and <code>srand()</code> are still commonly used in educational settings and legacy code.
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Quick Reference</h2>
+            
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <thead>
+                    <tr style="background: #2d3748; border-bottom: 2px solid #4a5568;">
+                        <th style="padding: 10px; text-align: left;">Function</th>
+                        <th style="padding: 10px; text-align: left;">Purpose</th>
+                        <th style="padding: 10px; text-align: left;">Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>std::time(nullptr)</code></td>
+                        <td style="padding: 8px;">Get current time</td>
+                        <td style="padding: 8px;"><code>time_t t = std::time(nullptr);</code></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>std::srand(seed)</code></td>
+                        <td style="padding: 8px;">Seed RNG</td>
+                        <td style="padding: 8px;"><code>std::srand(std::time(nullptr));</code></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>std::rand()</code></td>
+                        <td style="padding: 8px;">Generate random int</td>
+                        <td style="padding: 8px;"><code>int r = std::rand();</code></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>RAND_MAX</code></td>
+                        <td style="padding: 8px;">Max rand() value</td>
+                        <td style="padding: 8px;"><code>double d = (double)rand()/RAND_MAX;</code></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>rand() % N</code></td>
+                        <td style="padding: 8px;">Random [0, N-1]</td>
+                        <td style="padding: 8px;"><code>int dice = rand() % 6;</code></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;"><code>min + rand() % (max-min+1)</code></td>
+                        <td style="padding: 8px;">Random [min, max]</td>
+                        <td style="padding: 8px;"><code>int n = 10 + rand() % 11;</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="panel">
+            <h2>Code Examples from Course</h2>
+            <ul>
+                <li><a href="../../Codes/05.1-random.cpp">05.1-random.cpp</a> - Basic random number generation</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© 2025 CSC116 Study Tool by Zac M. </small>
+            <a href="https://github.com/Chaotic-Mess/My-Code-">Github Page</a>
+        </div>
+    </footer>
+</body>
+
+</html>

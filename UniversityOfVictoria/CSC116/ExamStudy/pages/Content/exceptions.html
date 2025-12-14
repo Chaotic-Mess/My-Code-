@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Throwing and Catching Exceptions</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../NoteStyles.css" />
+    <script src="../../settings.js"></script>
+     
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">CSC 116 Exam Study</div>
+            <nav class="nav" aria-label="Primary">
+                <a href="../../index.html">Home</a>
+                <a href="../../settings.html" class="settings-link">Settings</a>
+                <a href="../Information/checklist.html">Checklist</a>
+            </nav>
+        </div>
+    </header>
+
+    <aside class="quick-nav">
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="#what-are">What Are Exceptions?</a></li>
+            <li><a href="#basic-syntax">Basic Try-Catch Syntax</a></li>
+            <li><a href="#throwing-types">Throwing Different Types</a></li>
+            <li><a href="#standard-exceptions">Standard Exception Classes</a></li>
+            <li><a href="#multiple-catch">Multiple Catch Blocks</a></li>
+            <li><a href="#custom-exceptions">Custom Exception Classes</a></li>
+            <li><a href="#propagation">Exception Propagation</a></li>
+            <li><a href="#nested">Nested Try-Catch Blocks</a></li>
+            <li><a href="#uncaught">Uncaught Exceptions</a></li>
+            <li><a href="#best-practices">Best Practices</a></li>
+            <li><a href="#common-patterns">Common Patterns</a></li>
+            <li><a href="#guarantees">Exception Guarantees</a></li>
+            <li><a href="#quick-ref">Quick Reference</a></li>
+            <li><a href="#summary">Summary</a></li>
+        </ul>
+    </aside>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Throwing and Catching Exceptions</h1>
+            <p>Error handling in C++ using try-catch blocks, custom exceptions, and exception propagation.</p>
+        </section>
+
+        <section class="panel" id="what-are">
+            <h2>What Are Exceptions?</h2>
+            <p>Exceptions are a mechanism for handling runtime errors in C++. When an error occurs, we
+                <strong>throw</strong> an exception. The program then searches for a matching <strong>catch</strong>
+                block to handle it.</p>
+
+            <div class="info-box">
+                <strong>Key Concept:</strong> Exceptions allow you to separate error-handling code from normal program
+                logic, making code cleaner and more maintainable.
+            </div>
+
+            <h3>Why Use Exceptions?</h3>
+            <ul>
+                <li>Handle errors that cannot be dealt with locally</li>
+                <li>Propagate errors up the call stack automatically</li>
+                <li>Separate error handling from normal code flow</li>
+                <li>Provide detailed error information</li>
+                <li>Clean up resources automatically (RAII)</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="basic-syntax">
+            <h2>Basic Try-Catch Syntax</h2>
+            <p>The fundamental structure of exception handling uses <code>try</code>, <code>throw</code>, and
+                <code>catch</code>:</p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;stdexcept&gt;
+
+<span class="kw">int</span> divide(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">if</span> (b == <span class="nb">0</span>) {
+        <span class="kw">throw</span> <span class="ty">std::runtime_error</span>{<span class="st">"Division by zero!"</span>};
+    }
+    <span class="kw">return</span> a / b;
+}
+
+<span class="kw">int</span> main() {
+    <span class="kw">try</span> {
+        <span class="kw">int</span> result = divide(<span class="nb">10</span>, <span class="nb">0</span>);
+        std::cout &lt;&lt; <span class="st">"Result: "</span> &lt;&lt; result &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::runtime_error</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"Error: "</span> &lt;&lt; e.what() &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Error: Division by zero!</div>
+
+            <h3>How It Works:</h3>
+            <ol>
+                <li><strong>try block:</strong> Contains code that might throw an exception</li>
+                <li><strong>throw statement:</strong> Creates and throws an exception object</li>
+                <li><strong>catch block:</strong> Handles the exception if the type matches</li>
+            </ol>
+        </section>
+
+        <section class="panel" id="throwing-types">
+            <h2>Throwing Different Types</h2>
+            <p>You can throw any type in C++: integers, floats, strings, or objects.</p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+
+<span class="kw">int</span> F(<span class="kw">int</span> x) {
+    <span class="kw">int</span> bla{<span class="nb">5</span>};
+    <span class="kw">float</span> haha{<span class="nb">3.2</span>};
+    <span class="ty">std::string</span> foo{<span class="st">"hello"</span>};
+    
+    <span class="kw">if</span> (x &lt; <span class="nb">0</span>) {
+        <span class="kw">throw</span> bla;           <span class="cm">// Throws int</span>
+    }
+    <span class="kw">if</span> (x == <span class="nb">42</span>) {
+        <span class="kw">throw</span> haha;          <span class="cm">// Throws float</span>
+    }
+    <span class="kw">if</span> (x &gt; <span class="nb">100</span>) {
+        <span class="kw">throw</span> foo;           <span class="cm">// Throws string</span>
+    }
+    <span class="kw">return</span> <span class="nb">6</span>;
+}
+
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> y{<span class="nb">1000</span>};
+    
+    <span class="kw">try</span> {
+        y = F(<span class="nb">42</span>);
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="kw">int</span> value) {
+        std::cout &lt;&lt; <span class="st">"caught (int) "</span> &lt;&lt; value &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::string</span> &amp;value) {
+        std::cout &lt;&lt; <span class="st">"caught (string) "</span> &lt;&lt; value &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">catch</span> (...) {
+        std::cout &lt;&lt; <span class="st">"caught something else\n"</span>;
+    }
+    
+    std::cout &lt;&lt; <span class="st">"y = "</span> &lt;&lt; y &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">caught something else
+                y = 1000</div>
+
+            <div class="warning-box">
+                <strong>Important:</strong> The catch block must match the <em>exact type</em> thrown. In this example,
+                <code>float</code> is thrown but there's no <code>catch (const float &amp;)</code> block, so it's caught
+                by <code>catch (...)</code>.
+            </div>
+
+            <h3>The Catch-All Handler</h3>
+            <p><code>catch (...)</code> catches <strong>any</strong> exception type. Use it as a last resort to prevent
+                uncaught exceptions.</p>
+        </section>
+
+        <section class="panel" id="standard-exceptions">
+            <h2>Standard Exception Classes</h2>
+            <p>The C++ standard library provides several built-in exception classes in <code>&lt;stdexcept&gt;</code>:
+            </p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;stdexcept&gt;
+
+<span class="cm">// Common standard exceptions:</span>
+<span class="ty">std::runtime_error</span>      <span class="cm">// General runtime errors</span>
+<span class="ty">std::logic_error</span>        <span class="cm">// Logic/programming errors</span>
+<span class="ty">std::invalid_argument</span>   <span class="cm">// Invalid function arguments</span>
+<span class="ty">std::out_of_range</span>       <span class="cm">// Out of range access (like vector.at())</span>
+<span class="ty">std::domain_error</span>       <span class="cm">// Mathematical domain errors</span>
+<span class="ty">std::length_error</span>       <span class="cm">// Length exceeds maximum</span></pre>
+            </div>
+
+            <h3>Example: Invalid Argument</h3>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+<span class="kw">#include</span> &lt;stdexcept&gt;
+
+<span class="kw">int</span> last(<span class="kw">const</span> <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; &amp;input) {
+    <span class="kw">if</span> (input.size() &lt;= <span class="nb">0</span>) {
+        <span class="kw">throw</span> <span class="ty">std::invalid_argument</span>{<span class="st">"Cannot get last element of empty vector!"</span>};
+    }
+    <span class="kw">return</span> input.at(input.size() - <span class="nb">1</span>);
+}
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; W{<span class="nb">6</span>, <span class="nb">10</span>, <span class="nb">17</span>};
+    <span class="kw">auto</span> z{last(W)};
+    std::cout &lt;&lt; <span class="st">"z: "</span> &lt;&lt; z &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">z: 17</div>
+
+            <div class="info-box">
+                Standard exceptions have a <code>.what()</code> method that returns the error message as a C-string.
+            </div>
+        </section>
+
+        <section class="panel" id="multiple-catch">
+            <h2>Multiple Catch Blocks</h2>
+            <p>You can have multiple catch blocks to handle different exception types. Catch blocks are checked in order
+                from top to bottom.</p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;stdexcept&gt;
+
+<span class="kw">void</span> process(<span class="kw">int</span> value) {
+    <span class="kw">if</span> (value &lt; <span class="nb">0</span>) {
+        <span class="kw">throw</span> <span class="ty">std::invalid_argument</span>{<span class="st">"Negative value not allowed"</span>};
+    }
+    <span class="kw">if</span> (value &gt; <span class="nb">100</span>) {
+        <span class="kw">throw</span> <span class="ty">std::out_of_range</span>{<span class="st">"Value exceeds maximum"</span>};
+    }
+    <span class="kw">if</span> (value == <span class="nb">42</span>) {
+        <span class="kw">throw</span> <span class="ty">std::runtime_error</span>{<span class="st">"The answer to everything is not allowed"</span>};
+    }
+}
+
+<span class="kw">int</span> main() {
+    <span class="kw">try</span> {
+        process(<span class="nb">150</span>);
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::invalid_argument</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"Invalid: "</span> &lt;&lt; e.what() &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::out_of_range</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"Out of range: "</span> &lt;&lt; e.what() &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::runtime_error</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"Runtime: "</span> &lt;&lt; e.what() &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">catch</span> (...) {
+        std::cout &lt;&lt; <span class="st">"Unknown error\n"</span>;
+    }
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Out of range: Value exceeds maximum</div>
+
+            <div class="warning-box">
+                <strong>Order Matters!</strong> Place more specific exception types before general ones. If you put
+                <code>catch (...)</code> first, it will catch everything and subsequent catch blocks will never execute.
+            </div>
+        </section>
+
+        <section class="panel" id="custom-exceptions">
+            <h2>Custom Exception Classes</h2>
+            <p>You can create your own exception types using structs or classes. This allows you to include custom data
+                with your exceptions.</p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+<span class="kw">#include</span> &lt;string&gt;
+
+<span class="kw">struct</span> <span class="ty">InvalidGradeException</span> {
+    <span class="kw">unsigned int</span> grade_index{};  <span class="cm">// Index of invalid grade</span>
+    <span class="kw">int</span> grade_value{};            <span class="cm">// The invalid value</span>
+};
+
+<span class="kw">struct</span> <span class="ty">EmptyGradeArrayException</span> {
+    <span class="cm">// Empty struct - just serves as a signal</span>
+};
+
+<span class="kw">float</span> average_grades(<span class="kw">const</span> <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; &amp;grades) {
+    <span class="kw">if</span> (grades.size() &lt;= <span class="nb">0</span>) {
+        <span class="kw">throw</span> <span class="ty">EmptyGradeArrayException</span>{};
+    }
+    
+    <span class="kw">float</span> sum{<span class="nb">0</span>};
+    <span class="kw">for</span> (<span class="kw">unsigned int</span> i{<span class="nb">0</span>}; i &lt; grades.size(); i++) {
+        <span class="kw">const auto</span> &amp;g = grades.at(i);
+        <span class="kw">if</span> (g &lt; <span class="nb">0</span> || g &gt; <span class="nb">100</span>) {
+            <span class="kw">throw</span> <span class="ty">InvalidGradeException</span>{i, g};
+        }
+        sum += g;
+    }
+    <span class="kw">return</span> sum / grades.size();
+}
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; grades1{<span class="nb">90</span>, <span class="nb">70</span>, <span class="nb">80</span>};
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; grades2{};                <span class="cm">// Empty</span>
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; grades3{<span class="nb">90</span>, <span class="nb">70</span>, -<span class="nb">80</span>};    <span class="cm">// Invalid</span>
+    
+    <span class="kw">const auto</span> &amp;G = grades3;
+    
+    <span class="kw">try</span> {
+        <span class="kw">auto</span> av{average_grades(G)};
+        std::cout &lt;&lt; <span class="st">"Average: "</span> &lt;&lt; av &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">EmptyGradeArrayException</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"Error: Cannot average empty array\n"</span>;
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">InvalidGradeException</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"Invalid grade at index "</span> &lt;&lt; e.grade_index
+                  &lt;&lt; <span class="st">": "</span> &lt;&lt; e.grade_value 
+                  &lt;&lt; <span class="st">" not in [0,100]\n"</span>;
+    }
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Invalid grade at index 2: -80 not in [0,100]</div>
+
+            <div class="success-box">
+                <strong>Best Practice:</strong> Custom exceptions allow you to pass specific error information (like
+                which index failed, what the invalid value was, etc.) to the exception handler.
+            </div>
+        </section>
+
+        <section class="panel" id="propagation">
+            <h2>Exception Propagation</h2>
+            <p>When an exception is thrown, it "bubbles up" the call stack until a matching catch block is found.</p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;stdexcept&gt;
+
+<span class="kw">int</span> F(<span class="kw">int</span> x) {
+    std::cout &lt;&lt; <span class="st">"Inside F "</span> &lt;&lt; x &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">if</span> (x &gt; <span class="nb">10</span>) {
+        <span class="kw">throw</span> <span class="ty">std::runtime_error</span>{<span class="st">"Something bad happened"</span>};
+    }
+    std::cout &lt;&lt; <span class="st">"End of F, returning "</span> &lt;&lt; <span class="nb">10</span> * x &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">return</span> x * <span class="nb">10</span>;
+}
+
+<span class="kw">int</span> G(<span class="kw">int</span> y) {
+    std::cout &lt;&lt; <span class="st">"Inside G "</span> &lt;&lt; y &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">int</span> result{<span class="nb">0</span>};
+    <span class="kw">try</span> {
+        <span class="kw">while</span> (y &lt; <span class="nb">100</span>) {
+            result += F(y);  <span class="cm">// F might throw</span>
+            y = <span class="nb">2</span> * y;
+        }
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::runtime_error</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"Caught in G\n"</span>;
+        <span class="kw">throw</span> <span class="ty">std::runtime_error</span>{<span class="st">"Only partially handled!"</span>};
+    }
+    std::cout &lt;&lt; <span class="st">"End of G, returning "</span> &lt;&lt; result &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">return</span> result;
+}
+
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> y{<span class="nb">999</span>};
+    <span class="kw">try</span> {
+        y = G(<span class="nb">6</span>);
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::runtime_error</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"Caught in main\n"</span>;
+    }
+    std::cout &lt;&lt; <span class="st">"y is "</span> &lt;&lt; y &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">Inside G 6
+                Inside F 6
+                End of F, returning 60
+                Inside F 12
+                Caught in G
+                Caught in main
+                y is 999</div>
+
+            <h3>What Happens:</h3>
+            <ol>
+                <li><code>main()</code> calls <code>G(6)</code></li>
+                <li><code>G(6)</code> calls <code>F(6)</code> → succeeds, result = 60</li>
+                <li><code>G(6)</code> calls <code>F(12)</code> → throws exception</li>
+                <li>Exception propagates to <code>G</code>'s catch block</li>
+                <li><code>G</code> catches it, then throws a new exception</li>
+                <li>New exception propagates to <code>main</code></li>
+                <li><code>main</code> catches it and continues</li>
+            </ol>
+
+            <div class="info-box">
+                <strong>Re-throwing:</strong> You can catch an exception, do some cleanup or logging, and then throw a
+                new exception (or re-throw the same one with <code>throw;</code>).
+            </div>
+        </section>
+
+        <section class="panel" id="nested">
+            <h2>Nested Try-Catch Blocks</h2>
+            <p>You can have try-catch blocks inside other try-catch blocks. Inner exceptions are handled before outer
+                ones.</p>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;stdexcept&gt;
+
+<span class="kw">int</span> F(<span class="kw">int</span> start, <span class="kw">int</span> end) {
+    <span class="kw">int</span> total{<span class="nb">0</span>};
+    <span class="kw">try</span> {
+        <span class="kw">if</span> (start &lt; <span class="nb">1</span>)
+            <span class="kw">throw</span> <span class="ty">std::runtime_error</span>{<span class="st">"Start value too small"</span>};
+            
+        <span class="kw">for</span> (<span class="kw">int</span> i{start}; i &lt;= end; i++) {
+            <span class="kw">try</span> {
+                <span class="kw">if</span> (i &gt; <span class="nb">5</span>)
+                    <span class="kw">throw</span> <span class="ty">std::domain_error</span>{<span class="st">"Too big"</span>};
+                total += i;
+            }
+            <span class="kw">catch</span> (<span class="ty">std::domain_error</span> &amp;e) {
+                std::cout &lt;&lt; <span class="st">"F: Caught domain_error (inner)\n"</span>;
+                <span class="kw">throw</span> <span class="ty">std::domain_error</span>{<span class="st">"Re-thrown from inner"</span>};
+            }
+        }
+    }
+    <span class="kw">catch</span> (<span class="ty">std::runtime_error</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"F: Caught runtime_error (outer)\n"</span>;
+        <span class="kw">return</span> <span class="nb">1000</span>;
+    }
+    <span class="kw">catch</span> (<span class="ty">std::domain_error</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"F: Caught domain_error (outer)\n"</span>;
+        <span class="kw">return</span> <span class="nb">42</span>;
+    }
+    <span class="kw">return</span> total;
+}
+
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> sum{<span class="nb">1000</span>};
+    <span class="kw">try</span> {
+        sum = F(<span class="nb">2</span>, <span class="nb">4</span>);
+        std::cout &lt;&lt; <span class="st">"sum = "</span> &lt;&lt; sum &lt;&lt; <span class="st">"\n"</span>;
+        sum = F(<span class="nb">3</span>, <span class="nb">6</span>);  <span class="cm">// This will throw</span>
+        std::cout &lt;&lt; <span class="st">"sum = "</span> &lt;&lt; sum &lt;&lt; <span class="st">"\n"</span>;
+    }
+    <span class="kw">catch</span> (...) {
+        std::cout &lt;&lt; <span class="st">"main: Caught something\n"</span>;
+    }
+    std::cout &lt;&lt; <span class="st">"Final sum = "</span> &lt;&lt; sum &lt;&lt; <span class="st">"\n"</span>;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">sum = 9
+                F: Caught domain_error (inner)
+                F: Caught domain_error (outer)
+                sum = 42
+                Final sum = 42</div>
+
+            <h3>Execution Flow:</h3>
+            <ul>
+                <li>Inner try-catch blocks are checked first</li>
+                <li>If inner catch doesn't handle it (or re-throws), outer catches are checked</li>
+                <li>Exception handling searches from innermost to outermost scope</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="uncaught">
+            <h2>What Happens When an Exception is Not Caught?</h2>
+
+            <div class="warning-box">
+                <strong>Uncaught Exceptions:</strong> If an exception is thrown and not caught anywhere in the call
+                stack, the program will terminate by calling <code>std::terminate()</code>, which typically calls
+                <code>std::abort()</code>.
+            </div>
+
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;stdexcept&gt;
+
+<span class="kw">void</span> dangerous_function() {
+    <span class="kw">throw</span> <span class="ty">std::runtime_error</span>{<span class="st">"Oops!"</span>};
+}
+
+<span class="kw">int</span> main() {
+    dangerous_function();  <span class="cm">// No try-catch!</span>
+    std::cout &lt;&lt; <span class="st">"This will never print\n"</span>;
+    <span class="kw">return</span> <span class="nb">0</span>;
+}</pre>
+            </div>
+            <div class="output-box">terminate called after throwing an instance of 'std::runtime_error'
+                what(): Oops!
+                Aborted (core dumped)</div>
+        </section>
+
+        <section class="panel" id="best-practices">
+            <h2>Best Practices</h2>
+
+            <div class="comparison-grid">
+                <div>
+                    <h3 style="color: #51cf66;">✓ Do</h3>
+                    <ul>
+                        <li>Use standard exception classes when possible</li>
+                        <li>Catch exceptions by <code>const</code> reference</li>
+                        <li>Order catch blocks from specific to general</li>
+                        <li>Use meaningful error messages</li>
+                        <li>Clean up resources before re-throwing</li>
+                        <li>Document which exceptions a function might throw</li>
+                        <li>Use exceptions for exceptional circumstances</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: #ff6b6b;">✗ Don't</h3>
+                    <ul>
+                        <li>Use exceptions for normal control flow</li>
+                        <li>Throw exceptions in destructors</li>
+                        <li>Catch exceptions you can't handle</li>
+                        <li>Ignore caught exceptions silently</li>
+                        <li>Use <code>catch (...)</code> without re-throwing</li>
+                        <li>Throw raw pointers or primitive types</li>
+                        <li>Let exceptions escape from <code>main()</code></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel" id="common-patterns">
+            <h2>Common Patterns</h2>
+
+            <h3>Pattern 1: Validate Input</h3>
+            <div class="code-block">
+                <pre><span class="kw">void</span> set_age(<span class="kw">int</span> age) {
+    <span class="kw">if</span> (age &lt; <span class="nb">0</span> || age &gt; <span class="nb">150</span>) {
+        <span class="kw">throw</span> <span class="ty">std::invalid_argument</span>{<span class="st">"Age must be between 0 and 150"</span>};
+    }
+    <span class="cm">// ... rest of function</span>
+}</pre>
+            </div>
+
+            <h3>Pattern 2: Resource Cleanup</h3>
+            <div class="code-block">
+                <pre><span class="kw">void</span> process_file(<span class="kw">const</span> <span class="ty">std::string</span> &amp;filename) {
+    <span class="kw">auto</span> file = open_file(filename);
+    <span class="kw">try</span> {
+        <span class="cm">// Process file (might throw)</span>
+        do_something_dangerous(file);
+    }
+    <span class="kw">catch</span> (...) {
+        close_file(file);  <span class="cm">// Clean up</span>
+        <span class="kw">throw</span>;             <span class="cm">// Re-throw</span>
+    }
+    close_file(file);
+}</pre>
+            </div>
+
+            <h3>Pattern 3: Partial Error Recovery</h3>
+            <div class="code-block">
+                <pre><span class="kw">int</span> calculate_with_fallback(<span class="kw">int</span> x) {
+    <span class="kw">try</span> {
+        <span class="kw">return</span> risky_calculation(x);
+    }
+    <span class="kw">catch</span> (<span class="kw">const</span> <span class="ty">std::exception</span> &amp;e) {
+        std::cout &lt;&lt; <span class="st">"Warning: "</span> &lt;&lt; e.what() &lt;&lt; <span class="st">"\n"</span>;
+        <span class="kw">return</span> <span class="nb">0</span>;  <span class="cm">// Fallback value</span>
+    }
+}</pre>
+            </div>
+        </section>
+
+        <section class="panel" id="guarantees">
+            <h2>Exception Guarantees</h2>
+            <p>When writing functions that might throw exceptions, you should provide guarantees about program state:
+            </p>
+
+            <ul>
+                <li><strong>No-throw guarantee:</strong> Function never throws (use <code>noexcept</code>)</li>
+                <li><strong>Strong guarantee:</strong> If exception is thrown, program state is unchanged (atomic)</li>
+                <li><strong>Basic guarantee:</strong> If exception is thrown, program state is valid but may be modified
+                </li>
+                <li><strong>No guarantee:</strong> Exceptions may leave program in invalid state (avoid this!)</li>
+            </ul>
+
+            <div class="code-block">
+                <pre><span class="cm">// No-throw guarantee</span>
+<span class="kw">int</span> get_value() <span class="kw">noexcept</span> {
+    <span class="kw">return</span> <span class="nb">42</span>;
+}
+
+<span class="cm">// Strong guarantee (atomic swap)</span>
+<span class="kw">void</span> swap(<span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; &amp;a, <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; &amp;b) {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; temp = a;  <span class="cm">// Might throw, but a/b unchanged</span>
+    a = b;                        <span class="cm">// Might throw, but a=temp, b unchanged</span>
+    b = temp;                     <span class="cm">// Might throw, but a=b, b=temp</span>
+}</pre>
+            </div>
+        </section>
+
+        <section class="panel" id="quick-ref">
+            <h2>Quick Reference</h2>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                <thead>
+                    <tr style="background: #2d3748; border-bottom: 2px solid #4a5568;">
+                        <th style="padding: 10px; text-align: left;">Keyword</th>
+                        <th style="padding: 10px; text-align: left;">Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>try { }</code></td>
+                        <td style="padding: 8px;">Defines block where exceptions might occur</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>throw</code></td>
+                        <td style="padding: 8px;">Throws an exception object</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>catch (type)</code></td>
+                        <td style="padding: 8px;">Handles specific exception type</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>catch (...)</code></td>
+                        <td style="padding: 8px;">Catches any exception (catch-all)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;"><code>throw;</code></td>
+                        <td style="padding: 8px;">Re-throws current exception</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;"><code>noexcept</code></td>
+                        <td style="padding: 8px;">Specifies function won't throw</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="panel" id="summary">
+            <h2>Summary</h2>
+            <ul>
+                <li>Exceptions provide a clean way to handle errors in C++</li>
+                <li>Use <code>throw</code> to signal an error, <code>try</code> to protect code, and <code>catch</code>
+                    to handle errors</li>
+                <li>Exceptions propagate up the call stack until caught</li>
+                <li>Always catch by <code>const</code> reference to avoid slicing and copying</li>
+                <li>Order catch blocks from most specific to most general</li>
+                <li>Use standard exceptions when possible, create custom ones for specific needs</li>
+                <li>Uncaught exceptions terminate the program</li>
+                <li>Clean up resources before re-throwing exceptions</li>
+                <li>Use exceptions for exceptional situations, not regular control flow</li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© 2025 CSC116 Study Tool by Zac M. </small> <a href="https://github.com/Chaotic-Mess/My-Code-">
+                Github Page</a>
+        </div>
+    </footer>
+</body>
+
+</html>
