@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Math</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../NoteStyles.css" />
+    <script src="../../settings.js"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">CSC 116 Exam Study</div>
+            <nav class="nav" aria-label="Primary">
+                <a href="../../index.html">Home</a>
+                <a href="../../settings.html" class="settings-link">Settings</a>
+                <a href="../Information/checklist.html">Checklist</a>
+            </nav>
+        </div>
+    </header>
+
+    <aside class="quick-nav">
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="#faq">Fundamentals FAQ</a></li>
+            <li><a href="#arithmetic">Basic arithmetic</a></li>
+            <li><a href="#powers">Power, square root, and exponents</a></li>
+            <li><a href="#trig-log">Trigonometry and logarithms</a></li>
+            <li><a href="#rounding">Rounding and truncation</a></li>
+            <li><a href="#min-max">Min and max</a></li>
+            <li><a href="#random">Random numbers (&lt;random&gt;)</a></li>
+        </ul>
+    </aside>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Math Operations</h1>
+            <p>Arithmetic, functions from &lt;cmath&gt;, and numeric utilities.</p>
+        </section>
+
+        <section class="panel" id="faq">
+            <h2>Fundamentals FAQ</h2>
+            <ul>
+                <li><strong>Headers?</strong> <code>&lt;cmath&gt;</code> for math functions, <code>&lt;algorithm&gt;</code> for <code>std::min</code>/<code>std::max</code>, <code>&lt;random&gt;</code> for modern RNG.</li>
+                <li><strong>Integer division?</strong> <code>int/int</code> truncates; use a double operand to get floating results.</li>
+                <li><strong><code>std::abs</code> overloads?</strong> Works for int, long, long long, float, double, long double. Include <code>&lt;cstdlib&gt;</code> for some integer overloads.</li>
+                <li><strong><code>std::pow</code> vs <code>std::sqrt</code>?</strong> <code>pow</code> is generic exponent; <code>sqrt</code> is faster for square roots.</li>
+                <li><strong>Domain errors?</strong> Negative input to <code>sqrt</code> or log functions is undefined/NaN; check inputs first.</li>
+                <li><strong>Rounding rules?</strong> <code>std::floor</code> down, <code>ceil</code> up, <code>round</code> to nearest with ties to away from zero.</li>
+                <li><strong>Random?</strong> Prefer <code>&lt;random&gt;</code> engines/distributions; <code>rand()</code> is legacy.</li>
+                <li><strong>Constants?</strong> C++20 offers <code>std::numbers::pi</code> in <code>&lt;numbers&gt;</code> (not all compilers yet).</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="arithmetic">
+            <h2>Basic arithmetic</h2>
+            <p>Integer and floating-point operations.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> a = <span class="nb">10</span>;
+    <span class="kw">int</span> b = <span class="nb">3</span>;
+    std::cout &lt;&lt; <span class="st">"Add: "</span> &lt;&lt; (a + b) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Subtract: "</span> &lt;&lt; (a - b) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Multiply: "</span> &lt;&lt; (a * b) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Divide: "</span> &lt;&lt; (a / b) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Modulo: "</span> &lt;&lt; (a % b) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">Add: 13
+                Subtract: 7
+                Multiply: 30
+                Divide: 3
+                Modulo: 1</div>
+            <div class="info-box">
+                Integer division truncates (no remainder). Use <code>double</code> for exact division:
+                <code>10.0 / 3 ≈ 3.333</code>
+            </div>
+        </section>
+
+        <section class="panel" id="powers">
+            <h2>Power, square root, and exponents</h2>
+            <p>Use &lt;cmath&gt; for advanced operations.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cmath&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">double</span> x = <span class="nb">16.0</span>;
+    std::cout &lt;&lt; <span class="st">"sqrt(16): "</span> &lt;&lt; std::sqrt(x) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"pow(2, 3): "</span> &lt;&lt; std::pow(<span class="nb">2</span>, <span class="nb">3</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"abs(-5): "</span> &lt;&lt; std::abs(<span class="nb\">-5</span>) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">sqrt(16): 4
+                pow(2, 3): 8
+                abs(-5): 5</div>
+            <ul>
+                <li><code>std::sqrt(x)</code> returns the square root.</li>
+                <li><code>std::pow(base, exp)</code> raises base to the power of exp.</li>
+                <li><code>std::abs()</code> works for both int and double versions.</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="trig-log">
+            <h2>Trigonometry and logarithms</h2>
+            <p>More advanced math functions.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cmath&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">double</span> pi = <span class="nb">3.14159</span>;
+    std::cout &lt;&lt; <span class="st">"sin(pi/2): "</span> &lt;&lt; std::sin(pi / <span class="nb">2</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"cos(0): "</span> &lt;&lt; std::cos(<span class="nb">0</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"log(10): "</span> &lt;&lt; std::log10(<span class="nb">10</span>) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">sin(pi/2): 1
+                cos(0): 1
+                log(10): 1</div>
+            <ul>
+                <li><code>std::sin(), std::cos(), std::tan()</code> work with radians.</li>
+                <li><code>std::log()</code> is natural log; <code>std::log10()</code> is base-10.</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="rounding">
+            <h2>Rounding and truncation</h2>
+            <p>Convert floating-point to integer values.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cmath&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">double</span> x = <span class="nb">3.7</span>;
+    std::cout &lt;&lt; <span class="st">"Original: "</span> &lt;&lt; x &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"floor: "</span> &lt;&lt; std::floor(x) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"ceil: "</span> &lt;&lt; std::ceil(x) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"round: "</span> &lt;&lt; std::round(x) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">Original: 3.7
+                floor: 3
+                ceil: 4
+                round: 4</div>
+            <ul>
+                <li><code>std::floor()</code> rounds down; <code>std::ceil()</code> rounds up.</li>
+                <li><code>std::round()</code> rounds to the nearest integer.</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="min-max">
+            <h2>Min and max</h2>
+            <p>Find minimum and maximum values efficiently.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;algorithm&gt;
+
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> a = <span class="nb">5</span>;
+    <span class="kw">int</span> b = <span class="nb">12</span>;
+    std::cout &lt;&lt; <span class="st">"Min: "</span> &lt;&lt; std::min(a, b) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"Max: "</span> &lt;&lt; std::max(a, b) &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">Min: 5
+                Max: 12</div>
+            <ul>
+                <li><code>std::min()</code> and <code>std::max()</code> are in <code>&lt;algorithm&gt;</code>.</li>
+                <li>Both work with any comparable types (int, double, string, etc.).</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="random">
+            <h2>Random numbers (&lt;random&gt;)</h2>
+            <p>Generate pseudo-random values.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;random&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::random_device</span> rd;
+    <span class="ty">std::mt19937</span> gen(rd());
+    <span class="ty">std::uniform_int_distribution</span>&lt;&gt; dis(<span class="nb">1</span>, <span class="nb">10</span>);
+    
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nb">0</span>; i &lt; <span class="nb">3</span>; ++i) {
+        std::cout &lt;&lt; dis(gen) &lt;&lt; <span class="st">"\n"</span>;
+    }
+}</pre>
+            </div>
+            <div class="output-box">7
+                3
+                9</div>
+            <ul>
+                <li><code>std::mt19937</code> is a Mersenne Twister generator (better than <code>rand()</code>).</li>
+                <li><code>std::uniform_int_distribution</code> produces uniform random integers in a range.</li>
+                <li>Example: <a href="../../Codes/05.1-random.cpp">05.1-random.cpp</a></li>
+            </ul>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <small>© 2025 CSC116 Study Tool by Zac M. </small> <a href="https://github.com/Chaotic-Mess/My-Code-">
+                Github Page</a>
+        </div>
+    </footer>
+</body>
+
+</html>
