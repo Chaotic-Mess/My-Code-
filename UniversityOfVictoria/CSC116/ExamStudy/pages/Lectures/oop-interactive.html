@@ -406,6 +406,7 @@
                     <li><button class="section-btn" data-section="getters">Getters (Accessors)</button></li>
                     <li><button class="section-btn" data-section="setters">Setters (Mutators)</button></li>
                     <li><button class="section-btn" data-section="constructors">Constructors</button></li>
+                    <li><button class="section-btn" data-section="destructors">Destructors</button></li>
                     <li><button class="section-btn" data-section="inheritance">Inheritance</button></li>
                     <li><button class="section-btn" data-section="protected">Protected Access</button></li>
                     <li><button class="section-btn" data-section="override">Override</button></li>
@@ -517,11 +518,34 @@
                     </div>
                     <div class="section-nav">
                         <a href="#" onclick="nextSection('setters'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('destructors'); return false;">Next: Destructors →</a>
+                    </div>
+                </div>
+
+                <!-- 6. Destructors -->
+                <div id="destructors" class="section-view">
+                    <div class="section-header">
+                        <h2>Destructors</h2>
+                        <p>Special functions that clean up resources when objects are destroyed.</p>
+                        <button class="btn" onclick="showInfo('destructors')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('destructorsCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="destructorsCode" onclick="nextLine('destructorsCode')">Click to reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('constructors'); return false;">← Previous</a>
                         <a href="#" onclick="nextSection('inheritance'); return false;">Next: Inheritance →</a>
                     </div>
                 </div>
 
-                <!-- 6. Inheritance -->
+                <!-- 7. Inheritance -->
                 <div id="inheritance" class="section-view">
                     <div class="section-header">
                         <h2>Inheritance</h2>
@@ -540,12 +564,12 @@
                             reveal code →</button>
                     </div>
                     <div class="section-nav">
-                        <a href="#" onclick="nextSection('constructors'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('destructors'); return false;">← Previous</a>
                         <a href="#" onclick="nextSection('protected'); return false;">Next: Protected →</a>
                     </div>
                 </div>
 
-                <!-- 7. Protected Access -->
+                <!-- 8. Protected Access -->
                 <div id="protected" class="section-view">
                     <div class="section-header">
                         <h2>Protected Access</h2>
@@ -570,7 +594,7 @@
                     </div>
                 </div>
 
-                <!-- 8. Override -->
+                <!-- 9. Override -->
                 <div id="override" class="section-view">
                     <div class="section-header">
                         <h2>Override</h2>
@@ -595,7 +619,7 @@
                     </div>
                 </div>
 
-                <!-- 9. Polymorphism -->
+                <!-- 10. Polymorphism -->
                 <div id="polymorphism" class="section-view">
                     <div class="section-header">
                         <h2>Polymorphism</h2>
@@ -620,7 +644,7 @@
                     </div>
                 </div>
 
-                <!-- 10. Static Methods -->
+                <!-- 11. Static Methods -->
                 <div id="static" class="section-view">
                     <div class="section-header">
                         <h2>Static Methods</h2>
@@ -800,6 +824,36 @@
                 `<span class="fn">cout</span> &lt;&lt; good.<span class="fn">getArea</span>();`,
                 `<span class="cm">// Output:</span>`,
                 `<span class="cm">// 15</span>`
+            ],
+
+            destructors: [
+                `<span class="kw">class</span> <span class="ty">Node</span> {`,
+                `<span class="kw">private</span>:`,
+                `    <span class="ty">int</span>* data;`,
+                `<span class="kw">public</span>:`,
+                `    <span class="fn">Node</span>(<span class="ty">int</span> value) {`,
+                `        data = <span class="kw">new</span> <span class="ty">int</span>(value);`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Constructor: allocating memory\\n"</span>;`,
+                `    }`,
+                `    <span class="cm">// Destructor: named ~ClassName()</span>`,
+                `    ~<span class="fn">Node</span>() {`,
+                `        <span class="kw">delete</span> data;`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Destructor: freeing memory\\n"</span>;`,
+                `    }`,
+                `};`,
+                ``,
+                `{`,
+                `    <span class="ty">Node</span> obj(<span class="nb">42</span>);  <span class="cm">// Constructor called</span>`,
+                `}  <span class="cm">// Destructor called automatically</span>`,
+                ``,
+                `<span class="ty">Node</span>* ptr = <span class="kw">new</span> <span class="ty">Node</span>(<span class="nb">42</span>);`,
+                `<span class="kw">delete</span> ptr;  <span class="cm">// calls destructor for ptr</span>`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// Constructor: allocating memory</span>`,
+                `<span class="cm">// Destructor: freeing memory</span>`,
+                `<span class="cm">// Constructor: allocating memory</span>`,
+                `<span class="cm">// Destructor: freeing memory</span>`
             ],
 
             inheritance: [
@@ -1023,6 +1077,23 @@
                     </ul>
                     <p>Each object gets its own copy of member variables initialized by the constructor.</p>`
             },
+            destructors: {
+                title: "Destructors",
+                content: `<p><strong>Destructors</strong> are special functions called automatically when an object is destroyed.</p>
+                    <p>They are named <code>~ClassName()</code> and have no return type.</p>
+                    <p><strong>Purpose:</strong></p>
+                    <ul>
+                        <li>Free dynamically allocated memory (pointers)</li>
+                        <li>Close files or connections</li>
+                        <li>Release other resources</li>
+                    </ul>
+                    <p><strong>When are they called?</strong></p>
+                    <ul>
+                        <li>Stack objects: when they go out of scope</li>
+                        <li>Heap objects: when <code>delete</code> is called</li>
+                    </ul>
+                    <p><strong>Important:</strong> Forgetting to free memory in destructors leads to memory leaks!</p>`
+            },
             inheritance: {
                 title: "Inheritance",
                 content: `<p><strong>Inheritance</strong> allows a derived class to inherit members from a base class.</p>
@@ -1080,7 +1151,7 @@
         };
 
         let currentLines = {};
-        let totalSections = 10;
+        let totalSections = 11;
         let completedSections = 0;
 
         function escapeHtml(str) {
