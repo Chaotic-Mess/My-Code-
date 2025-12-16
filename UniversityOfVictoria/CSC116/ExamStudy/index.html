@@ -7,7 +7,7 @@
     <meta name="color-scheme" content="dark light" />
     <meta name="description"
         content="Comprehensive CSC 116 C++ exam study guide with interactive quizzes, code examples, and practice tests." />
-    <title>CSC 116 Exam Study Guide - Master C++</title>
+    <title>CSC 116 Exam Study Guide - C++</title>
     <link rel="stylesheet" href="styles.css" />
     <script src="settings.js"></script>
     <link rel="apple-touch-icon" sizes="180x180" href="Favicon/apple-touch-icon.png">
@@ -186,6 +186,47 @@
         </section>
     </main>
 
+    <div id="feedback-modal" hidden>
+        <form id="feedback-form">
+            <h3>Send Feedback</h3>
+
+            <label>
+                Type
+                <select name="type" required>
+                    <option value="bug">🐞 Bug</option>
+                    <option value="suggestion">💡 Suggestion</option>
+                    <option value="praise">❤️ Praise</option>
+                </select>
+            </label>
+
+            <label>
+                Rating
+                <div class="star-rating">
+                    <input type="radio" name="rating" value="5" required> ★★★★★
+                    <input type="radio" name="rating" value="4"> ★★★★☆
+                    <input type="radio" name="rating" value="3"> ★★★☆☆
+                    <input type="radio" name="rating" value="2"> ★★☆☆☆
+                    <input type="radio" name="rating" value="1"> ★☆☆☆☆
+                </div>
+            </label>
+
+            <label>
+                Your email (so I can reply)
+                <input type="email" name="email" placeholder="you@example.com">
+            </label>
+
+            <label>
+                Message
+                <textarea name="message" required></textarea>
+            </label>
+
+            <div class="feedback-actions">
+                <button type="submit" class="btn btn-primary">Send</button>
+                <button type="button" class="btn btn-secondary" id="feedback-close">Cancel</button>
+            </div>
+        </form>
+    </div>
+
     <footer class="site-footer">
         <div class="container">
             <div class="footer-content">
@@ -204,6 +245,10 @@
                     <span class="separator">•</span>
                     <a href="settings.html">Customize Theme</a>
                 </div>
+
+                <button id="feedback-btn">
+                    💬 Feedback
+                </button>
             </div>
         </div>
     </footer>
@@ -508,6 +553,66 @@
         // Update stats when returning to the page
         window.addEventListener('focus', updateStats);
     </script>
-</body>
 
+    <script>
+        const form = document.getElementById("feedback-form");
+        const btn = document.getElementById("feedback-btn");
+        const modal = document.getElementById("feedback-modal");
+        const closeBtn = document.getElementById("feedback-close");
+        
+        btn.addEventListener("click", () => {
+            modal.classList.add("show");
+        });
+
+        closeBtn.addEventListener("click", () => {
+            modal.classList.remove("show");
+        });
+
+        // Click outside modal closes it
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.classList.remove("show");
+            }
+        });
+
+        function collectQuizStats() {
+            const stats = {};
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith("bestScore-")) {
+                    stats[key.replace("bestScore-", "")] = localStorage.getItem(key);
+                }
+            });
+            return stats;
+        }
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+
+            const data = new FormData();
+
+            data.append("type", form.type.value);
+            data.append("rating", form.rating.value);
+            data.append("email", form.email.value || "");
+            data.append("message", form.message.value);
+            data.append("page", location.href);
+            data.append("time", new Date().toISOString());
+            data.append("completionRate", document.getElementById("completion-rate")?.textContent || "");
+            data.append("avgScore", document.getElementById("avg-score")?.textContent || "");
+
+            Object.entries(collectQuizStats()).forEach(([k, v]) => {
+                data.append(`quiz_${k}`, v);
+            });
+
+            await fetch("https://script.google.com/macros/s/AKfycbxByoidg87lRNNDWj96_w1qFFKirFpnEUhL_SH6_ygZH_n7C-eC3dTDQW2zABPQpLhv/exec", {
+                method: "POST",
+                body: data
+            });
+
+            form.reset();
+            modal.hidden = true;
+            alert("Thanks! Feedback sent ✨");
+        };
+
+    </script> 
+</body>
 </html>
