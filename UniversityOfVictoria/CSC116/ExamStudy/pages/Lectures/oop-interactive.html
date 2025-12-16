@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>OOP Lecture</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <style>
+        .oop-container {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            margin: 2rem 0;
+        }
+
+        .oop-sections {
+            flex: 0 0 200px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .oop-sections ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .oop-sections li {
+            margin: 0.5rem 0;
+        }
+
+        .oop-sections button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--panel);
+            border: 2px solid var(--border);
+            color: var(--text);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .oop-sections button:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .oop-sections button.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .oop-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .section-view {
+            display: none;
+        }
+
+        .section-view.active {
+            display: block;
+        }
+
+        .code-display {
+            position: relative;
+            background: var(--panel);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            min-height: 150px;
+            width: 100%;
+            text-align: left;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .code-display:hover {
+            background: #161b23;
+            box-shadow: 0 0 15px rgba(79, 140, 255, 0.3);
+        }
+
+        .code-display:active {
+            transform: scale(0.98);
+        }
+
+        .code-display.typing {
+            color: var(--accent);
+        }
+
+        .code-line {
+            position: relative;
+            margin: 0.5rem 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .code-line.new {
+            animation: fadeInCode 0.3s ease;
+        }
+
+        @keyframes fadeInCode {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--panel);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .info-popup.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -55%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .info-popup h3 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+
+        .info-popup p {
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+
+        .info-popup code {
+            background: var(--bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+
+        .info-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            display: none;
+        }
+
+        .info-popup-overlay.show {
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .prompt {
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2 {
+            margin: 0 0 0.5rem 0;
+        }
+
+        .section-header p {
+            margin: 0.5rem 0;
+            color: var(--muted);
+        }
+
+        .click-hint {
+            display: inline-block;
+            background: rgba(79, 140, 255, 0.1);
+            border-left: 3px solid var(--accent);
+            padding: 0.75rem 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .section-nav {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-nav a {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--accent);
+            transition: all 0.2s;
+        }
+
+        .section-nav a:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .section-nav a:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+ 
+        .code-wrapper {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.2s;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-wrapper:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: #6ba3ff;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn.copied {
+            background: #51cf66;
+        }
+
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="../Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="../../settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Object-Oriented Programming (OOP)</h1>
+            <p>Master the core concepts of OOP: classes, encapsulation, inheritance, and polymorphism.</p>
+        </section>
+
+        <div class="container intro-panel">
+            <strong>Note:</strong> There is more detailed information available in the <a href="../Content/classes.html"
+                target="_blank"><code>Classes & Objects</code>
+                Page</a>. This interactive lecture is designed to provide a hands-on learning experience.
+
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%;"></div>
+        </div>
+
+        <div class="oop-container">
+            <!-- Section Navigation -->
+            <nav class="oop-sections">
+                <ul>
+                    <li><button class="section-btn active" data-section="classes">Classes & Objects</button></li>
+                    <li><button class="section-btn" data-section="encapsulation">Encapsulation</button></li>
+                    <li><button class="section-btn" data-section="getters">Getters (Accessors)</button></li>
+                    <li><button class="section-btn" data-section="setters">Setters (Mutators)</button></li>
+                    <li><button class="section-btn" data-section="constructors">Constructors</button></li>
+                    <li><button class="section-btn" data-section="inheritance">Inheritance</button></li>
+                    <li><button class="section-btn" data-section="protected">Protected Access</button></li>
+                    <li><button class="section-btn" data-section="override">Override</button></li>
+                    <li><button class="section-btn" data-section="polymorphism">Polymorphism</button></li>
+                    <li><button class="section-btn" data-section="static">Static Methods</button></li>
+                </ul>
+            </nav>
+
+            <!-- Content Area -->
+            <div class="oop-content">
+                <!-- 1. Classes & Objects -->
+                <div id="classes" class="section-view active">
+                    <div class="section-header">
+                        <h2>Classes & Objects</h2>
+                        <p>The foundation of OOP. A class is a blueprint for creating objects.</p>
+                        <button class="btn" onclick="showInfo('classes')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('classesCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="classesCode" onclick="nextLine('classesCode')">Click to reveal
+                            code
+                            →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('encapsulation'); return false;">Next: Encapsulation →</a>
+                    </div>
+                </div>
+
+                <!-- 2. Encapsulation -->
+                <div id="encapsulation" class="section-view">
+                    <div class="section-header">
+                        <h2>Encapsulation</h2>
+                        <p>Hide internal details and expose only what's necessary.</p>
+                        <button class="btn" onclick="showInfo('encapsulation')"> Info </button>
+
+                    </div>
+                    <button class="code-display" id="encapsulationCode" onclick="nextLine('encapsulationCode')">Click to
+                        reveal code →</button>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('classes'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('getters'); return false;">Next: Getters →</a>
+                    </div>
+                </div>
+
+                <!-- 3. Getters -->
+                <div id="getters" class="section-view">
+                    <div class="section-header">
+                        <h2>Getters (Accessors)</h2>
+                        <p>Allow controlled read-only access to private member variables.</p>
+                        <button class="btn" onclick="showInfo('classes')"> Info </button>
+                    </div>
+                    <button class="code-display" id="gettersCode" onclick="nextLine('gettersCode')">Click to reveal code
+                        →</button>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('encapsulation'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('setters'); return false;">Next: Setters →</a>
+                    </div>
+                </div>
+
+                <!-- 4. Setters -->
+                <div id="setters" class="section-view">
+                    <div class="section-header">
+                        <h2>Setters (Mutators)</h2>
+                        <p>Allow controlled modification of private member variables with validation.</p>
+                        <button class="btn" onclick="showInfo('setters')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('settersCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="settersCode" onclick="nextLine('settersCode')">Click to reveal
+                            code
+                            →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('getters'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('constructors'); return false;">Next: Constructors →</a>
+                    </div>
+                </div>
+
+                <!-- 5. Constructors -->
+                <div id="constructors" class="section-view">
+                    <div class="section-header">
+                        <h2>Constructors</h2>
+                        <p>Special functions that initialize objects when they're created.</p>
+                        <button class="btn" onclick="showInfo('constructors')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('constructorsCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="constructorsCode" onclick="nextLine('constructorsCode')">Click
+                            to
+                            reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('setters'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('inheritance'); return false;">Next: Inheritance →</a>
+                    </div>
+                </div>
+
+                <!-- 6. Inheritance -->
+                <div id="inheritance" class="section-view">
+                    <div class="section-header">
+                        <h2>Inheritance</h2>
+                        <p>A derived class inherits members from a base class.</p>
+                        <button class="btn" onclick="showInfo('inheritance')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('inheritanceCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="inheritanceCode" onclick="nextLine('inheritanceCode')">Click to
+                            reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('constructors'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('protected'); return false;">Next: Protected →</a>
+                    </div>
+                </div>
+
+                <!-- 7. Protected Access -->
+                <div id="protected" class="section-view">
+                    <div class="section-header">
+                        <h2>Protected Access</h2>
+                        <p>Protected members are accessible in derived classes but not from outside.</p>
+                        <button class="btn" onclick="showInfo('protected')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('protectedCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="protectedCode" onclick="nextLine('protectedCode')">Click to
+                            reveal
+                            code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('inheritance'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('override'); return false;">Next: Override →</a>
+                    </div>
+                </div>
+
+                <!-- 8. Override -->
+                <div id="override" class="section-view">
+                    <div class="section-header">
+                        <h2>Override</h2>
+                        <p>Derived classes can override base class functions with their own implementation.</p>
+                        <button class="btn" onclick="showInfo('override')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('overrideCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="overrideCode" onclick="nextLine('overrideCode')">Click to
+                            reveal
+                            code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('protected'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('polymorphism'); return false;">Next: Polymorphism →</a>
+                    </div>
+                </div>
+
+                <!-- 9. Polymorphism -->
+                <div id="polymorphism" class="section-view">
+                    <div class="section-header">
+                        <h2>Polymorphism</h2>
+                        <p>One interface, multiple implementations. Use base class pointers with derived classes.</p>
+                        <button class="btn" onclick="showInfo('polymorphism')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('polymorphismCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="polymorphismCode" onclick="nextLine('polymorphismCode')">Click
+                            to
+                            reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('override'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('static'); return false;">Next: Static Methods →</a>
+                    </div>
+                </div>
+
+                <!-- 10. Static Methods -->
+                <div id="static" class="section-view">
+                    <div class="section-header">
+                        <h2>Static Methods</h2>
+                        <p>Functions that belong to the class, not individual objects. Called on the class itself.</p>
+                        <button class="btn" onclick="showInfo('static')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('staticCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="staticCode" onclick="nextLine('staticCode')">Click to reveal
+                            code
+                            →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('polymorphism'); return false;">← Previous: Polymorphism</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Info Popup -->
+    <div class="info-popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
+    <div class="info-popup" id="infoPopup">
+        <button class="close-btn" onclick="closePopup()">✕</button>
+        <h3 id="popupTitle">Info</h3>
+        <div id="popupContent"></div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Code snippets for each section
+        const codeSnippets = {
+            classes: [
+                `<span class="kw">class</span> <span class="ty">Dog</span> {`,
+                `<span class="kw">public</span>:`,
+                `    <span class="ty">string</span> name;`,
+                `    <span class="ty">int</span> age;`,
+                `    <span class="kw">void</span> <span class="fn">bark</span>() {`,
+                `        <span class="fn">cout</span> &lt;&lt; name &lt;&lt; <span class="st">" says Woof!\\n"</span>;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="ty">Dog</span> myDog;`,
+                `myDog.name = <span class="st">"Buddy"</span>;`,
+                `myDog.age = <span class="nb">5</span>;`,
+                `myDog.<span class="fn">bark</span>();`,
+                `<span class="cm">// Dog stray; stray.bark();  // ⚠️ ok but uninitialized data (logic bug)</span>`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// Buddy says Woof!</span>`
+            ],
+
+            encapsulation: [
+                `<span class="kw">class</span> <span class="ty">BankAccount</span> {`,
+                `<span class="kw">private</span>:`,
+                `    <span class="ty">double</span> balance;  <span class="cm">// Hidden from outside</span>`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">deposit</span>(<span class="ty">double</span> amount) {`,
+                `        <span class="kw">if</span> (amount &gt; <span class="nb">0</span>) {`,
+                `            balance += amount;`,
+                `        }`,
+                `    }`,
+                `    <span class="ty">double</span> <span class="fn">getBalance</span>() {`,
+                `        <span class="kw">return</span> balance;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="ty">BankAccount</span> account;`,
+                `account.<span class="fn">deposit</span>(<span class="nb">100</span>);`,
+                `<span class="fn">cout</span> &lt;&lt; account.<span class="fn">getBalance</span>();`,
+                `<span class="cm">// account.balance = 999;  // error: 'balance' is private</span>`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 100</span>`
+            ],
+
+            getters: [
+                `<span class="kw">class</span> <span class="ty">Person</span> {`,
+                `<span class="kw">private</span>:`,
+                `    <span class="ty">string</span> name;`,
+                `    <span class="ty">int</span> age;`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">setName</span>(<span class="ty">string</span> n) { name = n; }`,
+                `    <span class="kw">void</span> <span class="fn">setAge</span>(<span class="ty">int</span> a) { <span class="kw">if</span> (a &gt;= <span class="nb">0</span>) age = a; }`,
+                `    <span class="ty">string</span> <span class="fn">getName</span>() <span class="kw">const</span> {`,
+                `        <span class="kw">return</span> name;`,
+                `    }`,
+                `    <span class="ty">int</span> <span class="fn">getAge</span>() <span class="kw">const</span> {`,
+                `        <span class="kw">return</span> age;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="ty">Person</span> p;`,
+                `p.<span class="fn">setName</span>(<span class="st">"Alice"</span>);`,
+                `p.<span class="fn">setAge</span>(<span class="nb">20</span>);`,
+                `<span class="fn">cout</span> &lt;&lt; p.<span class="fn">getName</span>() &lt;&lt; <span class="st">"\n"</span>;`,
+                `<span class="fn">cout</span> &lt;&lt; p.<span class="fn">getAge</span>();`,
+                ``,
+                `<span class="cm">// ❌ Bad access examples:</span>`,
+                `<span class="cm">// p.age = 99;       // error: 'age' is private</span>`,
+                `<span class="cm">// p.name = "Bob";   // error: 'name' is private</span>`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// Alice</span>`,
+                `<span class="cm">// 20</span>`
+            ],
+
+            setters: [
+                `<span class="kw">class</span> <span class="ty">Person</span> {`,
+                `<span class="kw">private</span>:`,
+                `    <span class="ty">string</span> name;`,
+                `    <span class="ty">int</span> age;`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">setAge</span>(<span class="ty">int</span> newAge) {`,
+                `        <span class="kw">if</span> (newAge &gt; <span class="nb">0</span> &amp;&amp; newAge &lt; <span class="nb">150</span>) {`,
+                `            age = newAge;`,
+                `        }`,
+                `    }`,
+                `    <span class="kw">void</span> <span class="fn">setName</span>(<span class="ty">string</span> newName) {`,
+                `        name = newName;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="ty">Person</span> p;`,
+                `p.<span class="fn">setAge</span>(<span class="nb">25</span>);`,
+                `p.<span class="fn">setAge</span>(-<span class="nb">10</span>); <span class="cm">// ❌ ignored by validation</span>`,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 25</span>`
+            ],
+
+            constructors: [
+                `<span class="kw">class</span> <span class="ty">Rectangle</span> {`,
+                `<span class="kw">private</span>:`,
+                `    <span class="ty">double</span> width, height;`,
+                `<span class="kw">public</span>:`,
+                `    <span class="fn">Rectangle</span>(<span class="ty">double</span> w, <span class="ty">double</span> h) {`,
+                `        width = w;`,
+                `        height = h;`,
+                `    }`,
+                `    <span class="ty">double</span> <span class="fn">getArea</span>() {`,
+                `        <span class="kw">return</span> width * height;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="cm">// Rectangle r;        // ❌ error: no default constructor</span>`,
+                `<span class="cm">// Rectangle bad(<span class="nb">5</span>);   // ❌ error: missing height arg</span>`,
+                `<span class="ty">Rectangle</span> good(<span class="nb">5.0</span>, <span class="nb">3.0</span>);`,
+                `<span class="fn">cout</span> &lt;&lt; good.<span class="fn">getArea</span>();`,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 15</span>`
+            ],
+
+            inheritance: [
+                `<span class="kw">class</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">private</span>:`,
+                `    <span class="ty">int</span> id;`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">eat</span>() {`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Eating...\\n"</span>;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="kw">class</span> <span class="ty">Dog</span> : <span class="kw">public</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">bark</span>() {`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Woof!\\n"</span>;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="ty">Dog</span> pup;`,
+                `pup.<span class="fn">eat</span>();   <span class="cm">// inherited from Animal</span>`,
+                `pup.<span class="fn">bark</span>();  <span class="cm">// defined in Dog</span>`,
+                ``,
+                `<span class="cm">// ❌ Bad access:</span>`,
+                `<span class="cm">// pup.id = 7;  // error: 'id' is private in base</span>`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// Eating...</span>`,
+                `<span class="cm">// Woof!</span>`
+            ],
+
+            protected: [
+                `<span class="kw">class</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">protected</span>:`,
+                `    <span class="ty">string</span> name;`,
+                `<span class="kw">private</span>:`,
+                `    <span class="ty">int</span> id;`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">setName</span>(<span class="ty">string</span> n) {`,
+                `        name = n;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="kw">class</span> <span class="ty">Dog</span> : <span class="kw">public</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">describe</span>() {`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Dog: "</span> &lt;&lt; name &lt;&lt; <span class="st">"\n"</span>;`,
+                `    }`,
+                `};`,
+                `<span class="ty">Dog</span> d;`,
+                `d.<span class="fn">setName</span>(<span class="st">"Rex"</span>);`,
+                `d.<span class="fn">describe</span>();`,
+                `<span class="cm">// d.name = "Buddy";  // ❌ error: 'name' is protected</span>`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// Dog: Rex</span>`
+            ],
+
+            override: [
+                `<span class="kw">class</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">speak</span>() {`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Some sound\\n"</span>;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="kw">class</span> <span class="ty">Dog</span> : <span class="kw">public</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">speak</span>() <span class="kw">override</span> {`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Woof!\\n"</span>;`,
+                `    }`,
+                `};`,
+                `<span class="kw">class</span> <span class="ty">Cat</span> : <span class="kw">public</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">speak</span>() <span class="kw">override</span> {`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Meow!\\n"</span>;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="ty">Dog</span> d;`,
+                `<span class="ty">Cat</span> c;`,
+                `d.<span class="fn">speak</span>();  <span class="cm">// calls Dog::speak</span>`,
+                `c.<span class="fn">speak</span>();  <span class="cm">// calls Cat::speak</span>`,
+                ``,
+                `<span class="cm">// override explanation:</span>`,
+                `<span class="cm">// override tells the compiler this function MUST replace</span>`,
+                `<span class="cm">// a virtual function from the base class.</span>`,
+                `<span class="cm">// If the name or parameters don’t match, compilation fails.</span>`,
+                `<span class="cm">// It does not change runtime behavior — it’s a safety check.</span>`,
+                ``,
+                `<span class="cm">// ❌ Bad override examples:</span>`,
+                `<span class="cm">// void speak(int) override;  // error: signature mismatch</span>`,
+                `<span class="cm">// void talk() override;      // error: no base virtual named talk</span>`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// Woof!</span>`,
+                `<span class="cm">// Meow!</span>`
+            ],
+
+            polymorphism: [
+                `<span class="kw">class</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">virtual</span> <span class="kw">void</span> <span class="fn">speak</span>() {`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Some sound\\n"</span>;`,
+                `    }`,
+                `};`,
+                `<span class="kw">class</span> <span class="ty">Dog</span> : <span class="kw">public</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">speak</span>() <span class="kw">override</span> {`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Woof!\\n"</span>;`,
+                `    }`,
+                `};`,
+                `<span class="kw">class</span> <span class="ty">Cat</span> : <span class="kw">public</span> <span class="ty">Animal</span> {`,
+                `<span class="kw">public</span>:`,
+                `    <span class="kw">void</span> <span class="fn">speak</span>() <span class="kw">override</span> {`,
+                `        <span class="fn">cout</span> &lt;&lt; <span class="st">"Meow!\\n"</span>;`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="ty">Animal</span>* a = <span class="kw">new</span> <span class="ty">Dog</span>();`,
+                `<span class="ty">Animal</span>* b = <span class="kw">new</span> <span class="ty">Cat</span>();`,
+                ``,
+                `a-&gt;<span class="fn">speak</span>();  <span class="cm">// calls Dog::speak</span>`,
+                `b-&gt;<span class="fn">speak</span>();  <span class="cm">// calls Cat::speak</span>`,
+                ``,
+                `<span class="cm">// ⚠️ Bad: object slicing loses polymorphism</span>`,
+                `<span class="ty">Animal</span> sliced = <span class="ty">Dog</span>();`,
+                `sliced.<span class="fn">speak</span>();  <span class="cm">// calls Animal::speak only!</span>`,
+                `<span class="cm">// A <code>Dog</code> is copied into an <code>Animal</code></span>`,
+                `<span class="cm">// The <code>Dog</code> part is discarded, what remains is just an <code>Animal</code></span>`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// Woof!</span>`,
+                `<span class="cm">// Meow!</span>`,
+                `<span class="cm">// Some sound</span>`
+            ],
+
+            static: [
+                `<span class="kw">class</span> <span class="ty">Counter</span> {`,
+                `<span class="kw">private</span>:`,
+                `    <span class="kw">static</span> <span class="ty">int</span> count;`,
+                `<span class="kw">public</span>:`,
+                `    <span class="fn">Counter</span>() {`,
+                `        count++;`,
+                `    }`,
+                `    <span class="kw">static</span> <span class="ty">int</span> <span class="fn">getCount</span>() {`,
+                `        <span class="kw">return</span> count;`,
+                `    }`,
+                `};`,
+                `<span class="ty">int</span> <span class="ty">Counter</span>::count = <span class="nb">0</span>;  <span class="cm">// must define outside class</span>`,
+                ``,
+                `<span class="ty">Counter</span> c1, c2, c3;`,
+                `<span class="fn">cout</span> &lt;&lt; <span class="ty">Counter</span>::<span class="fn">getCount</span>();  <span class="cm">// static method call</span>`,
+                ``,
+                `<span class="cm">// ❌ Bad access:</span>`,
+                `<span class="cm">// cout << Counter::count;  // error: 'count' is private</span>`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 3</span>`
+            ]
+        };
+
+
+
+        // Info content for each section
+        const infoContent = {
+            classes: {
+                title: "Classes & Objects",
+                content: `<p>A <strong>class</strong> is a blueprint that defines the structure and behavior of objects.</p>
+                    <p><strong>Key terms:</strong></p>
+                    <ul>
+                        <li><code>class</code> keyword: Defines a new class</li>
+                        <li>Member variables: Data stored in each object</li>
+                        <li>Member functions: Actions objects can perform</li>
+                        <li><code>public</code>: Accessible from outside</li>
+                    </ul>
+                    <p>Each object created from a class is independent with its own data.</p>`
+            },
+            encapsulation: {
+                title: "Encapsulation",
+                content: `<p><strong>Encapsulation</strong> is bundling data and functions together, controlling access with visibility modifiers.</p>
+                    <p><strong>Access modifiers:</strong></p>
+                    <ul>
+                        <li><code>public</code>: Anyone can access</li>
+                        <li><code>private</code>: Only the class can access</li>
+                        <li><code>protected</code>: Class and derived classes can access</li>
+                    </ul>
+                    <p>This prevents invalid data and maintains class integrity.</p>`
+            },
+            getters: {
+                title: "Getters (Accessors)",
+                content: `<p><strong>Getters</strong> are <code>const</code> functions that return the value of private variables.</p>
+                    <p>They provide read-only access to data without allowing modification.</p>
+                    <p><strong>Benefits:</strong></p>
+                    <ul>
+                        <li>Control what information is exposed</li>
+                        <li>Can add logic to computed properties</li>
+                        <li>Makes the interface cleaner</li>
+                    </ul>`
+            },
+            setters: {
+                title: "Setters (Mutators)",
+                content: `<p><strong>Setters</strong> are functions that modify private variables with validation.</p>
+                    <p>They allow changes while ensuring data integrity.</p>
+                    <p><strong>Key points:</strong></p>
+                    <ul>
+                        <li>Check validity before assignment</li>
+                        <li>Prevent invalid states</li>
+                        <li>Can add side effects (logging, updates, etc.)</li>
+                    </ul>`
+            },
+            constructors: {
+                title: "Constructors",
+                content: `<p><strong>Constructors</strong> are special functions called automatically when an object is created.</p>
+                    <p>They have the same name as the class and no return type.</p>
+                    <p><strong>Purpose:</strong></p>
+                    <ul>
+                        <li>Initialize member variables</li>
+                        <li>Set up the object for use</li>
+                        <li>Can take parameters</li>
+                    </ul>
+                    <p>Each object gets its own copy of member variables initialized by the constructor.</p>`
+            },
+            inheritance: {
+                title: "Inheritance",
+                content: `<p><strong>Inheritance</strong> allows a derived class to inherit members from a base class.</p>
+                    <p>Syntax: <code>class Derived : public Base { };</code></p>
+                    <p><strong>Benefits:</strong></p>
+                    <ul>
+                        <li>Code reuse</li>
+                        <li>Establish relationships between classes</li>
+                        <li>Polymorphism support</li>
+                    </ul>
+                    <p>A derived class has access to all public members of the base class.</p>`
+            },
+            protected: {
+                title: "Protected Access",
+                content: `<p><strong>Protected</strong> members are a middle ground between private and public.</p>
+                    <p>They are accessible in:</p>
+                    <ul>
+                        <li>The class itself</li>
+                        <li>Derived classes</li>
+                        <li><strong>NOT</strong> from outside</li>
+                    </ul>
+                    <p>Use <code>protected</code> for data that derived classes need to access.</p>`
+            },
+            override: {
+                title: "Override",
+                content: `<p><strong>Override</strong> means a derived class provides its own implementation of a base class function.</p>
+                    <p>The base class function must be marked <code>virtual</code>.</p>
+                    <p>Use <code>override</code> keyword (C++11+) to explicitly mark overridden functions.</p>
+                    <p>This enables polymorphism: different classes implement the same interface differently.</p>`
+            },
+            polymorphism: {
+                title: "Polymorphism",
+                content: `<p><strong>Polymorphism</strong> means "many forms" - one interface, multiple implementations.</p>
+                    <p>Use base class pointers/references to work with derived objects.</p>
+                    <p>Virtual functions determine which implementation to call at runtime.</p>
+                    <p><strong>Benefits:</strong></p>
+                    <ul>
+                        <li>Write generic code for multiple types</li>
+                        <li>Flexibility and extensibility</li>
+                        <li>Loose coupling between classes</li>
+                    </ul>`
+            },
+            static: {
+                title: "Static Methods",
+                content: `<p><strong>Static methods</strong> belong to the class itself, not to individual objects.</p>
+                    <p>They can be called without creating an object: <code>ClassName::method()</code></p>
+                    <p><strong>Static members:</strong></p>
+                    <ul>
+                        <li>Shared across all instances</li>
+                        <li>Declared in class</li>
+                        <li>Defined outside class: <code>Type ClassName::member = value;</code></li>
+                    </ul>
+                    <p>Useful for counters, configuration, and utility functions.</p>`
+            }
+        };
+
+        let currentLines = {};
+        let totalSections = 10;
+        let completedSections = 0;
+
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function highlightCpp(line) {
+            // If author supplied markup, keep it
+            if (line.includes('<span')) return line;
+
+            let escaped = escapeHtml(line);
+
+            // Strings
+            escaped = escaped.replace(/"([^"\\]|\\.)*"/g, match => `<span class="st">${match}</span>`);
+            // Numbers
+            escaped = escaped.replace(/\b\d+(\.\d+)?\b/g, match => `<span class="nb">${match}</span>`);
+            // Keywords
+            const keywords = ['class', 'public', 'private', 'protected', 'virtual', 'override', 'return', 'void', 'int', 'double', 'string', 'auto', 'static', 'const', 'new', 'delete'];
+            const kwRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
+            escaped = escaped.replace(kwRegex, match => `<span class="kw">${match}</span>`);
+            return escaped;
+        }
+
+        function nextLine(codeId) {
+            const section = codeId.replace('Code', '');
+            const lines = codeSnippets[section];
+
+            if (!lines) {
+                console.error('Code snippet not found for:', section);
+                return;
+            }
+
+            if (!currentLines[codeId]) {
+                currentLines[codeId] = 0;
+            }
+
+            if (currentLines[codeId] < lines.length) {
+                const codeDisplay = document.getElementById(codeId);
+                const line = lines[currentLines[codeId]];
+
+                const lineEl = document.createElement('div');
+                lineEl.className = 'code-line new';
+                lineEl.innerHTML = highlightCpp(line || ' ');
+                codeDisplay.appendChild(lineEl);
+
+                currentLines[codeId]++;
+
+                // Show info on first line
+                if (currentLines[codeId] === 1) {
+                    showInfo(section);
+                }
+            } else {
+                // All lines shown, mark section as complete
+                markSectionComplete(section);
+            }
+
+            updateProgress();
+        }
+
+        function showInfo(section) {
+            const info = infoContent[section];
+            if (info) {
+                document.getElementById('popupTitle').textContent = info.title;
+                document.getElementById('popupContent').innerHTML = info.content;
+                document.getElementById('infoPopup').classList.add('show');
+                document.getElementById('popupOverlay').classList.add('show');
+            }
+        }
+
+        function closePopup() {
+            document.getElementById('infoPopup').classList.remove('show');
+            document.getElementById('popupOverlay').classList.remove('show');
+        }
+
+        function nextSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section-view').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Remove active from all buttons
+            document.querySelectorAll('.section-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Mark button as active
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+
+            // Scroll into view
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            closePopup();
+        }
+
+        function markSectionComplete(section) {
+            const btn = document.querySelector(`[data-section="${section}"]`);
+            if (btn && !btn.dataset.completed) {
+                btn.dataset.completed = 'true';
+                btn.style.opacity = '0.6';
+                completedSections++;
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (completedSections / totalSections) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function copyCode(codeId) {
+            const codeDisplay = document.getElementById(codeId);
+            const codeLines = codeDisplay.querySelectorAll('.code-line');
+
+            if (codeLines.length === 0) {
+                return; // Nothing to copy yet
+            }
+
+            // Extract text content from all revealed lines
+            let text = '';
+            codeLines.forEach(line => {
+                text += line.textContent + '\n';
+            });
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(text.trim()).then(() => {
+                // Visual feedback
+                const btn = codeDisplay.parentElement.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.classList.add('copied');
+                btn.innerHTML = `<svg fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                </svg>Copied!`;
+
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // Initialize section buttons
+        document.querySelectorAll('.section-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const section = btn.dataset.section;
+                nextSection(section);
+            });
+        });
+
+        // Allow clicking outside popup to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
+    </script>
+</body>
+
+</html>

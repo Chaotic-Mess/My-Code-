@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Quiz: Strings </title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+    <script src="./QuizCore.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link">Home</a>
+                <a href="../Information/checklist.html" class="nav-link">Checklist</a>
+                <a href="../../settings.html" class="nav-link settings-link">Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="quiz-results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="score-display"></div>
+            <p id="score-message"></p>
+            <div class="back-link">
+                <a href="../Content/strings.html">← Back to Strings</a>
+            </div>
+        </div>
+        <div class="quiz-container">
+            <h1>Quiz: Strings</h1>
+            <p>Test your knowledge of std::string and string operations.</p>
+
+            <form id="quiz-form">
+                <!-- Q1 -->
+                <div class="quiz-question">
+                    <h3>1. How do you create an empty string?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q1" data-value="a">std::string s;</button>
+                        <button type="button" class="option" data-question="q1" data-value="b">std::string s = "";</button>
+                        <button type="button" class="option" data-question="q1" data-value="c">char* s = "";</button>
+                        <button type="button" class="option" data-question="q1" data-value="d">std::string s();</button>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="quiz-question">
+                    <h3>2. What does s.size() return?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q2" data-value="a">The number of characters in the string</button>
+                        <button type="button" class="option" data-question="q2" data-value="b">The memory allocated for the string</button>
+                        <button type="button" class="option" data-question="q2" data-value="c">The maximum size the string can hold</button>
+                        <button type="button" class="option" data-question="q2" data-value="d">Nothing; it's not a valid function</button>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="quiz-question">
+                    <h3>3. How do you access the first character of a string?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q3" data-value="a">s[0]</button>
+                        <button type="button" class="option" data-question="q3" data-value="b">s.at(0)</button>
+                        <button type="button" class="option" data-question="q3" data-value="c">s.front()</button>
+                        <button type="button" class="option" data-question="q3" data-value="d">s.first()</button>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="quiz-question">
+                    <h3>4. What's the difference between s[i] and s.at(i)?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q4" data-value="a">No difference; they're identical</button>
+                        <button type="button" class="option" data-question="q4" data-value="b">s[i] is faster; s.at(i) checks bounds and throws exceptions</button>
+                        <button type="button" class="option" data-question="q4" data-value="c">s.at(i) is faster; s[i] is slower</button>
+                        <button type="button" class="option" data-question="q4" data-value="d">s.at(i) only works for const strings</button>
+                    </div>
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="quiz-question">
+                    <h3>5. How do you concatenate two strings?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q5" data-value="a">s1 + s2 (with two std::string values)</button>
+                        <button type="button" class="option" data-question="q5" data-value="b">s1 += s2</button>
+                        <button type="button" class="option" data-question="q5" data-value="c">Either + or += works for std::string</button>
+                        <button type="button" class="option" data-question="q5" data-value="d">strcat(s1, s2)</button>
+                    </div>
+                    <div class="feedback" id="feedback5"></div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="quiz-question">
+                    <h3>6. What does std::stoi("42") return?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q6" data-value="a">The string "42"</button>
+                        <button type="button" class="option" data-question="q6" data-value="b">The integer 42</button>
+                        <button type="button" class="option" data-question="q6" data-value="c">A double 42.0</button>
+                        <button type="button" class="option" data-question="q6" data-value="d">Nothing; stoi is not a valid function</button>
+                    </div>
+                    <div class="feedback" id="feedback6"></div>
+                </div>
+
+                <!-- Q7 -->
+                <div class="quiz-question">
+                    <h3>7. What does std::to_string(42) return?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q7" data-value="a">The integer 42</button>
+                        <button type="button" class="option" data-question="q7" data-value="b">The string "42"</button>
+                        <button type="button" class="option" data-question="q7" data-value="c">A character '42'</button>
+                        <button type="button" class="option" data-question="q7" data-value="d">A bool true/false</button>
+                    </div>
+                    <div class="feedback" id="feedback7"></div>
+                </div>
+
+                <!-- Q8 -->
+                <div class="quiz-question">
+                    <h3>8. Which is true about std::tolower()?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q8" data-value="a">It converts an entire string to lowercase</button>
+                        <button type="button" class="option" data-question="q8" data-value="b">It converts a single character to lowercase</button>
+                        <button type="button" class="option" data-question="q8" data-value="c">It only works on const strings</button>
+                        <button type="button" class="option" data-question="q8" data-value="d">It returns a string, not a character</button>
+                    </div>
+                    <div class="feedback" id="feedback8"></div>
+                </div>
+            </form>
+
+            <div class="quiz-submit">
+                <button type="button" class="btn btn-primary" onclick="submitQuiz()">Submit Quiz</button>
+                <button type="button" class="btn" onclick="resetQuiz()">Reset</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links"> 
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const quizId = 'quiz-strings';
+
+        const answers = {
+            q1: 'a',
+            q2: 'a',
+            q3: 'a',
+            q4: 'b',
+            q5: 'b',
+            q6: 'b',
+            q7: 'b',
+            q8: 'b'
+        };
+
+        const explanations = {
+            q1: 'std::string s; is the simplest way to declare an empty string.',
+            q2: 's.size() returns the number of characters currently in the string.',
+            q3: 's[0] is the most common way to access the first character.',
+            q4: 's[i] is faster but no bounds checking; s.at(i) checks bounds and throws std::out_of_range if invalid.',
+            q5: 's1 += s2 is efficient for concatenation as it modifies s1 in-place.',
+            q6: 'std::stoi() converts a string to an integer.',
+            q7: 'std::to_string() converts a number to a string representation.',
+            q8: 'std::tolower() operates on single characters, not entire strings. Loop through the string to convert all.'
+        };
+
+        // Initialize quiz when page loads
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+    </script>
+</body>
+
+</html>

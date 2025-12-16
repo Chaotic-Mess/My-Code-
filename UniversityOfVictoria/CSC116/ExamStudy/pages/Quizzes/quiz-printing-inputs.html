@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Quiz: Printing & Input </title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+    <script src="./QuizCore.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link">Home</a>
+                <a href="../Information/checklist.html" class="nav-link">Checklist</a>
+                <a href="../../settings.html" class="nav-link settings-link">Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="quiz-results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="score-display"></div>
+            <p id="score-message"></p>
+            <div class="back-link">
+                <a href="../Content/printing-inputs.html">← Back to Printing & Input</a>
+            </div>
+        </div>
+
+        <div class="quiz-container">
+            <h1>Quiz: Printing & Input</h1>
+            <p>Test your knowledge of cout, cin, and related output functions.</p>
+
+            <form id="quiz-form">
+                <!-- Q1 -->
+                <div class="quiz-question">
+                    <h3>1. What is the correct syntax to print a line with a newline?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q1" data-value="a">std::cout << "Hello" << std::endl;</button>
+                        <button type="button" class="option" data-question="q1" data-value="b">std::cout >> "Hello";</button>
+                        <button type="button" class="option" data-question="q1" data-value="c">print("Hello");</button>
+                        <button type="button" class="option" data-question="q1" data-value="d">std::output << "Hello" ;</button>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="quiz-question">
+                    <h3>2. What's the difference between std::endl and '\n'?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q2" data-value="a">No difference; they do the same thing</button>
+                        <button type="button" class="option" data-question="q2" data-value="b">std::endl adds a newline and flushes the buffer; '\n' just adds a newline</button>
+                        <button type="button" class="option" data-question="q2" data-value="c">'\n' is C-style; std::endl is C++ style</button>
+                        <button type="button" class="option" data-question="q2" data-value="d">std::endl only works with printf()</button>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="quiz-question">
+                    <h3>3. How do you read a single integer from the user?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q3" data-value="a">std::cin >> num;</button>
+                        <button type="button" class="option" data-question="q3" data-value="b">std::cout >> num;</button>
+                        <button type="button" class="option" data-question="q3" data-value="c">std::input >> num;</button>
+                        <button type="button" class="option" data-question="q3" data-value="d">read(num);</button>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="quiz-question">
+                    <h3>4. What does std::getline() do?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q4" data-value="a">Reads a single word from input</button>
+                        <button type="button" class="option" data-question="q4" data-value="b">Reads an entire line including spaces until a newline</button>
+                        <button type="button" class="option" data-question="q4" data-value="c">Reads a single character</button>
+                        <button type="button" class="option" data-question="q4" data-value="d">Outputs a line to the console</button>
+                    </div>
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="quiz-question">
+                    <h3>5. What operator is used for output in C++?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q5" data-value="a"><< (left shift)</button>
+                        <button type="button" class="option" data-question="q5" data-value="b">>> (right shift)</button>
+                        <button type="button" class="option" data-question="q5" data-value="c">-> (arrow)</button>
+                        <button type="button" class="option" data-question="q5" data-value="d">== (equality)</button>
+                    </div>
+                    <div class="feedback" id="feedback5"></div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="quiz-question">
+                    <h3>6. How would you print an integer with a specific width?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q6" data-value="a">std::cout << std::setw(10) << num;</button>
+                        <button type="button" class="option" data-question="q6" data-value="b">std::cout.width(10) << num;</button>
+                        <button type="button" class="option" data-question="q6" data-value="c">Either std::setw() or .width() sets output width</button>
+                        <button type="button" class="option" data-question="q6" data-value="d">printf() is the only way</button>
+                    </div>
+                    <div class="feedback" id="feedback6"></div>
+                </div>
+            </form>
+
+            <div class="quiz-submit">
+                <button type="button" class="btn btn-primary" onclick="submitQuiz()">Submit Quiz</button>
+                <button type="button" class="btn" onclick="resetQuiz()">Reset</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links"> 
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const quizId = 'quiz-printing-inputs';
+
+        const answers = {
+            q1: 'a',
+            q2: 'b',
+            q3: 'a',
+            q4: 'b',
+            q5: 'a',
+            q6: 'c'
+        };
+
+        const explanations = {
+            q1: 'std::cout with << and std::endl is the correct C++ output syntax.',
+            q2: 'std::endl outputs a newline AND flushes the output buffer, while \' just adds a newline.',
+            q3: 'std::cin uses the >> (extraction) operator to read input.',
+            q4: 'std::getline() reads an entire line of input including spaces, stopping at the newline.',
+            q5: '<< is the left shift operator used for output in C++.',
+            q6: 'You can set width with std::setw() or the .width() member function.'
+        };
+
+        // Initialize quiz when page loads
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description"
+        content="Comprehensive CSC 116 C++ exam study guide with interactive quizzes, code examples, and practice tests." />
+    <title>CSC 116 Exam Study Guide - Master C++</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="settings.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Favicon/favicon-16x16.png">
+    <link rel="manifest" href="Favicon/site.webmanifest">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="index.html" class="nav-link active" aria-current="page">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="pages/Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section with Stats -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>C++ Final Exam Study Guide</h1>
+                <p class="hero-subtitle">C++ fundamentals with interactive lessons, quizzes, and code
+                    examples.</p>
+
+                <div class="stats-grid">
+                    <!-- <div class="stat-card">
+                        <div class="stat-value" id="topics-count">8</div>
+                        <div class="stat-label">Topics Covered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="quizzes-count">8</div>
+                        <div class="stat-label">Practice Quizzes</div>
+                    </div> -->
+                    <div class="stat-card" style="visibility: hidden;"> SPACER </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="completion-rate">0%</div>
+                        <div class="stat-label">Completion</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avg-score">—</div>
+                        <div class="stat-label">Avg Quiz Score</div>
+                    </div>
+                    <div class="stat-card" style="visibility: hidden;"> SPACER </div>
+                </div>
+                <div class="quick-nav">
+                    <a href="#by-content" class="btn btn-secondary">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm0 1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z" />
+                        </svg>
+                        Browse Topics
+                    </a>
+                    <a href="#by-quiz" class="btn btn-secondary">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                            <path
+                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                        </svg>
+                        Take Quizzes
+                    </a>
+                    <a href="#exam-prep" class="btn btn-secondary">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917l-7.5-3.5Z" />
+                        </svg>
+                        Final Practice
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Sections with Search -->
+        <div class="search-container">
+            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input type="text" id="search-input" class="search-input"
+                placeholder="Search topics, quizzes, or content..." aria-label="Search content">
+            <div id="search-results" class="search-results"></div>
+        </div>
+
+        <section id="by-lecture">
+            <div class="section-header">
+                <h2>
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917l-7.5-3.5Z" />
+                    </svg>
+                    Lecture Materials
+                </h2>
+                <p class="section-description">Organized by lecture sessions and course structure</p>
+            </div>
+            <div class="grid card-grid" id="by-lecture-grid"></div>
+        </section>
+
+
+        <section id="by-content">
+            <div class="section-header">
+                <h2>
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z" />
+                        <path
+                            d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z" />
+                    </svg>
+                    Core Topics
+                </h2>
+                <p class="section-description">Comprehensive lessons grouped by C++ features and standard library</p>
+            </div>
+            <div class="grid card-grid" id="by-content-grid"></div>
+        </section>
+
+        <section id="by-quiz">
+            <div class="section-header">
+                <h2>
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                            d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
+                    </svg>
+                    Practice Quizzes
+                </h2>
+                <p class="section-description">Test your knowledge with interactive quizzes for each topic</p>
+            </div>
+            <div class="grid card-grid" id="by-quiz-grid"></div>
+        </section>
+
+        <section id="exam-prep">
+            <div class="section-header">
+                <h2>
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z" />
+                    </svg>
+                    Exam Preparation
+                </h2>
+                <p class="section-description">Final practice examinations to test your readiness</p>
+            </div>
+            <div class="grid card-grid" id="by-exam-grid"></div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="pages/Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data definitions
+        const byLectureItems = [
+            {
+                title: 'OOP Lecture',
+                desc: 'Master the core concepts of OOP: classes, encapsulation, inheritance, and polymorphism.',
+                href: 'pages/Lectures/oop-interactive.html'
+            },
+            {
+                title: 'Lambda Lecture',
+                desc: 'Master the core concepts of lambda calculus and functional programming.',
+                href: 'pages/Lectures/lambda-interactive.html'
+            }
+        ];
+
+        const byContentItems = [
+            {
+                title: 'Printing and Input',
+                desc: 'Console output and input patterns with practical, exam-ready scenarios.',
+                href: 'pages/Content/printing-inputs.html',
+                tags: ['input', 'output', 'cout', 'cin']
+            },
+            {
+                title: 'Characters',
+                desc: 'char type, character functions, and ASCII operations.',
+                href: 'pages/Content/characters.html',
+                tags: ['char', 'ascii', 'characters']
+            },
+            {
+                title: 'Math',
+                desc: 'Arithmetic, functions from <cmath>, and numeric utilities.',
+                href: 'pages/Content/math.html',
+                tags: ['math', 'arithmetic', 'cmath']
+            },
+            {
+                title: 'Throwing and Catching Exceptions',
+                desc: 'Error handling in C++ using try-catch blocks, custom exceptions, and exception propagation.',
+                href: 'pages/Content/exceptions.html',
+                tags: ['exceptions', 'error', 'try', 'catch']
+            },
+            {
+                title: 'Strings',
+                desc: 'std::string fundamentals, operations, and common patterns.',
+                href: 'pages/Content/strings.html',
+                tags: ['strings', 'string', 'text']
+            },
+            {
+                title: 'Vectors',
+                desc: 'Dynamic arrays, manipulation, iteration, and algorithms.',
+                href: 'pages/Content/vectors.html',
+                tags: ['vectors', 'arrays', 'dynamic']
+            },
+            {
+                title: 'Time & Random Numbers',
+                desc: 'Working with time values and generating pseudo-random numbers in C++.',
+                href: 'pages/Content/time-random.html',
+                tags: ['time', 'random', 'rand']
+            },
+            {
+                title: 'Classes & Objects',
+                desc: 'Takes no parameters. If you don\'t write any constructor, the compiler generates a default one.',
+                href: 'pages/Content/classes.html',
+                tags: ['classes', 'objects', 'oop']
+            },
+            {
+                title: 'Class Templates',
+                desc: 'Write type-generic classes in C++ using templates.',
+                href: 'pages/Content/class-templates.html',
+                tags: ['templates', 'classes', 'generic']
+            },
+            {
+                title: 'Function Templates',
+                desc: 'Write generic functions that work for multiple types.',
+                href: 'pages/Content/function-templates.html',
+                tags: ['templates', 'functions', 'generic']
+            },
+            {
+                title: 'Inheritance',
+                desc: 'Build related classes by reusing a base class, then extending it with derived classes.',
+                href: 'pages/Content/Inheritance.html'
+            },
+            {
+                title: 'Lambdas (C++)',
+                desc: 'A compact reference to C++ lambdas: syntax, captures, and practical use with the STL.',
+                href: 'pages/Content/lambdas.html'
+            }
+        ];
+
+        const byQuizItems = [
+            {
+                title: 'Quiz: Printing & Input ',
+                desc: 'Test your knowledge of cout, cin, and related output functions.',
+                href: 'pages/Quizzes/quiz-printing-inputs.html',
+                id: 'quiz-printing-inputs',
+                tags: ['quiz', 'input', 'output']
+            },
+            {
+                title: 'Quiz: Strings ',
+                desc: 'Test your knowledge of std::string and string operations.',
+                href: 'pages/Quizzes/quiz-strings.html',
+                id: 'quiz-strings',
+                tags: ['quiz', 'strings']
+            },
+            {
+                title: 'Quiz: Characters ',
+                desc: 'Test your knowledge of char type, ASCII, and character functions.',
+                href: 'pages/Quizzes/quiz-characters.html',
+                id: 'quiz-characters',
+                tags: ['quiz', 'characters']
+            },
+            {
+                title: 'Quiz: Math Operations ',
+                desc: 'Test your knowledge of cmath functions and arithmetic operations.',
+                href: 'pages/Quizzes/quiz-math.html',
+                id: 'quiz-math',
+                tags: ['quiz', 'math']
+            },
+            {
+                title: 'Quiz: Vectors ',
+                desc: 'Test your knowledge of std::vector and dynamic arrays.',
+                href: 'pages/Quizzes/quiz-vectors.html',
+                id: 'quiz-vectors',
+                tags: ['quiz', 'vectors']
+            },
+            {
+                title: 'Quiz: Exceptions ',
+                desc: 'Test your knowledge of try, catch, throw, and exception handling.',
+                href: 'pages/Quizzes/quiz-exceptions.html',
+                id: 'quiz-exceptions',
+                tags: ['quiz', 'exceptions']
+            },
+            {
+                title: 'Quiz: Time & Random ',
+                desc: 'Test your knowledge of time operations and random number generation.',
+                href: 'pages/Quizzes/quiz-time-random.html',
+                id: 'quiz-time-random',
+                tags: ['quiz', 'time', 'random']
+            },
+            {
+                title: 'Quiz: Classes ',
+                desc: 'Test your knowledge of class design, constructors, and object-oriented programming.',
+                href: 'pages/Quizzes/quiz-classes.html',
+                id: 'quiz-classes',
+                tags: ['quiz', 'classes', 'oop']
+            },
+            {
+                title: 'Quiz: Inheritance',
+                desc: '',
+                href: 'pages/Quizzes/quiz-inheritance.html',
+                id: 'quiz-inheritance'
+            }
+        ];
+
+        const byExamItems = [
+            {
+                title: 'Provided Final Practice Examination',
+                desc: 'Consider the syntactically correct C++ code below.',
+                href: 'pages/examinations/ProvidedFinal.html'
+            }
+        ];
+
+        // Utility functions
+        function getBestScore(id) {
+            try {
+                const raw = localStorage.getItem(`bestScore-${id}`);
+                if (raw === null) return null; // no score saved yet
+                const num = Number(raw);
+                if (!Number.isFinite(num)) return null;
+                return Math.max(0, Math.min(100, Math.round(num)));
+            } catch (err) {
+                return null;
+            }
+        }
+
+        function calculateStats() {
+            const quizScores = byQuizItems.map(item => getBestScore(item.id)).filter(score => score !== null);
+            const avgScore = quizScores.length > 0 ? Math.round(quizScores.reduce((a, b) => a + b, 0) / quizScores.length) : null;
+            const completionRate = Math.round((quizScores.length / byQuizItems.length) * 100);
+
+            return { avgScore, completionRate };
+        }
+
+        function updateStats() {
+            const { avgScore, completionRate } = calculateStats();
+            document.getElementById('completion-rate').textContent = `${completionRate}%`;
+            document.getElementById('avg-score').textContent = avgScore !== null ? `${avgScore}%` : '—';
+        }
+
+        function createCard(item) {
+            const link = document.createElement('a');
+            link.className = 'card-link';
+            link.href = item.href;
+
+            const card = document.createElement('div');
+            card.className = 'card card-enhanced';
+
+            const header = document.createElement('div');
+            header.className = 'card-header';
+
+            const h3 = document.createElement('h3');
+            h3.textContent = item.title;
+            header.appendChild(h3);
+
+            if (item.id) {
+                const best = getBestScore(item.id);
+                const badge = document.createElement('span');
+                badge.className = `score-badge ${best !== null ? (best >= 80 ? 'score-high' : best >= 60 ? 'score-med' : 'score-low') : ''}`;
+                badge.textContent = best !== null ? `${best}%` : '—';
+                header.appendChild(badge);
+            }
+
+            const p = document.createElement('p');
+            p.className = 'card-description';
+            p.textContent = item.desc;
+
+            card.appendChild(header);
+            card.appendChild(p);
+
+            link.appendChild(card);
+            return link;
+        }
+
+        // Search functionality
+        const allItems = [
+            ...byContentItems.map(item => ({ ...item, type: 'content' })),
+            ...byQuizItems.map(item => ({ ...item, type: 'quiz' })),
+            ...byLectureItems.map(item => ({ ...item, type: 'lecture' })),
+            ...byExamItems.map(item => ({ ...item, type: 'exam' }))
+        ];
+
+        function performSearch(query) {
+            if (!query || query.length < 2) return [];
+
+            const lowerQuery = query.toLowerCase();
+            return allItems.filter(item => {
+                const titleMatch = item.title.toLowerCase().includes(lowerQuery);
+                const descMatch = item.desc.toLowerCase().includes(lowerQuery);
+                const tagsMatch = item.tags?.some(tag => tag.toLowerCase().includes(lowerQuery));
+                return titleMatch || descMatch || tagsMatch;
+            });
+        }
+
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim();
+
+            if (query.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                const results = performSearch(query);
+
+                if (results.length === 0) {
+                    searchResults.innerHTML = '<div class="search-empty">No results found</div>';
+                    searchResults.style.display = 'block';
+                    return;
+                }
+
+                searchResults.innerHTML = results.map(item => `
+                    <a href="${item.href}" class="search-result-item">
+                        <div class="search-result-type">${item.type}</div>
+                        <div class="search-result-title">${item.title}</div>
+                        <div class="search-result-desc">${item.desc}</div>
+                    </a>
+                `).join('');
+                searchResults.style.display = 'block';
+            }, 200);
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Render cards
+        const lectureGrid = document.getElementById('by-lecture-grid');
+        const byContentGrid = document.getElementById('by-content-grid');
+        const quizGrid = document.getElementById('by-quiz-grid');
+        const examGrid = document.getElementById('by-exam-grid');
+
+        // byLectureItems.forEach(item => lectureGrid.appendChild(createCard(item)));
+        byContentItems.forEach(item => byContentGrid.appendChild(createCard(item)));
+        byQuizItems.forEach(item => quizGrid.appendChild(createCard(item)));
+        byLectureItems.forEach(item => lectureGrid.appendChild(createCard(item)));
+        byExamItems.forEach(item => examGrid.appendChild(createCard(item)));
+
+        // Initialize stats
+        updateStats();
+
+        // Update stats when returning to the page
+        window.addEventListener('focus', updateStats);
+    </script>
+</body>
+
+</html>

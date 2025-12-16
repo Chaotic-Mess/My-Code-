@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Quiz: Inheritance</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+    <script src="./QuizCore.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link">Home</a>
+                <a href="../Information/checklist.html" class="nav-link">Checklist</a>
+                <a href="../../settings.html" class="nav-link settings-link">Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="quiz-results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="score-display"></div>
+            <p id="score-message"></p>
+            <div class="back-link">
+                <a href="../Content/inheritance.html">← Back to Inheritance</a>
+            </div>
+        </div>
+
+        <div class="quiz-container">
+            <h1>Quiz: Inheritance</h1>
+            <p>Test your knowledge of base/derived classes, access rules, and inheritance basics.</p>
+
+            <form id="quiz-form">
+                <!-- Q1 -->
+                <div class="quiz-question">
+                    <h3>1. In OOP, inheritance primarily represents which relationship?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q1" data-value="a">“is-a” (Derived is a kind of Base)</button>
+                        <button type="button" class="option" data-question="q1" data-value="b">“has-a” (composition)</button>
+                        <button type="button" class="option" data-question="q1" data-value="c">“uses-a” (dependency)</button>
+                        <button type="button" class="option" data-question="q1" data-value="d">“owns-a” (aggregation)</button>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="quiz-question">
+                    <h3>2. When you construct a Derived object, what happens first?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q2" data-value="a">Derived constructor runs, then Base constructor runs</button>
+                        <button type="button" class="option" data-question="q2" data-value="b">Base constructor runs, then Derived constructor runs</button>
+                        <button type="button" class="option" data-question="q2" data-value="c">Only the Derived constructor runs</button>
+                        <button type="button" class="option" data-question="q2" data-value="d">Constructors can run in any order</button>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="quiz-question">
+                    <h3>3. Which access level allows Derived to use a member, but keeps it hidden from non-derived code?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q3" data-value="a">public</button>
+                        <button type="button" class="option" data-question="q3" data-value="b">private</button>
+                        <button type="button" class="option" data-question="q3" data-value="c">protected</button>
+                        <button type="button" class="option" data-question="q3" data-value="d">static</button>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="quiz-question">
+                    <h3>4. In <code>class Derived : public Base</code>, what happens to Base’s public members inside Derived?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q4" data-value="a">They become protected</button>
+                        <button type="button" class="option" data-question="q4" data-value="b">They become private</button>
+                        <button type="button" class="option" data-question="q4" data-value="c">They stay public</button>
+                        <button type="button" class="option" data-question="q4" data-value="d">They become inaccessible</button>
+                    </div>
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="quiz-question">
+                    <h3>5. In <code>class Derived : private Base</code>, how are Base’s public/protected members treated inside Derived?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q5" data-value="a">They stay public/protected</button>
+                        <button type="button" class="option" data-question="q5" data-value="b">They become private in Derived</button>
+                        <button type="button" class="option" data-question="q5" data-value="c">They become protected in Derived</button>
+                        <button type="button" class="option" data-question="q5" data-value="d">They disappear completely</button>
+                    </div>
+                    <div class="feedback" id="feedback5"></div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="quiz-question">
+                    <h3>6. Can a Derived class directly access Base’s private data members?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q6" data-value="a">Yes, always</button>
+                        <button type="button" class="option" data-question="q6" data-value="b">Yes, but only with public inheritance</button>
+                        <button type="button" class="option" data-question="q6" data-value="c">No, but it can use Base’s public/protected member functions to work with them</button>
+                        <button type="button" class="option" data-question="q6" data-value="d">No, and it cannot interact with them at all</button>
+                    </div>
+                    <div class="feedback" id="feedback6"></div>
+                </div>
+
+                <!-- Q7 -->
+                <div class="quiz-question">
+                    <h3>7. With public inheritance, which assignment is valid without a cast?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q7" data-value="a"><code>Derived* dp = new Base();</code></button>
+                        <button type="button" class="option" data-question="q7" data-value="b"><code>Base* bp = new Derived();</code></button>
+                        <button type="button" class="option" data-question="q7" data-value="c"><code>Derived d = Base();</code></button>
+                        <button type="button" class="option" data-question="q7" data-value="d"><code>Derived& dr = Base();</code></button>
+                    </div>
+                    <div class="feedback" id="feedback7"></div>
+                </div>
+
+                <!-- Q8 -->
+                <div class="quiz-question">
+                    <h3>8. What is “object slicing”?</h3>
+                    <div class="quiz-options">
+                        <button type="button" class="option" data-question="q8" data-value="a">When you call a derived destructor before the base destructor</button>
+                        <button type="button" class="option" data-question="q8" data-value="b">When a derived object is copied into a base object by value and the derived-specific part is lost</button>
+                        <button type="button" class="option" data-question="q8" data-value="c">When you remove elements from a vector using <code>erase()</code></button>
+                        <button type="button" class="option" data-question="q8" data-value="d">When you split a string into tokens</button>
+                    </div>
+                    <div class="feedback" id="feedback8"></div>
+                </div>
+            </form>
+
+            <div class="quiz-submit">
+                <button type="button" class="btn btn-primary" onclick="submitQuiz()">Submit Quiz</button>
+                <button type="button" class="btn" onclick="resetQuiz()">Reset</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+                <div class="footer-links">
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const quizId = 'quiz-inheritance';
+
+        const answers = {
+            q1: 'a',
+            q2: 'b',
+            q3: 'c',
+            q4: 'c',
+            q5: 'b',
+            q6: 'c',
+            q7: 'b',
+            q8: 'b'
+        };
+
+        const explanations = {
+            q1: 'Inheritance models an “is-a” relationship: a Derived is a specialized kind of Base.',
+            q2: 'Construction order is Base first, then Derived (destruction happens in reverse).',
+            q3: 'protected members are accessible in derived classes, but not accessible from outside code.',
+            q4: 'With public inheritance, Base’s public stays public (and protected stays protected).',
+            q5: 'With private inheritance, Base’s public/protected become private inside Derived.',
+            q6: 'Base private members are not directly accessible from Derived; you use Base’s public/protected interface.',
+            q7: 'Upcasting is allowed: a Base* can point to a Derived object when inheritance is public.',
+            q8: 'Slicing happens when copying a Derived into a Base by value: the Base part is kept, derived-specific data is discarded.'
+        };
+
+        // Initialize quiz when page loads
+        document.addEventListener('DOMContentLoaded', initializeQuiz);
+    </script>
+</body>
+
+</html>

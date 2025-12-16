@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Vectors</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script> 
+</head>
+
+<body>
+<header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link" aria-current="page">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="../Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="../../settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <aside class="quick-nav">
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="#faq">Fundamentals FAQ</a></li>
+            <li><a href="#vector-basics">Vector basics</a></li>
+            <li><a href="#accessing">Accessing elements</a></li>
+            <li><a href="#range-for">Range-based for loop</a></li>
+            <li><a href="#add-remove">Adding and removing elements</a></li>
+            <li><a href="#capacity">Capacity vs. size</a></li>
+            <li><a href="#iterators">Iterators</a></li>
+            <li><a href="#algorithms">Algorithms: find, count, and sort</a></li>
+            <li><a href="#accumulate">Accumulate and reduce</a></li>
+            <li><a href="#vector-of-vectors">Vector of vectors (2D arrays)</a></li>
+            <li><a href="#mistakes">Common mistakes and performance</a></li>
+        </ul>
+    </aside>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Vectors</h1>
+            <p>Dynamic arrays, manipulation, iteration, and algorithms.</p>
+        </section>
+
+        <section class="panel" id="faq">
+            <h2>Fundamentals FAQ</h2>
+            <ul>
+                <li><strong>Header?</strong> <code>&lt;vector&gt;</code> for std::vector; <code>&lt;algorithm&gt;</code>/<code>&lt;numeric&gt;</code> for algorithms.</li>
+                <li><strong>Default state?</strong> Empty vector has size 0, capacity 0.</li>
+                <li><strong>Adding elements?</strong> <code>push_back</code> amortized O(1); may reallocate and invalidate pointers/iterators/references.</li>
+                <li><strong>Bounds checks?</strong> <code>.at()</code> throws on bad index; <code>[]</code> is unchecked.</li>
+                <li><strong>Iteration choices?</strong> Range-for for read-only; use <code>auto&amp;</code> to modify in place; const vectors give const references.</li>
+                <li><strong><code>reserve</code> vs <code>resize</code>?</strong> <code>reserve</code> changes capacity only; <code>resize</code> changes size (and value-initializes new elements).</li>
+                <li><strong><code>erase/insert</code> cost?</strong> O(n) and they invalidate iterators at/after the point of change.</li>
+                <li><strong>front/back safety?</strong> Calling on an empty vector is UB; check <code>.empty()</code> first.</li>
+                <li><strong>Capacity growth?</strong> Implementation-defined; typically geometric (about 1.5–2x).</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="vector-basics">
+            <h2>Vector basics</h2>
+            <p>Declaration, initialization, and basic operations.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; v;
+    std::cout &lt;&lt; <span class="st">"Empty vector size: "</span> &lt;&lt; v.size() &lt;&lt; <span class="st">"\n"</span>;
+    
+    v.push_back(<span class="nb">10</span>);
+    v.push_back(<span class="nb">20</span>);
+    v.push_back(<span class="nb">30</span>);
+    std::cout &lt;&lt; <span class="st">"After 3 push_backs: "</span> &lt;&lt; v.size() &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">Empty vector size: 0
+                After 3 push_backs: 3</div>
+            <ul>
+                <li><code>push_back()</code> adds an element to the end.</li>
+                <li><code>size()</code> returns the current number of elements.</li>
+            </ul>
+
+            <div class="info-box">
+                Vectors automatically manage memory. They grow as needed when elements are added. <br>
+                <code> push_back(x)</code> x is the value to add. <b>Not</b> the amount you are pushing back.
+            </div>
+        </section>
+
+        <section class="panel" id="accessing">
+            <h2>Accessing elements</h2>
+            <p>Indexing, .at(), and iteration.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; v = {<span class="nb">10</span>, <span class="nb">20</span>, <span class="nb">30</span>};
+    
+    std::cout &lt;&lt; <span class="st">"v[0]: "</span> &lt;&lt; v[<span class="nb">0</span>] &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"v.at(1): "</span> &lt;&lt; v.at(<span class="nb">1</span>) &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"v.front(): "</span> &lt;&lt; v.front() &lt;&lt; <span class="st">"\n"</span>;
+    std::cout &lt;&lt; <span class="st">"v.back(): "</span> &lt;&lt; v.back() &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">v[0]: 10
+                v.at(1): 20
+                v.front(): 10
+                v.back(): 30</div>
+            <div class="info-box">
+                <code>.at()</code> throws an exception if index is out of bounds. <code>[]</code> does not check; use it
+                when you're certain the index is valid.
+            </div>
+        </section>
+
+        <section class="panel" id="range-for">
+            <h2>Range-based for loop</h2>
+            <p>The modern way to iterate over vectors.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; v = {<span class="nb">5</span>, <span class="nb">10</span>, <span class="nb">15</span>};
+    
+    <span class="kw">for</span> (<span class="kw">int</span> x : v) {
+        std::cout &lt;&lt; x &lt;&lt; <span class="st">" "</span>;
+    }
+    std::cout &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">5 10 15</div>
+            <ul>
+                <li><code>for (int x : v)</code> copies each element; use <code>int&amp;</code> to modify in-place.</li>
+                <li><code>for (const int&amp; x : v)</code> for read-only access to avoid copies.</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="add-remove">
+            <h2>Adding and removing elements</h2>
+            <p><code>push_back()</code>, <code>pop_back()</code>, <code>insert()</code>, and <code>erase()</code>.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; v = {<span class="nb">10</span>, <span class="nb">20</span>, <span class="nb">30</span>};
+    
+    v.pop_back();
+    std::cout &lt;&lt; <span class="st">"After pop_back: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> x : v) std::cout &lt;&lt; x &lt;&lt; <span class="st">" "</span>;
+    std::cout &lt;&lt; <span class="st">"\n"</span>;
+    
+    v.erase(v.begin() + <span class="nb">1</span>);
+    std::cout &lt;&lt; <span class="st">"After erase(1): "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> x : v) std::cout &lt;&lt; x &lt;&lt; <span class="st">" "</span>;
+    std::cout &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">After pop_back: 10 20
+                After erase(1): 10</div>
+            <ul>
+                <li><code>pop_back()</code> removes the last element.</li>
+                <li><code>erase(iterator)</code> removes at a specific position.</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="capacity">
+            <h2>Capacity vs. size</h2>
+            <p>Understanding memory allocation.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; v;
+    
+    std::cout &lt;&lt; <span class="st">"Initial size: "</span> &lt;&lt; v.size() 
+              &lt;&lt; <span class="st">", capacity: "</span> &lt;&lt; v.capacity() &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nb">0</span>; i &lt; <span class="nb">5</span>; ++i) {
+        v.push_back(i);
+        std::cout &lt;&lt; <span class="st">"size: "</span> &lt;&lt; v.size() 
+                  &lt;&lt; <span class="st">", capacity: "</span> &lt;&lt; v.capacity() &lt;&lt; <span class="st">"\n"</span>;
+    }
+}</pre>
+            </div>
+            <div class="output-box">Initial size: 0, capacity: 0
+                size: 1, capacity: 1
+                size: 2, capacity: 2
+                size: 3, capacity: 4
+                size: 4, capacity: 4
+                size: 5, capacity: 8</div>
+            <div class="info-box">
+                <strong>size()</strong> = number of elements; <strong>capacity()</strong> = allocated memory. Vectors
+                double capacity when needed to avoid frequent allocations.
+            </div>
+        </section>
+
+        <section class="panel" id="iterators">
+            <h2>Iterators</h2>
+            <p>Pointers-like objects for traversing containers.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; v = {<span class="nb">10</span>, <span class="nb">20</span>, <span class="nb">30</span>};
+    
+    <span class="kw">for</span> (<span class="kw">auto</span> it = v.begin(); it != v.end(); ++it) {
+        std::cout &lt;&lt; *it &lt;&lt; <span class="st">" "</span>;
+    }
+    std::cout &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">10 20 30</div>
+            <ul>
+                <li><code>.begin()</code> points to the first element; <code>.end()</code> points past the last.</li>
+                <li>Dereference with <code>*it</code> to access the element.</li>
+                <li>Prefer range-based for loops unless you need the iterator itself.</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="algorithms">
+            <h2>Algorithms: find, count, and sort</h2>
+            <p>Common operations from &lt;algorithm&gt;.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+<span class="kw">#include</span> &lt;algorithm&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; v = {<span class="nb">3</span>, <span class="nb">1</span>, <span class="nb">4</span>, <span class="nb">1</span>, <span class="nb">5</span>};
+    
+    <span class="kw">auto</span> it = std::find(v.begin(), v.end(), <span class="nb">4</span>);
+    std::cout &lt;&lt; <span class="st">"Found 4 at index: "</span> 
+              &lt;&lt; std::distance(v.begin(), it) &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="kw">int</span> cnt = std::count(v.begin(), v.end(), <span class="nb">1</span>);
+    std::cout &lt;&lt; <span class="st">"Count of 1: "</span> &lt;&lt; cnt &lt;&lt; <span class="st">"\n"</span>;
+    
+    std::sort(v.begin(), v.end());
+    std::cout &lt;&lt; <span class="st">"Sorted: "</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> x : v) std::cout &lt;&lt; x &lt;&lt; <span class="st">" "</span>;
+    std::cout &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">Found 4 at index: 2
+                Count of 1: 2
+                Sorted: 1 1 3 4 5</div>
+            <ul>
+                <li><code>std::find()</code> returns an iterator to the first match, or <code>.end()</code> if not
+                    found.</li>
+                <li><code>std::count()</code> returns how many elements match a value.</li>
+                <li><code>std::sort()</code> sorts in ascending order by default.</li>
+                <li>Example: <a href="../../Codes/06-vectors.cpp">06-vectors.cpp</a></li>
+            </ul>
+        </section>
+
+        <section class="panel" id="accumulate">
+            <h2>Accumulate and reduce</h2>
+            <p>Sum or combine all elements.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+<span class="kw">#include</span> &lt;numeric&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt; v = {<span class="nb">1</span>, <span class="nb">2</span>, <span class="nb">3</span>, <span class="nb">4</span>};
+    
+    <span class="kw">int</span> sum = std::accumulate(v.begin(), v.end(), <span class="nb">0</span>);
+    std::cout &lt;&lt; <span class="st">"Sum: "</span> &lt;&lt; sum &lt;&lt; <span class="st">"\n"</span>;
+    
+    <span class="kw">int</span> product = std::accumulate(v.begin(), v.end(), <span class="nb">1</span>,
+        [](<span class="kw">int</span> a, <span class="kw">int</span> b) { <span class="kw">return</span> a * b; });
+    std::cout &lt;&lt; <span class="st">"Product: "</span> &lt;&lt; product &lt;&lt; <span class="st">"\n"</span>;
+}</pre>
+            </div>
+            <div class="output-box">Sum: 10
+                Product: 24</div>
+            <ul>
+                <li><code>std::accumulate()</code> is in <code>&lt;numeric&gt;</code>.</li>
+                <li>Third argument is the initial value (0 for sum, 1 for product).</li>
+                <li>Optional fourth argument is a custom binary operation (here, a lambda for multiplication).</li>
+                <li>Example: <a href="../../Codes/108-accumulate.cpp">108-accumulate.cpp</a></li>
+            </ul>
+        </section>
+
+        <section class="panel" id="vector-of-vectors">
+            <h2>Vector of vectors (2D arrays)</h2>
+            <p>Nested vectors for matrix-like structures.</p>
+            <div class="code-block">
+                <pre><span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;vector&gt;
+
+<span class="kw">int</span> main() {
+    <span class="ty">std::vector</span>&lt;<span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt;&gt; matrix(
+        <span class="nb">2</span>, <span class="ty">std::vector</span>&lt;<span class="kw">int</span>&gt;(<span class="nb">3</span>, <span class="nb">0</span>)
+    );
+    
+    matrix[<span class="nb">0</span>][<span class="nb">0</span>] = <span class="nb">5</span>;
+    matrix[<span class="nb">1</span>][<span class="nb">2</span>] = <span class="nb">9</span>;
+    
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="nb">0</span>; i &lt; <span class="nb">2</span>; ++i) {
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="nb">0</span>; j &lt; <span class="nb">3</span>; ++j) {
+            std::cout &lt;&lt; matrix[i][j] &lt;&lt; <span class="st">" "</span>;
+        }
+        std::cout &lt;&lt; <span class="st">"\n"</span>;
+    }
+}</pre>
+            </div>
+            <div class="output-box">5 0 0
+                0 0 9</div>
+            <ul>
+                <li><code>std::vector&lt;std::vector&lt;int&gt;&gt;</code> creates a 2D vector.</li>
+                <li>Constructor argument: rows=2, columns=3, initialized to 0.</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="mistakes">
+            <h2>Common mistakes and performance</h2>
+            <p>Tips for efficient vector usage.</p>
+            <div class="code-block">
+                <pre><span class="cm">// AVOID: Expensive erase in a loop
+</span><span class="kw">for</span> (<span class="kw">auto</span> it = v.begin(); it != v.end(); ++it) {
+    <span class="kw">if</span> (*it % <span class="nb">2</span> == <span class="nb">0</span>) {
+        v.erase(it);  <span class="cm">// O(n) for each erase!</span>
+    }
+}
+
+<span class="cm">// PREFER: Use remove-erase idiom
+</span>v.erase(
+    std::remove_if(v.begin(), v.end(),
+        [](<span class="kw">int</span> x) { <span class="kw">return</span> x % <span class="nb">2</span> == <span class="nb">0</span>; }),
+    v.end()
+);</pre>
+            </div>
+            <div class="info-box">
+                <strong>Tip:</strong> <code>erase()</code> in a loop is O(n²). Use the <strong>remove-erase
+                    idiom</strong> for O(n) complexity. Reserve capacity upfront with <code>v.reserve(n)</code> if you
+                know the final size.
+            </div>
+        </section>
+
+        <div class="info-box" style="margin-top: 40px; text-align: center; background: var(--accent); color: var(--bg); padding: 20px; border-radius: 12px;">
+            <strong>Ready to test yourself?</strong><br>
+            <a href="../Quizzes/quiz-vectors.html" style="color: var(--bg); text-decoration: none; font-weight: 600;">Take the Vectors Quiz →</a>
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links"> 
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

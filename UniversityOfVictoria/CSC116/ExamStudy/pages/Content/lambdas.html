@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Lambdas (C++)</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+</head>
+
+<body>
+<header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="../Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="../../settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <aside class="quick-nav">
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="#basics">Basics</a></li>
+            <li><a href="#captures">Captures</a></li>
+            <li><a href="#init-capture">Init-Capture & mutable</a></li>
+            <li><a href="#generic">Generic Lambdas</a></li>
+            <li><a href="#algorithms">Algorithms</a></li>
+            <li><a href="#sorting">Sorting</a></li>
+            <li><a href="#std-function">std::function</a></li>
+            <li><a href="#this-capture">Capturing this</a></li>
+            <li><a href="#recursion">Recursion</a></li>
+            <li><a href="#pitfalls">Pitfalls</a></li>
+        </ul>
+    </aside>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Lambdas</h1>
+            <p>A compact reference to C++ lambdas: syntax, captures, and practical use with the STL.</p>
+        </section>
+
+        <section id="basics" class="panel">
+            <h2>Basics</h2>
+            <p>A <strong>lambda</strong> is an inline function object with the form <code>[capture](params) mutable -> ret { body }</code>.</p>
+            <pre><code class="language-cpp">#include &lt;iostream&gt;
+auto add = [](int a, int b) { return a + b; };
+std::cout &lt;&lt; add(2, 3) &lt;&lt; '\n';
+
+// Immediately-invoked lambda (IIFE)
+[](const std::string&amp; msg){ std::cout &lt;&lt; msg &lt;&lt; '\n'; }("Hello");</code></pre>
+        </section>
+
+        <section id="captures" class="panel">
+            <h2>Captures</h2>
+            <p>Capture external variables into the lambda's <em>closure</em>:</p>
+            <ul>
+                <li><code>[=]</code>: capture all used variables by value</li>
+                <li><code>[&amp;]</code>: capture all used variables by reference</li>
+                <li><code>[x]</code> / <code>[&amp;x]</code>: capture specific variables</li>
+                <li>Mix: <code>[=, &amp;x]</code> or <code>[&amp;, x]</code></li>
+            </ul>
+            <pre><code class="language-cpp">int x = 10;
+auto byVal = [x]{ std::cout &lt;&lt; x &lt;&lt; '\n'; }; // copy
+x = 20; byVal(); // prints 10
+
+auto byRef = [&amp;x]{ x++; };
+byRef(); byRef();
+std::cout &lt;&lt; x &lt;&lt; '\n'; // 22</code></pre>
+            <div>
+                <h3>Value vs Reference</h3>
+                <ul>
+                    <li><strong>By value</strong>: captures a snapshot at creation time. Inside the lambda, the captured copy is read-only unless the lambda is marked <code>mutable</code>.</li>
+                    <li><strong>By reference</strong>: the lambda refers to the original variable; mutations affect the original and observe subsequent changes.</li>
+                    <li><strong>Lifetime</strong>: avoid returning a lambda that references locals — it will dangle after the function returns.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="init-capture" class="panel">
+            <h2>Init-Capture &amp; mutable</h2>
+            <p><strong>Init-capture</strong> computes or moves values into the closure: <code>[y = expr]</code>.
+               Use <code>mutable</code> to modify captured-by-value variables inside the lambda.</p>
+            <pre><code class="language-cpp">int x = 10;
+auto h = [y = x]() mutable { y++; std::cout &lt;&lt; y &lt;&lt; '\n'; };
+h(); // 11
+h(); // 12
+std::cout &lt;&lt; x &lt;&lt; '\n'; // 10 (unchanged)
+
+// Move-only example (C++14+)
+auto p = std::make_unique&lt;int&gt;(5);
+auto take = [q = std::move(p)]{ std::cout &lt;&lt; *q &lt;&lt; '\n'; };</code></pre>
+            <div>
+                <h3>Details</h3>
+                <ul>
+                    <li><strong>Init-capture</strong>: great for computing derived values once or moving ownership into the closure (e.g., <code>unique_ptr</code>).</li>
+                    <li><strong>mutable</strong>: allows changing the captured-by-value state for that lambda instance; it does not change the original variable.</li>
+                    <li><strong>Thread-safety</strong>: prefer init-capture over references when passing lambdas to async tasks to avoid shared-state races.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="generic" class="panel">
+            <h2>Generic Lambdas</h2>
+            <p>Use <code>auto</code> parameters to write lambdas that work with multiple types.</p>
+            <pre><code class="language-cpp">auto maxOf = [](auto a, auto b) { return a &lt; b ? b : a; };
+std::cout &lt;&lt; maxOf(1, 3) &lt;&lt; '\n';
+std::cout &lt;&lt; maxOf(std::string("ab"), std::string("c")) &lt;&lt; '\n';
+
+// Trailing return for complex cases
+auto sum = [](auto a, auto b) -&gt; decltype(a + b) { return a + b; };</code></pre>
+            <div>
+                <h3>Details</h3>
+                <ul>
+                    <li><strong>Type deduction</strong>: parameters are deduced independently; use a trailing return when result type isn’t obvious.</li>
+                    <li><strong>Constraints</strong>: with C++20, add <em>requires</em> clauses to document valid argument types.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="algorithms" class="panel">
+            <h2>Algorithms</h2>
+            <p>Lambdas make STL algorithms concise and expressive.</p>
+            <pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;numeric&gt;
+#include &lt;vector&gt;
+std::vector&lt;int&gt; v{1,2,3,4};
+std::for_each(v.begin(), v.end(), [](int&amp; n){ n *= 2; }); // 2,4,6,8
+std::transform(v.begin(), v.end(), v.begin(), [](int n){ return n + 1; }); // 3,5,7,9
+int s = std::accumulate(v.begin(), v.end(), 0, [](int acc, int n){ return acc + n; });</code></pre>
+            <div>
+                <h3>Tips</h3>
+                <ul>
+                    <li>Prefer <code>const&amp;</code> parameters when you don’t mutate elements.</li>
+                    <li>Use captures to bring external thresholds/config into predicates.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="sorting" class="panel">
+            <h2>Sorting</h2>
+            <p>Provide custom comparators to <code>std::sort</code> to define ordering.</p>
+            <pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+std::vector&lt;int&gt; a{5,1,3,4,2};
+std::sort(a.begin(), a.end(), [](int x, int y){ return x &gt; y; }); // desc
+
+struct Person { std::string name; int age; };
+std::vector&lt;Person&gt; p{{"Ann",20},{"Bob",18},{"Cara",22}};
+std::sort(p.begin(), p.end(), [](const Person&amp; lhs, const Person&amp; rhs){ return lhs.age &lt; rhs.age; });</code></pre>
+            <div>
+                <h3>Comparator rules</h3>
+                <ul>
+                    <li>Must impose <em>strict weak ordering</em>: irreflexive, transitive, and consistent.</li>
+                    <li>Comparators should not modify inputs or rely on external mutable state that changes during sort.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="std-function" class="panel">
+            <h2>std::function</h2>
+            <p><code>std::function</code> type-erases callables (lambdas, function objects, functions). Great for callbacks.</p>
+            <pre><code class="language-cpp">#include &lt;functional&gt;
+#include &lt;vector&gt;
+std::function&lt;int(int,int)&gt; op = [](int a, int b){ return a + b; };
+
+void apply(const std::vector&lt;int&gt;&amp; v, std::function&lt;void(int)&gt; fn) {
+    for (int n : v) fn(n);
+}
+apply({1,2,3}, [](int n){ std::cout &lt;&lt; n &lt;&lt; ' '; });</code></pre>
+            <div>
+                <h3>Details</h3>
+                <ul>
+                    <li><strong>Overhead</strong>: <code>std::function</code> has indirection and potential allocations; prefer templated callables for hot paths.</li>
+                    <li><strong>Flexibility</strong>: excellent for storing heterogenous callbacks and APIs.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="this-capture" class="panel">
+            <h2>Capturing this</h2>
+            <p>Use <code>[this]</code> inside member functions to access members. Ensure the object outlives the lambda.</p>
+            <pre><code class="language-cpp">struct Counter {
+    int count{0};
+    void incBy(int step){
+        auto doInc = [this, step]{ count += step; };
+        doInc();
+    }
+};
+Counter c; c.incBy(2); // c.count == 2</code></pre>
+            <div>
+                <h3>Safety</h3>
+                <ul>
+                    <li>Prefer capturing specific members (<code>[this]</code> or structured captures) over global state.</li>
+                    <li>Do not let async callbacks outlive the object; consider <code>weak_ptr</code> patterns.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="recursion" class="panel">
+            <h2>Recursion</h2>
+            <p>Enable recursion with <code>std::function</code> or by passing the lambda to itself.</p>
+            <pre><code class="language-cpp">#include &lt;functional&gt;
+std::function&lt;int(int)&gt; fact = [&](int n){ return n &lt;= 1 ? 1 : n * fact(n - 1); };
+
+auto fib = [](auto&amp; self, int n) -&gt; int { return n&lt;2 ? n : self(self,n-1) + self(self,n-2); };</code></pre>
+            <div>
+                <h3>Notes</h3>
+                <ul>
+                    <li><code>std::function</code> enables self-reference without naming a separate function object type.</li>
+                    <li>Self-passing generic lambdas avoid <code>std::function</code> overhead and keep everything inline.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="pitfalls" class="panel">
+            <h2>Pitfalls</h2>
+            <ul>
+                <li><strong>Dangling references:</strong> never return a lambda that captures a local by reference.</li>
+                <li><strong>Mutable confusion:</strong> without <code>mutable</code>, captured-by-value variables are read-only inside the lambda.</li>
+                <li><strong>Expensive std::function:</strong> prefer templated callables when performance is critical.</li>
+                <li><strong>Async + this:</strong> ensure objects outlive lambdas used in async callbacks.</li>
+                <li><strong>Comparator rules:</strong> comparators must implement strict weak ordering.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+        </footer>
+</body>
+
+</html>

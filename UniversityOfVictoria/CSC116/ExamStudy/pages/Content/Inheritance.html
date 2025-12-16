@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Inheritance</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link" aria-current="page">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="../Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="../../settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <aside class="quick-nav">
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#isa">Is-a vs Has-a</a></li>
+            <li><a href="#syntax">Syntax</a></li>
+            <li><a href="#access">Public / Protected / Private</a></li>
+            <li><a href="#ctors">Constructors &amp; Destructors</a></li>
+            <li><a href="#hiding">Overriding vs Hiding</a></li>
+            <li><a href="#pitfalls">Common Pitfalls</a></li>
+            <li><a href="#quickref">Quick Reference</a></li>
+            <li><a href="#practice">Practice Prompts</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+    </aside>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Inheritance</h1>
+            <p>Build related classes by reusing a base class, then extending it with derived classes.</p>
+        </section>
+
+        <section id="overview" class="panel">
+            <h2>Overview</h2>
+            <p><strong>Inheritance</strong> lets you define a <strong>base class</strong> (shared data + behaviors), then create a
+                <strong>derived class</strong> that <em>reuses</em> the base and adds/changes features.</p>
+            <ul>
+                <li><strong>Base</strong> = “common stuff” (fields + functions)</li>
+                <li><strong>Derived</strong> = “common stuff + extra”</li>
+                <li>Best for true <strong>is-a</strong> relationships (not just “can use”)</li>
+            </ul>
+
+            <div class="callout callout-info">
+                <strong>Exam reality:</strong> Most inheritance questions are about writing class definitions correctly (members,
+                constructors, access), then using them in <code>main()</code>.
+            </div>
+        </section>
+
+        <section id="isa" class="panel">
+            <h2>Is-a vs Has-a</h2>
+            <p>Use inheritance only when the derived type <strong>is-a</strong> more specific version of the base type.</p>
+
+            <ul>
+                <li><strong>Is-a</strong> (inheritance): <code>Dog</code> is-a <code>Animal</code></li>
+                <li><strong>Has-a</strong> (composition): <code>Car</code> has-a <code>Engine</code></li>
+            </ul>
+
+            <div class="callout callout-warning">
+                <strong>Rule of thumb:</strong> If you can’t say “X is a Y” out loud and it sounds right, don’t inherit.
+            </div>
+        </section>
+
+        <section id="syntax" class="panel">
+            <h2>Syntax</h2>
+            <p>Basic inheritance is written with a <code>:</code> after the derived class name.</p>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">hello</span>() { std::cout &lt;&lt; <span class="st">"hi\n"</span>; }
+};
+
+<span class="kw">class</span> <span class="ty">Derived</span> : <span class="kw">public</span> <span class="ty">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">extra</span>() { std::cout &lt;&lt; <span class="st">"extra\n"</span>; }
+};
+
+<span class="kw">int</span> main() {
+    <span class="ty">Derived</span> d;
+    d.<span class="fn">hello</span>();  <span class="cm">// from Base</span>
+    d.<span class="fn">extra</span>();  <span class="cm">// from Derived</span>
+}</code></pre>
+
+            <ul>
+                <li><strong>public inheritance</strong> is the most common for “is-a”.</li>
+                <li>You can inherit from multiple bases: <code>class D : public A, public B</code> (often avoided in intro courses).</li>
+            </ul>
+
+            <div class="callout callout-info">
+                <strong>Important C++ gotcha:</strong> <code>class Derived : Base</code> defaults to <strong>private</strong> inheritance.
+                Be explicit: <code>: public Base</code>.
+            </div>
+        </section>
+
+        <section id="access" class="panel">
+            <h2>Public / Protected / Private</h2>
+            <p>There are two separate ideas that people mix up:</p>
+            <ol>
+                <li><strong>Member access</strong> (inside a class): <code>public</code>, <code>protected</code>, <code>private</code></li>
+                <li><strong>Inheritance mode</strong> (between base and derived): <code>public</code> / <code>protected</code> / <code>private</code> inheritance</li>
+            </ol>
+
+            <h3>Member access (what derived classes can see)</h3>
+            <ul>
+                <li><code>public</code>: anyone can access (via object)</li>
+                <li><code>protected</code>: only the class and its derived classes can access</li>
+                <li><code>private</code>: only the class itself can access</li>
+            </ul>
+
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Animal</span> {
+<span class="kw">private</span>:
+    <span class="ty">std::string</span> secret;   <span class="cm">// derived CANNOT access directly</span>
+<span class="kw">protected</span>:
+    <span class="ty">std::string</span> name;     <span class="cm">// derived CAN access</span>
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">setName</span>(<span class="kw">const</span> <span class="ty">std::string</span>&amp; n) { name = n; }
+    <span class="ty">std::string</span> <span class="fn">getName</span>() <span class="kw">const</span> { <span class="kw">return</span> name; }
+};</code></pre>
+
+            <h3>Inheritance mode (what the outside world sees)</h3>
+            <ul>
+                <li><code>public</code> inheritance: base public stays public (best for “is-a”)</li>
+                <li><code>protected</code> inheritance: base public becomes protected</li>
+                <li><code>private</code> inheritance: base public becomes private (rare for this course)</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>Key memory hook:</strong> <code>protected</code> means “for me and my kids (derived classes)”, not for the
+                outside world.
+            </div>
+        </section>
+
+        <section id="ctors" class="panel">
+            <h2>Constructors &amp; Destructors</h2>
+            <p>When you construct a derived object, the base part must be constructed first.</p>
+
+            <h3>Calling a base constructor</h3>
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Item</span> {
+<span class="kw">protected</span>:
+    <span class="ty">std::string</span> name;
+<span class="kw">public</span>:
+    <span class="fn">Item</span>(<span class="kw">const</span> <span class="ty">std::string</span>&amp; n) : name(n) {}
+    <span class="ty">std::string</span> <span class="fn">getName</span>() <span class="kw">const</span> { <span class="kw">return</span> name; }
+};
+
+<span class="kw">class</span> <span class="ty">Food</span> : <span class="kw">public</span> <span class="ty">Item</span> {
+    <span class="kw">int</span> calories;
+<span class="kw">public</span>:
+    <span class="fn">Food</span>(<span class="kw">const</span> <span class="ty">std::string</span>&amp; n, <span class="kw">int</span> c)
+        : <span class="ty">Item</span>(n), calories(c) {}  <span class="cm">// base ctor call</span>
+
+    <span class="kw">int</span> <span class="fn">getCalories</span>() <span class="kw">const</span> { <span class="kw">return</span> calories; }
+};</code></pre>
+
+            <h3>Order rules (memorize these)</h3>
+            <ul>
+                <li><strong>Construction:</strong> Base constructor runs first, then derived constructor body.</li>
+                <li><strong>Destruction:</strong> Derived destructor runs first, then base destructor.</li>
+                <li><strong>Initialization order:</strong> Members are initialized in the order they’re declared in the class, not
+                    the order in your initializer list.</li>
+            </ul>
+
+            <div class="callout callout-warning">
+                <strong>Common bug:</strong> assigning fields inside the constructor body instead of using the initializer list.
+                In C++ you should prefer <code>: field(value)</code> (especially for base constructors and const/reference members).
+            </div>
+        </section>
+
+        <section id="hiding" class="panel">
+            <h2>Overriding vs Hiding</h2>
+            <p>Even without deep polymorphism, you’ll often need to understand what happens when a derived class uses the same
+                function name as the base.</p>
+
+            <h3>1) Overriding (polymorphism) needs <code>virtual</code></h3>
+            <p>If you want calls through a base pointer/reference to use the derived version, the base function must be
+                <code>virtual</code>. (We’ll do a full dedicated page on this.)</p>
+
+            <h3>2) Hiding (name hiding) happens even without virtual</h3>
+            <pre><code class="language-cpp"><span class="kw">class</span> <span class="ty">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">print</span>(<span class="kw">int</span> x) { std::cout &lt;&lt; x &lt;&lt; <span class="st">"\n"</span>; }
+};
+
+<span class="kw">class</span> <span class="ty">Derived</span> : <span class="kw">public</span> <span class="ty">Base</span> {
+<span class="kw">public</span>:
+    <span class="kw">void</span> <span class="fn">print</span>(<span class="ty">std::string</span> s) { std::cout &lt;&lt; s &lt;&lt; <span class="st">"\n"</span>; }
+};
+
+<span class="kw">int</span> main() {
+    <span class="ty">Derived</span> d;
+    d.<span class="fn">print</span>(<span class="st">"hi"</span>); 
+    <span class="cm">// d.print(5); // ERROR: Base::print(int) is hidden by Derived::print(string)</span>
+}
+</code></pre>
+
+            <div class="callout callout-info">
+                <strong>Fix (when needed):</strong> add <code>using Base::print;</code> inside <code>Derived</code> to un-hide base overloads.
+            </div>
+        </section>
+
+        <section id="pitfalls" class="panel">
+            <h2>Common Pitfalls</h2>
+            <ul>
+                <li><strong>Private base data is not accessible in derived classes</strong> — use <code>protected</code> or provide getters/setters.</li>
+                <li><strong>Forgetting <code>: public Base</code></strong> (private inheritance default).</li>
+                <li><strong>Object slicing</strong>: assigning a derived object to a base object copies only the base part.
+                    <div class="callout callout-warning" style="margin-top:10px;">
+                        <strong>Rule:</strong> Use <code>Base&amp;</code> / <code>Base*</code> when you want to preserve derived behavior.
+                    </div>
+                </li>
+                <li><strong>Name hiding</strong> when you overload in the derived class (see above).</li>
+                <li><strong>Wrong constructor calls</strong>: base constructor must be called in initializer list if it needs arguments.</li>
+                <li><strong>Polymorphism without virtual destructor</strong> (advanced, but good to remember): if you ever delete through a base pointer, base destructor should be <code>virtual</code>.</li>
+            </ul>
+        </section>
+
+        <section id="quickref" class="panel">
+            <h2>Quick Reference</h2>
+            <table style="width:100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="text-align:left; border-bottom: 1px solid #4a5568;">
+                        <th style="padding: 8px;">Goal</th>
+                        <th style="padding: 8px;">Do this</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;">Make a derived class</td>
+                        <td style="padding: 8px;"><code>class D : public B { ... };</code></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;">Let derived access base data</td>
+                        <td style="padding: 8px;"><code>protected:</code> in base (or provide getters/setters)</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;">Call base constructor with args</td>
+                        <td style="padding: 8px;"><code>D(args) : B(baseArgs), ... {}</code></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #4a5568;">
+                        <td style="padding: 8px;">Prevent hiding base overloads</td>
+                        <td style="padding: 8px;"><code>using B::func;</code> inside derived</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;">Polymorphic behavior</td>
+                        <td style="padding: 8px;">Base function must be <code>virtual</code> (next page)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="practice" class="panel">
+            <h2>Practice Prompts</h2>
+            <p>Try these without looking anything up (closed-book practice).</p>
+            <ol>
+                <li>Write a base class <code>Employee</code> with <code>protected</code> members <code>name</code> and <code>id</code>, a constructor, and getters. Then write a derived class <code>HourlyEmployee</code> with <code>hourlyRate</code>, a constructor that calls the base constructor, and a function that returns weekly pay given hours.</li>
+                <li>Write a base class <code>Shape</code> with a public function <code>printType()</code>. Derive <code>Rectangle</code> and add width/height. Make sure <code>Rectangle</code> can print both its type and its dimensions.</li>
+                <li>Create a derived class that declares a function with the same name as a base function. Demonstrate (in comments) the “name hiding” problem and fix it using <code>using Base::name;</code>.</li>
+            </ol>
+
+            <div class="info-box">
+                <strong>Self-check:</strong> For every class you write, confirm you have (1) correct access modifiers, (2) correct constructor signatures, (3) initializer lists, (4) correct base constructor call.
+            </div>
+        </section>
+
+        <section id="faq" class="panel">
+            <h2>Fundamentals FAQ</h2>
+
+            <details>
+                <summary>Do derived classes automatically inherit constructors?</summary>
+                <p>No (not in the simple way people assume). You typically define derived constructors and explicitly call a base constructor in the initializer list. (There are advanced features like inheriting constructors, but intro courses rarely rely on them.)</p>
+            </details>
+
+            <details>
+                <summary>Can a derived class access base private members?</summary>
+                <p>No. Use <code>protected</code> (if appropriate) or provide public/protected member functions (getters/setters) in the base.</p>
+            </details>
+
+            <details>
+                <summary>What’s the difference between overriding and overloading?</summary>
+                <p><strong>Overloading</strong> = same name, different parameters (compile-time). <strong>Overriding</strong> = derived provides a new implementation of a <code>virtual</code> base function (run-time dispatch).</p>
+            </details>
+
+            <details>
+                <summary>When will this matter on the exam?</summary>
+                <p>When a question asks you to implement multiple related classes and then use them in a short <code>main()</code> test. Expect to write constructors, getters, and simple behaviors.</p>
+            </details>
+        </section>
+
+        <div class="info-box"
+            style="margin-top: 40px; text-align: center; background: var(--accent); color: var(--bg); padding: 20px; border-radius: 12px;">
+            <strong>Ready to test yourself?</strong><br>
+            <a href="../Quizzes/quiz-inheritance.html"
+                style="color: var(--bg); text-decoration: none; font-weight: 600;">Take the Inheritance Quiz →</a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="noopener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

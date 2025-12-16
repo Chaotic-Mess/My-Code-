@@ -1,0 +1,1122 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Lambda Lecture</title>
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../pages.css" />
+    <script src="../../settings.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="../../Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../Favicon/favicon-16x16.png">
+    <link rel="manifest" href="../../Favicon/site.webmanifest">
+    <style>
+        .lambda-container {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            margin: 2rem 0;
+        }
+
+        .lambda-sections {
+            flex: 0 0 200px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .lambda-sections ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .lambda-sections li {
+            margin: 0.5rem 0;
+        }
+
+        .lambda-sections button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--panel);
+            border: 2px solid var(--border);
+            color: var(--text);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .lambda-sections button:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .lambda-sections button.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .lambda-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .section-view {
+            display: none;
+        }
+
+        .section-view.active {
+            display: block;
+        }
+
+        .code-display {
+            position: relative;
+            background: var(--panel);
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 0;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            min-height: 150px;
+            width: 100%;
+            text-align: left;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .code-display:hover {
+            background: #161b23;
+            box-shadow: 0 0 15px rgba(79, 140, 255, 0.3);
+        }
+
+        .code-display:active {
+            transform: scale(0.98);
+        }
+
+        .code-display.typing {
+            color: var(--accent);
+        }
+
+        .code-line {
+            position: relative;
+            margin: 0.5rem 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .code-line.new {
+            animation: fadeInCode 0.3s ease;
+        }
+
+        @keyframes fadeInCode {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--panel);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 500px;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .info-popup.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -55%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .info-popup h3 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+
+        .info-popup p {
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+
+        .info-popup code {
+            background: var(--bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+
+        .info-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            display: none;
+        }
+
+        .info-popup-overlay.show {
+            display: block;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .prompt {
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2 {
+            margin: 0 0 0.5rem 0;
+        }
+
+        .section-header p {
+            margin: 0.5rem 0;
+            color: var(--muted);
+        }
+
+        .click-hint {
+            display: inline-block;
+            background: rgba(79, 140, 255, 0.1);
+            border-left: 3px solid var(--accent);
+            padding: 0.75rem 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .section-nav {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-nav a {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--accent);
+            transition: all 0.2s;
+        }
+
+        .section-nav a:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .section-nav a:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .code-wrapper {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.2s;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-wrapper:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: #6ba3ff;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn.copied {
+            background: #51cf66;
+        }
+
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="brand">
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3h18v18H3V3z" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 12h10M12 7v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                CSC 116 Exam Study
+            </div>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="../../index.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                    </svg>
+                    Home
+                </a>
+                <a href="../Information/checklist.html" class="nav-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                        <path
+                            d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z" />
+                    </svg>
+                    Checklist
+                </a>
+                <a href="../../settings.html" class="nav-link settings-link">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path
+                            d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z" />
+                    </svg>
+                    Settings
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content-wrapper">
+        <section class="hero">
+            <h1>Lambda</h1>
+            <p>Master the core concepts of lambda calculus and functional programming.</p>
+        </section>
+
+        <div class="container intro-panel">
+            <strong>Note:</strong> There is more detailed information available in the <a href="../Content/lambdas.html"
+                target="_blank"><code>Lambdas</code>
+                Page</a>. This interactive lecture is designed to provide a hands-on learning experience.
+        </div> 
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%;"></div>
+        </div>
+
+        <div class="lambda-container">
+            <!-- Section Navigation -->
+            <nav class="lambda-sections">
+                <ul>
+                    <li><button class="section-btn active" data-section="Basics">Basics</button></li>
+                    <li><button class="section-btn" data-section="CaptureByValue">CaptureByValue</button></li>
+                    <li><button class="section-btn" data-section="CaptureByReference">CaptureByReference</button></li>
+                    <li><button class="section-btn" data-section="InitCaptureMutable">InitCaptureMutable</button></li>
+                    <li><button class="section-btn" data-section="GenericLambdas">GenericLambdas</button></li>
+                    <li><button class="section-btn" data-section="Algorithms">Algorithms</button></li>
+                    <li><button class="section-btn" data-section="Sorting">Sorting</button></li>
+                    <li><button class="section-btn" data-section="StdFunction">StdFunction</button></li>
+                    <li><button class="section-btn" data-section="ThisCapture">ThisCapture</button></li>
+                    <li><button class="section-btn" data-section="Recursion">Recursion</button></li>
+                </ul>
+            </nav>
+
+            <!-- Content Area -->
+            <div class="lambda-content">
+                <!-- 1. Basics -->
+                <div id="Basics" class="section-view active">
+                    <div class="section-header">
+                        <h2>Basics</h2>
+                        <p>Lambda syntax, creation, and immediate invocation.</p>
+                        <button class="btn" onclick="showInfo('Basics')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('BasicsCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="BasicsCode" onclick="nextLine('BasicsCode')">Click to reveal
+                            code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('CaptureByValue'); return false;">Next: CaptureByValue →</a>
+                    </div>
+                </div>
+
+                <!-- 2. CaptureByValue -->
+                <div id="CaptureByValue" class="section-view">
+                    <div class="section-header">
+                        <h2>CaptureByValue</h2>
+                        <p>Copy variables into the closure; default immutable.</p>
+                        <button class="btn" onclick="showInfo('CaptureByValue')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('CaptureByValueCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="CaptureByValueCode"
+                            onclick="nextLine('CaptureByValueCode')">Click to reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('Basics'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('CaptureByReference'); return false;">Next: CaptureByReference
+                            →</a>
+                    </div>
+                </div>
+
+                <!-- 3. CaptureByReference -->
+                <div id="CaptureByReference" class="section-view">
+                    <div class="section-header">
+                        <h2>CaptureByReference</h2>
+                        <p>Reference semantics allow mutation of captured state.</p>
+                        <button class="btn" onclick="showInfo('CaptureByReference')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('CaptureByReferenceCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="CaptureByReferenceCode"
+                            onclick="nextLine('CaptureByReferenceCode')">Click to reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('CaptureByValue'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('InitCaptureMutable'); return false;">Next: InitCaptureMutable
+                            →</a>
+                    </div>
+                </div>
+
+                <!-- 4. InitCaptureMutable -->
+                <div id="InitCaptureMutable" class="section-view">
+                    <div class="section-header">
+                        <h2>InitCaptureMutable</h2>
+                        <p>Initialize capture with expressions; use mutable to modify copies.</p>
+                        <button class="btn" onclick="showInfo('InitCaptureMutable')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('InitCaptureMutableCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="InitCaptureMutableCode"
+                            onclick="nextLine('InitCaptureMutableCode')">Click to reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('CaptureByReference'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('GenericLambdas'); return false;">Next: GenericLambdas →</a>
+                    </div>
+                </div>
+
+                <!-- 5. GenericLambdas -->
+                <div id="GenericLambdas" class="section-view">
+                    <div class="section-header">
+                        <h2>GenericLambdas</h2>
+                        <p>Use <code>auto</code> parameters for type-generic lambdas.</p>
+                        <button class="btn" onclick="showInfo('GenericLambdas')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('GenericLambdasCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="GenericLambdasCode"
+                            onclick="nextLine('GenericLambdasCode')">Click to reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('InitCaptureMutable'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('Algorithms'); return false;">Next: Algorithms →</a>
+                    </div>
+                </div>
+
+                <!-- 6. Algorithms -->
+                <div id="Algorithms" class="section-view">
+                    <div class="section-header">
+                        <h2>Algorithms</h2>
+                        <p>Use lambdas with STL algorithms like <code>for_each</code>, <code>transform</code>,
+                            <code>accumulate</code>.</p>
+                        <button class="btn" onclick="showInfo('Algorithms')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('AlgorithmsCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="AlgorithmsCode" onclick="nextLine('AlgorithmsCode')">Click to
+                            reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('GenericLambdas'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('Sorting'); return false;">Next: Sorting →</a>
+                    </div>
+                </div>
+
+                <!-- 7. Sorting -->
+                <div id="Sorting" class="section-view">
+                    <div class="section-header">
+                        <h2>Sorting</h2>
+                        <p>Custom comparators with <code>std::sort</code> using lambdas.</p>
+                        <button class="btn" onclick="showInfo('Sorting')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('SortingCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="SortingCode" onclick="nextLine('SortingCode')">Click to reveal
+                            code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('Algorithms'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('StdFunction'); return false;">Next: StdFunction →</a>
+                    </div>
+                </div>
+
+                <!-- 8. StdFunction -->
+                <div id="StdFunction" class="section-view">
+                    <div class="section-header">
+                        <h2>StdFunction</h2>
+                        <p>Store lambdas in <code>std::function</code> and pass as callbacks.</p>
+                        <button class="btn" onclick="showInfo('StdFunction')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('StdFunctionCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="StdFunctionCode" onclick="nextLine('StdFunctionCode')">Click to
+                            reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('Sorting'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('ThisCapture'); return false;">Next: ThisCapture →</a>
+                    </div>
+                </div>
+
+                <!-- 9. ThisCapture -->
+                <div id="ThisCapture" class="section-view">
+                    <div class="section-header">
+                        <h2>ThisCapture</h2>
+                        <p>Capture object state from member functions with <code>[this]</code>.</p>
+                        <button class="btn" onclick="showInfo('ThisCapture')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('ThisCaptureCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="ThisCaptureCode" onclick="nextLine('ThisCaptureCode')">Click to
+                            reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('StdFunction'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('Recursion'); return false;">Next: Recursion →</a>
+                    </div>
+                </div>
+
+                <!-- 10. Recursion -->
+                <div id="Recursion" class="section-view">
+                    <div class="section-header">
+                        <h2>Recursion</h2>
+                        <p>Recursive lambdas via <code>std::function</code> or self-reference.</p>
+                        <button class="btn" onclick="showInfo('Recursion')"> Info </button>
+                    </div>
+                    <div class="code-wrapper">
+                        <button class="copy-btn" onclick="copyCode('RecursionCode')">
+                            <svg fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z" />
+                            </svg>
+                            Copy
+                        </button>
+                        <button class="code-display" id="RecursionCode" onclick="nextLine('RecursionCode')">Click to
+                            reveal code →</button>
+                    </div>
+                    <div class="section-nav">
+                        <a href="#" onclick="nextSection('ThisCapture'); return false;">← Previous</a>
+                        <a href="#" onclick="nextSection('Basics'); return false;">Back to start</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Info Popup -->
+    <div class="info-popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
+    <div class="info-popup" id="infoPopup">
+        <button class="close-btn" onclick="closePopup()">✕</button>
+        <h3 id="popupTitle">Info</h3>
+        <div id="popupContent"></div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <small>© 2025 CSC116 Study Tool by Zac M.</small>
+                    <a href="https://github.com/Chaotic-Mess/My-Code-" target="_blank" rel="nlambdaener noreferrer">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+                <div class="footer-links">
+                    <a href="../../index.html">Home</a>
+                    <span class="separator">•</span>
+                    <a href="../Information/checklist.html">Study Checklist</a>
+                    <span class="separator">•</span>
+                    <a href="../../settings.html">Customize Theme</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Code snippets for each section (keys are lowercase)
+        const codeSnippets = {
+            basics: [
+                `<span class="cm">// Basics: unnamed function + call it</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;string&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="kw">auto</span> <span class="fn">add</span> = [](<span class="ty">int</span> a, <span class="ty">int</span> b) { <span class="kw">return</span> a + b; };`,
+                `    <span class="fn">cout</span> &lt;&lt; <span class="fn">add</span>(<span class="nb">2</span>, <span class="nb">3</span>) &lt;&lt; <span class="st">"\\n"</span>;`,
+                ``,
+                `    <span class="cm">// Immediately-invoked lambda</span>`,
+                `    [](<span class="kw">const</span> <span class="ty">string</span>&amp; msg) { <span class="fn">cout</span> &lt;&lt; msg &lt;&lt; <span class="st">"\\n"</span>; }(<span class="st">"Hello from lambda"</span>);`,
+                ``,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 5</span>`,
+                `<span class="cm">// Hello from lambda</span>`
+            ],
+
+            capturebyvalue: [
+                `<span class="cm">// Capture by value: copies x at capture time</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="ty">int</span> x = <span class="nb">10</span>;`,
+                `    <span class="kw">auto</span> f = [x]() { <span class="fn">cout</span> &lt;&lt; x &lt;&lt; <span class="st">"\\n"</span>; }; <span class="cm">// copy x</span>`,
+                `    x = <span class="nb">20</span>;`,
+                `    f(); <span class="cm">// prints 10 (captured earlier)</span>`,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 10</span>`
+            ],
+
+            capturebyreference: [
+                `<span class="cm">// Capture by reference: lambda mutates the original x</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="ty">int</span> x = <span class="nb">10</span>;`,
+                `    <span class="kw">auto</span> g = [&x]() { x++; }; <span class="cm">// reference</span>`,
+                `    g(); g();`,
+                `    <span class="fn">cout</span> &lt;&lt; x &lt;&lt; <span class="st">"\\n"</span>;`,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 12</span>`,
+                ``,
+                `<span class="cm">// ⚠️ Dangling reference warning:</span>`,
+                `<span class="cm">// auto makeLambda() { int y = 42; return [&](){ cout &lt;&lt; y; }; }</span>`,
+                `<span class="cm">// auto h = makeLambda(); // y is destroyed → dangling ref</span>`
+            ],
+
+            initcapturemutable: [
+                `<span class="cm">// Init-capture + mutable: keep private state inside the closure</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="ty">int</span> x = <span class="nb">10</span>;`,
+                `    <span class="kw">auto</span> h = [y = x]() <span class="kw">mutable</span> { y++; <span class="fn">cout</span> &lt;&lt; y &lt;&lt; <span class="st">"\\n"</span>; };`,
+                `    h();`,
+                `    h();`,
+                `    <span class="fn">cout</span> &lt;&lt; x &lt;&lt; <span class="st">"\\n"</span>; <span class="cm">// original unchanged</span>`,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 11</span>`,
+                `<span class="cm">// 12</span>`,
+                `<span class="cm">// 10</span>`
+            ],
+
+            genericlambdas: [
+                `<span class="cm">// Generic lambdas: auto params</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;string&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="kw">auto</span> maxOf = [](<span class="kw">auto</span> a, <span class="kw">auto</span> b) { <span class="kw">return</span> a &lt; b ? b : a; };`,
+                `    <span class="fn">cout</span> &lt;&lt; maxOf(<span class="nb">1</span>, <span class="nb">3</span>) &lt;&lt; <span class="st">"\\n"</span>;`,
+                `    <span class="fn">cout</span> &lt;&lt; maxOf(<span class="ty">string</span>(<span class="st">"ab"</span>), <span class="ty">string</span>(<span class="st">"c"</span>)) &lt;&lt; <span class="st">"\\n"</span>;`,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 3</span>`,
+                `<span class="cm">// c</span>`
+            ],
+
+            algorithms: [
+                `<span class="cm">// Lambdas + STL algorithms</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;algorithm&gt;</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;numeric&gt;</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;vector&gt;</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="ty">vector</span>&lt;<span class="ty">int</span>&gt; v{<span class="nb">1</span>,<span class="nb">2</span>,<span class="nb">3</span>,<span class="nb">4</span>};`,
+                `    <span class="fn">for_each</span>(v.begin(), v.end(), [](<span class="ty">int</span>&amp; n){ n *= <span class="nb">2</span>; }); <span class="cm">// 2,4,6,8</span>`,
+                `    <span class="fn">transform</span>(v.begin(), v.end(), v.begin(), [](<span class="ty">int</span> n){ <span class="kw">return</span> n + <span class="nb">1</span>; }); <span class="cm">// 3,5,7,9</span>`,
+                `    <span class="ty">int</span> s = <span class="fn">accumulate</span>(v.begin(), v.end(), <span class="nb">0</span>, [](<span class="ty">int</span> acc, <span class="ty">int</span> n){ <span class="kw">return</span> acc + n; });`,
+                `    <span class="fn">cout</span> &lt;&lt; s &lt;&lt; <span class="st">"\\n"</span>;`,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 24</span>`
+            ],
+
+            sorting: [
+                `<span class="cm">// Sorting with lambdas: custom comparator</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;algorithm&gt;</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;vector&gt;</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="ty">vector</span>&lt;<span class="ty">int</span>&gt; a{<span class="nb">5</span>,<span class="nb">1</span>,<span class="nb">3</span>,<span class="nb">4</span>,<span class="nb">2</span>};`,
+                `    <span class="fn">sort</span>(a.begin(), a.end(), [](<span class="ty">int</span> x, <span class="ty">int</span> y){ <span class="kw">return</span> x &gt; y; }); <span class="cm">// desc</span>`,
+                `    <span class="kw">for</span> (<span class="ty">int</span> n : a) <span class="fn">cout</span> &lt;&lt; n &lt;&lt; <span class="st">" "</span>;`,
+                `    <span class="fn">cout</span> &lt;&lt; <span class="st">"\\n"</span>;`,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 5 4 3 2 1</span>`
+            ],
+
+            stdfunction: [
+                `<span class="cm">// std::function: store a lambda as a callback</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;functional&gt;</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="ty">function</span>&lt;<span class="ty">int</span>(<span class="ty">int</span>,<span class="ty">int</span>)&gt; op = [](<span class="ty">int</span> a, <span class="ty">int</span> b){ <span class="kw">return</span> a + b; };`,
+                `    <span class="fn">cout</span> &lt;&lt; op(<span class="nb">2</span>, <span class="nb">3</span>) &lt;&lt; <span class="st">"\\n"</span>;`,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 5</span>`
+            ],
+
+            thiscapture: [
+                `<span class="cm">// Capturing this: use members inside the lambda</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="kw">struct</span> <span class="ty">Counter</span> {`,
+                `    <span class="ty">int</span> count{<span class="nb">0</span>};`,
+                `    <span class="ty">void</span> <span class="fn">incBy</span>(<span class="ty">int</span> step) {`,
+                `        <span class="kw">auto</span> doInc = [<span class="kw">this</span>, step] { count += step; };`,
+                `        doInc();`,
+                `    }`,
+                `};`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="ty">Counter</span> c;`,
+                `    c.<span class="fn">incBy</span>(<span class="nb">2</span>);`,
+                `    <span class="fn">cout</span> &lt;&lt; c.count &lt;&lt; <span class="st">"\\n"</span>;`,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 2</span>`,
+                ``,
+                `<span class="cm">// ⚠️ If you run the lambda later (async/thread), make sure *this is still alive.</span>`
+            ],
+
+            recursion: [
+                `<span class="cm">// Recursion with std::function</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;functional&gt;</span>`,
+                `<span class="kw">#include</span> <span class="st">&lt;iostream&gt;</span>`,
+                `<span class="kw">using</span> <span class="kw">namespace</span> <span class="ty">std</span>;`,
+                ``,
+                `<span class="ty">int</span> <span class="fn">main</span>() {`,
+                `    <span class="ty">function</span>&lt;<span class="ty">int</span>(<span class="ty">int</span>)&gt; fact = [&] (<span class="ty">int</span> n) {`,
+                `        <span class="kw">return</span> (n &lt;= <span class="nb">1</span>) ? <span class="nb">1</span> : n * fact(n - <span class="nb">1</span>);`,
+                `    };`,
+                `    <span class="fn">cout</span> &lt;&lt; fact(<span class="nb">5</span>) &lt;&lt; <span class="st">"\\n"</span>;`,
+                `    <span class="kw">return</span> <span class="nb">0</span>;`,
+                `}`,
+                ``,
+                `<span class="cm">// Output:</span>`,
+                `<span class="cm">// 120</span>`
+            ]
+        };
+
+
+
+        // Info content for each section
+        const infoContent = {
+            basics: {
+                title: "Basics",
+                content: `<p>Lambdas have the form <code>[capture](params) mutable -> ret { body }</code>.</p>
+                          <p>Use them as inline callables or store them in variables.</p>`
+            },
+            capturebyvalue: {
+                title: "Capture By Value",
+                content: `<p>Values are copied into the closure at creation time and are immutable by default.</p>
+                          <p>Add <code>mutable</code> to modify the captured copy inside the lambda.</p>`
+            },
+            capturebyreference: {
+                title: "Capture By Reference",
+                content: `<p>References let the lambda observe and modify external state.</p>
+                          <p><strong>Warning:</strong> Avoid returning lambdas that reference locals that will be destroyed.</p>`
+            },
+            initcapturemutable: {
+                title: "Init-Capture + mutable",
+                content: `<p>Init-capture lets you compute or move values into the closure: <code>[x = expr]</code>.</p>
+                          <p><code>mutable</code> allows changing captured-by-value state per-closure instance.</p>`
+            },
+            genericlambdas: {
+                title: "Generic Lambdas",
+                content: `<p>Use <code>auto</code> parameters to write lambdas that work with multiple types.</p>
+                          <p>Specify trailing returns when the return type is not obvious.</p>`
+            },
+            algorithms: {
+                title: "Algorithms",
+                content: `<p>Lambdas shine with STL algorithms for concise data processing pipelines.</p>
+                          <p>Prefer <code>const&</code> parameters when you don't need to modify elements.</p>`
+            },
+            sorting: {
+                title: "Sorting",
+                content: `<p>Provide custom comparators to <code>std::sort</code> to define ordering.</p>
+                          <p>Comparators must impose a strict weak ordering.</p>`
+            },
+            stdfunction: {
+                title: "std::function",
+                content: `<p><code>std::function</code> type-erases callables (lambdas, function objects, functions).</p>
+                          <p>Great for callbacks but has overhead vs templated callables.</p>`
+            },
+            thiscapture: {
+                title: "Capturing this",
+                content: `<p>Use <code>[this]</code> (or <code>[=]</code> in older code) inside member functions to access members.</p>
+                          <p>Ensure the object outlives the lambda if it's used asynchronously.</p>`
+            },
+            recursion: {
+                title: "Recursion",
+                content: `<p>Bind a <code>std::function</code> or pass a lambda to itself to enable recursion.</p>
+                          <p>Be mindful of performance and prefer iterative forms for hot paths.</p>`
+            },
+        };
+
+        let currentLines = {};
+        let totalSections = 10;
+        let completedSections = 0;
+
+        function escapeHtml(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function highlightCpp(line) {
+            // If author supplied markup, keep it
+            if (line.includes('<span')) return line;
+
+            let escaped = escapeHtml(line);
+
+            // Strings
+            escaped = escaped.replace(/"([^"\\]|\\.)*"/g, match => `<span class="st">${match}</span>`);
+            // Numbers
+            escaped = escaped.replace(/\b\d+(\.\d+)?\b/g, match => `<span class="nb">${match}</span>`);
+            // Keywords
+            const keywords = ['class', 'public', 'private', 'protected', 'virtual', 'override', 'return', 'void', 'int', 'double', 'string', 'auto', 'static', 'const', 'new', 'delete'];
+            const kwRegex = new RegExp(`\\b(${keywords.join('|')})\\b`, 'g');
+            escaped = escaped.replace(kwRegex, match => `<span class="kw">${match}</span>`);
+            return escaped;
+        }
+
+        function nextLine(codeId) {
+            const section = codeId.replace('Code', '');
+            const key = section.toLowerCase();
+            const lines = codeSnippets[key];
+
+            if (!lines) {
+                console.error('Code snippet not found for:', section);
+                return;
+            }
+
+            if (!currentLines[codeId]) {
+                currentLines[codeId] = 0;
+            }
+
+            if (currentLines[codeId] < lines.length) {
+                const codeDisplay = document.getElementById(codeId);
+                const line = lines[currentLines[codeId]];
+
+                const lineEl = document.createElement('div');
+                lineEl.className = 'code-line new';
+                lineEl.innerHTML = highlightCpp(line || ' ');
+                codeDisplay.appendChild(lineEl);
+
+                currentLines[codeId]++;
+
+                // Show info on first line
+                if (currentLines[codeId] === 1) {
+                    showInfo(key);
+                }
+            } else {
+                // All lines shown, mark section as complete
+                markSectionComplete(section);
+            }
+
+            updateProgress();
+        }
+
+        function showInfo(section) {
+            const info = infoContent[section.toLowerCase()] || infoContent[section];
+            if (info) {
+                document.getElementById('popupTitle').textContent = info.title;
+                document.getElementById('popupContent').innerHTML = info.content;
+                document.getElementById('infoPopup').classList.add('show');
+                document.getElementById('popupOverlay').classList.add('show');
+            }
+        }
+
+        function closePopup() {
+            document.getElementById('infoPopup').classList.remove('show');
+            document.getElementById('popupOverlay').classList.remove('show');
+        }
+
+        function nextSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section-view').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Remove active from all buttons
+            document.querySelectorAll('.section-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Mark button as active
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+
+            // Scroll into view
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            closePopup();
+        }
+
+        function markSectionComplete(section) {
+            const btn = document.querySelector(`[data-section="${section}"]`);
+            if (btn && !btn.dataset.completed) {
+                btn.dataset.completed = 'true';
+                btn.style.opacity = '0.6';
+                completedSections++;
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (completedSections / totalSections) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function copyCode(codeId) {
+            const codeDisplay = document.getElementById(codeId);
+            const codeLines = codeDisplay.querySelectorAll('.code-line');
+
+            if (codeLines.length === 0) {
+                return; // Nothing to copy yet
+            }
+
+            // Extract text content from all revealed lines
+            let text = '';
+            codeLines.forEach(line => {
+                text += line.textContent + '\n';
+            });
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(text.trim()).then(() => {
+                // Visual feedback
+                const btn = codeDisplay.parentElement.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.classList.add('copied');
+                btn.innerHTML = `<svg fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                </svg>Copied!`;
+
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // Initialize section buttons
+        document.querySelectorAll('.section-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const section = btn.dataset.section;
+                nextSection(section);
+            });
+        });
+
+        // Allow clicking outside popup to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
+    </script>
+</body>
+
+</html>
