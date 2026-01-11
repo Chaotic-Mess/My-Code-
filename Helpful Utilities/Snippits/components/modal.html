@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Component | HTML Snippets</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../prism-dracula.css">
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        .trigger-btn {
+            padding: 12px 24px;
+            background: var(--accent-color);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Library</a>
+        
+        <header class="fade-in">
+            <h1>Modal Component</h1>
+            <p>A centered overlay dialog with a back-drop and close functionality.</p>
+        </header>
+
+        <section class="preview-hero fade-in">
+            <button class="trigger-btn" id="openModal">Open Modal Preview</button>
+            <div class="modal-overlay" id="modalPreview">
+                <div class="modal-content">
+                    <span class="close-btn" id="closeModal">&times;</span>
+                    <h2>Hello!</h2>
+                    <p style="margin: 1rem 0; color: #8b949e;">This is a minimalistic modal window.</p>
+                    <button class="trigger-btn" onclick="document.getElementById('modalPreview').style.display = 'none'">Close</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="code-snippets">
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>HTML</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-markup">&lt;!-- Trigger Button --&gt;
+&lt;button id="openBtn"&gt;Open Modal&lt;/button&gt;
+
+&lt;!-- Modal Overlay --&gt;
+&lt;div class="modal-overlay" id="myModal"&gt;
+    &lt;div class="modal-content"&gt;
+        &lt;h2&gt;Title&lt;/h2&gt;
+        &lt;p&gt;Content goes here.&lt;/p&gt;
+        &lt;button id="closeBtn"&gt;Close&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>CSS</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-css">.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background: #161b22;
+    padding: 2rem;
+    border-radius: 12px;
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>JavaScript</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-javascript">const modal = document.getElementById('myModal');
+const openBtn = document.getElementById('openBtn');
+const closeBtn = document.getElementById('closeBtn');
+
+openBtn.onclick = () => modal.style.display = 'flex';
+closeBtn.onclick = () => modal.style.display = 'none';
+window.onclick = (e) => {
+    if (e.target == modal) modal.style.display = 'none';
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>Full HTML File</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;style&gt;
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 20px; border-radius: 8px; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;button id="openBtn"&gt;Open Modal&lt;/button&gt;
+    &lt;div class="modal-overlay" id="myModal"&gt;
+        &lt;div class="modal-content"&gt;
+            &lt;p&gt;Hello World!&lt;/p&gt;
+            &lt;button id="closeBtn"&gt;Close&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+        const m = document.getElementById('myModal');
+        document.getElementById('openBtn').onclick = () =&gt; m.style.display = 'flex';
+        document.getElementById('closeBtn').onclick = () =&gt; m.style.display = 'none';
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="../script.js"></script>
+    <script>
+        // Modal Preview logic
+        const modal = document.getElementById('modalPreview');
+        const openBtn = document.getElementById('openModal');
+        const closeBtn = document.getElementById('closeModal');
+
+        openBtn.onclick = () => modal.style.display = 'flex';
+        closeBtn.onclick = () => modal.style.display = 'none';
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

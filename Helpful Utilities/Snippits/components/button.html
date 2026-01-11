@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Component | HTML Snippets</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../prism-dracula.css">
+    <style>
+        /* Specific preview styles */
+        .preview-btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            font-family: inherit;
+        }
+        .preview-btn:hover {
+            background-color: #4091f7;
+            transform: translateY(-2px);
+        }
+        .preview-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Library</a>
+        
+        <header class="fade-in">
+            <h1>Button Component</h1>
+            <p>A simple, modern button with hover and active states.</p>
+        </header>
+
+        <section class="preview-hero fade-in">
+            <button class="preview-btn">Interactive Button</button>
+        </section>
+
+        <section class="code-snippets">
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>HTML</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-markup">&lt;button class="btn-primary"&gt;Click Me&lt;/button&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>CSS</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-css">.btn-primary {
+    padding: 12px 24px;
+    font-size: 1rem;
+    background-color: #58a6ff;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #4091f7;
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>JavaScript</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-javascript">const btn = document.querySelector('.btn-primary');
+btn.addEventListener('click', () => {
+    alert('Button clicked!');
+});</code></pre>
+                </div>
+            </div>
+
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>Full HTML File</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;style&gt;
+        .btn-primary {
+            padding: 12px 24px;
+            background-color: #58a6ff;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #4091f7;
+            transform: translateY(-2px);
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;button class="btn-primary"&gt;Click Me&lt;/button&gt;
+    &lt;script&gt;
+        document.querySelector('.btn-primary').onclick = () =&gt; alert('Hi!');
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="../script.js"></script>
+    <script>
+        // Preview interaction
+        document.querySelector('.preview-btn').addEventListener('click', () => {
+            alert('Button clicked in preview!');
+        });
+    </script>
+</body>
+</html>

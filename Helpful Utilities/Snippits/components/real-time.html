@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Feed | HTML Snippets</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../prism-dracula.css">
+    <style>
+        .live-preview {
+            background: #161b22;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #30363d;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .data-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #238636;
+            margin: 1rem 0;
+            font-family: 'Fira Code', monospace;
+        }
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #8b949e;
+            background: rgba(35, 134, 54, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(35, 134, 54, 0.3);
+        }
+        .live-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #238636;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        .method-toggle {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            justify-content: center;
+        }
+        .toggle-btn {
+            padding: 12px 24px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .toggle-btn:hover {
+            border-color: var(--accent-color);
+        }
+        .toggle-btn.active {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
+        }
+        .method-content {
+            display: none;
+        }
+        .method-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Library</a>
+        
+        <header class="fade-in">
+            <h1>Real-Time Data Feed</h1>
+            <p>Stream live updates from a Python backend using Server-Sent Events (SSE).</p>
+        </header>
+
+        <div class="method-toggle fade-in">
+            <button class="toggle-btn active" onclick="switchMethod(1)">Method One: Plain Text</button>
+            <button class="toggle-btn" onclick="switchMethod(2)">Method Two: JSON Object</button>
+        </div>
+
+        <!-- Method One Content -->
+        <div id="method1" class="method-content active">
+            <section class="preview-hero fade-in">
+                <div class="live-preview">
+                    <div class="live-indicator">LIVE STREAM (PLAIN)</div>
+                    <div class="data-display" id="liveValue1">--</div>
+                    <p style="color: #8b949e; font-size: 0.9rem;">Streaming simple strings from server</p>
+                </div>
+            </section>
+
+            <section class="code-snippets">
+                <div class="code-section animate-on-scroll">
+                    <div class="code-header">
+                        <h3>Python  </h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code class="language-python">def generate_data():
+    while True:
+        number = random.randint(10, 99)
+        yield f"data: {number}\n\n"
+        time.sleep(1)</code></pre>
+                    </div>
+                </div>
+
+                <div class="code-section animate-on-scroll">
+                    <div class="code-header">
+                        <h3>HTML</h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code class="language-markup">&lt;div id="display"&gt;Waiting...&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+
+                <div class="code-section animate-on-scroll">
+                    <div class="code-header">
+                        <h3>CSS</h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code class="language-css">#display {
+    font-size: 2rem;
+    color: #238636;
+    font-family: monospace;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="code-section animate-on-scroll">
+                    <div class="code-header">
+                        <h3>JavaScript  </h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code class="language-javascript">const source = new EventSource('/stream');
+source.onmessage = (e) => {
+    document.getElementById('display').innerText = e.data;
+};</code></pre>
+                    </div>
+                </div>
+
+                <div class="code-section animate-on-scroll">
+                    <div class="code-header">
+                        <h3>Full script.py</h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code class="language-python">from flask import Flask, Response, render_template_string
+import time
+import random
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template_string("""
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+        &lt;head&gt;
+            &lt;title&gt;Real-Time Feed&lt;/title&gt;
+            &lt;style&gt;
+                #display { font-size: 2rem; color: #238636; font-family: monospace; }
+            &lt;/style&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+            &lt;h1&gt;Live Data&lt;/h1&gt;
+            &lt;div id="display"&gt;Waiting...&lt;/div&gt;
+            &lt;script&gt;
+                const source = new EventSource('/stream');
+                source.onmessage = (e) =&gt; {
+                    document.getElementById('display').innerText = e.data;
+                };
+            &lt;/script&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+    """)
+
+@app.route('/stream')
+def stream():
+    def generate_data():
+        while True:
+            yield f"data: {random.randint(10, 99)}\\n\\n"
+            time.sleep(1)
+    return Response(generate_data(), mimetype='text/event-stream')
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)</code></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Method Two Content -->
+        <div id="method2" class="method-content">
+            <section class="preview-hero">
+                <div class="live-preview">
+                    <div class="live-indicator" style="background: rgba(88, 166, 255, 0.1); border-color: rgba(88, 166, 255, 0.3); color: var(--accent-color);">
+                        LIVE STREAM (JSON)
+                    </div>
+                    <div class="data-display" id="liveValue2" style="color: var(--accent-color);">{"val": --}</div>
+                    <p style="color: #8b949e; font-size: 0.9rem;">Streaming complex JSON objects from server</p>
+                </div>
+            </section>
+
+            <section class="code-snippets">
+                <div class="code-section">
+                    <div class="code-header">
+                        <h3>Python (JSON)</h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>import json
+
+def generate_json():
+    while True:
+        data = {"value": random.randint(100, 999), "status": "ok"}
+        yield f"data: {json.dumps(data)}\n\n"
+        time.sleep(1)</code></pre>
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header">
+                        <h3>HTML</h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code class="language-markup">&lt;div id="json-output"&gt;&lt;/div&gt;</code></pre>
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header">
+                        <h3>CSS</h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>#json-output {
+    white-space: pre;
+    color: #58a6ff;
+    padding: 1rem;
+    background: #010409;
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header">
+                        <h3>JavaScript (JSON Parsing)</h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>const source = new EventSource('/stream-json');
+source.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    document.getElementById('display').innerText = `Value: ${data.value}`;
+};</code></pre>
+                    </div>
+                </div>
+
+                <div class="code-section">
+                    <div class="code-header">
+                        <h3>Full script.py (JSON version)</h3>
+                    </div>
+                    <div class="code-box">
+                        <button class="copy-btn">Copy</button>
+                        <pre><code>from flask import Flask, Response, render_template_string
+import time
+import random
+import json
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template_string("""
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+        &lt;head&gt;
+            &lt;title&gt;Real-Time JSON Feed&lt;/title&gt;
+            &lt;style&gt;
+                #json-output { white-space: pre; color: #58a6ff; padding: 1rem; background: #010409; }
+            &lt;/style&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+            &lt;h1&gt;Live JSON Stream&lt;/h1&gt;
+            &lt;div id="json-output"&gt;Waiting...&lt;/div&gt;
+            &lt;script&gt;
+                const source = new EventSource('/stream');
+                source.onmessage = (e) =&gt; {
+                    const data = JSON.parse(e.data);
+                    document.getElementById('json-output').innerText = JSON.stringify(data, null, 2);
+                };
+            &lt;/script&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+    """)
+
+@app.route('/stream')
+def stream():
+    def generate_json():
+        while True:
+            data = {"value": random.randint(100, 999), "status": "ok"}
+            yield f"data: {json.dumps(data)}\\n\\n"
+            time.sleep(1)
+    return Response(generate_json(), mimetype='text/event-stream')
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000</code></pre>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        function switchMethod(methodNum) {
+            // Update buttons
+            document.querySelectorAll('.toggle-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === methodNum - 1);
+            });
+            // Update content
+            document.querySelectorAll('.method-content').forEach((content, idx) => {
+                content.classList.toggle('active', idx === methodNum - 1);
+            });
+        }
+
+        // Mock sessions for preview
+        setInterval(() => {
+            document.getElementById('liveValue1').innerText = Math.floor(Math.random() * 90) + 10;
+            
+            const jsonVal = { "value": Math.floor(Math.random() * 900) + 100, "status": "active" };
+            document.getElementById('liveValue2').innerText = JSON.stringify(jsonVal, null, 2);
+        }, 1000);
+    </script>
+</body>
+</html>

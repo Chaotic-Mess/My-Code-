@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Server | HTML Snippets</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../prism-dracula.css">
+    <style>
+        .server-preview {
+            background: #161b22;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #30363d;
+            width: 100%;
+            max-width: 400px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #238636;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .response-box {
+            background: #010409;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-family: monospace;
+            min-height: 50px;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+        .server-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--accent-color);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to Library</a>
+        
+        <header class="fade-in">
+            <h1>Python Server & Interface</h1>
+            <p>A full-stack snippet featuring a Python (Flask) backend and a fetch-based HTML interface.</p>
+        </header>
+
+        <section class="preview-hero fade-in">
+            <div class="server-preview">
+                <div style="font-size: 0.8rem; color: #8b949e; margin-bottom: 0.5rem;">
+                    <span class="status-dot"></span> Server: localhost:5000 [MOCK SERVER]
+                </div>
+                <input type="text" id="userInput" class="form-input" style="width:100%" placeholder="Type something to send...">
+                <button class="server-btn" id="sendBtn">Send Request</button>
+                <div class="response-box" id="responseDisplay">Response will appear here...</div>
+            </div>
+        </section>
+
+        <section class="code-snippets">
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>Python (app.py)</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-python">from flask import Flask, request, jsonify
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app) # Enable CORS for frontend interaction
+
+@app.route('/api/message', methods=['POST'])
+def handle_message():
+    data = request.json
+    user_msg = data.get('message', '')
+    return jsonify({
+        "status": "success",
+        "reply": f"Server received: {user_msg}"
+    })
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)</code></pre>
+                </div>
+            </div>
+
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>HTML</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code>&lt;div class="container"&gt;
+    &lt;input type="text" id="userInput" placeholder="Message..."&gt;
+    &lt;button onclick="sendMessage()"&gt;Send&lt;/button&gt;
+    &lt;div id="response"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>JavaScript</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-javascript">async function sendMessage() {
+    const msg = document.getElementById('userInput').value;
+    const responseBox = document.getElementById('response');
+    
+    try {
+        const res = await fetch('http://localhost:5000/api/message', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+        responseBox.innerText = data.reply;
+    } catch (err) {
+        responseBox.innerText = "Error: Server not running or unreachable.";
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="code-section animate-on-scroll">
+                <div class="code-header">
+                    <h3>Full script.py (Single File App)</h3>
+                </div>
+                <div class="code-box">
+                    <button class="copy-btn">Copy</button>
+                    <pre><code class="language-python">from flask import Flask, request, jsonify, render_template_string
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/')
+def index():
+    return render_template_string("""
+        &lt;!DOCTYPE html&gt;
+        &lt;html&gt;
+        &lt;head&gt;
+            &lt;title&gt;Python Server Interface&lt;/title&gt;
+            &lt;style&gt;
+                body { font-family: sans-serif; padding: 2rem; background: #0d1117; color: white; }
+                input { padding: 10px; border-radius: 4px; border: 1px solid #30363d; background: #010409; color: white; }
+                button { padding: 10px 20px; border-radius: 4px; background: #58a6ff; color: white; border: none; cursor: pointer; }
+                #response { margin-top: 20px; color: #8b949e; }
+            &lt;/style&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+            &lt;h1&gt;Python API Interface&lt;/h1&gt;
+            &lt;input type="text" id="userInput" placeholder="Message..."&gt;
+            &lt;button onclick="sendMessage()"&gt;Send&lt;/button&gt;
+            &lt;div id="response"&gt;Waiting for action...&lt;/div&gt;
+
+            &lt;script&gt;
+                async function sendMessage() {
+                    const msg = document.getElementById('userInput').value;
+                    const resBox = document.getElementById('response');
+                    resBox.innerText = 'Connecting...';
+                    try {
+                        const res = await fetch('/api/message', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ message: msg })
+                        });
+                        const data = await res.json();
+                        resBox.innerText = 'Server says: ' + data.reply;
+                    } catch (err) {
+                        resBox.innerText = 'Error connecting to server';
+                    }
+                }
+            &lt;/script&gt;
+        &lt;/body&gt;
+        &lt;/html&gt;
+    """)
+
+@app.route('/api/message', methods=['POST'])
+def handle_message():
+    data = request.json
+    return jsonify({"reply": f"Received: {data['message']}"})
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)</code></pre>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="../script.js"></script>
+    <script>
+        // Mock interaction for preview
+        const sendBtn = document.getElementById('sendBtn');
+        const input = document.getElementById('userInput');
+        const display = document.getElementById('responseDisplay');
+
+        sendBtn.onclick = () => {
+            const val = input.value || "Hello";
+            display.innerText = "Sending request...";
+            setTimeout(() => {
+                display.innerText = `JSON Response: { "status": "success", "reply": "Server received: ${val}" }`;
+            }, 600);
+        };
+    </script>
+</body>
+</html>
