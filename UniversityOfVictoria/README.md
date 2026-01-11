@@ -1,78 +1,82 @@
-# University of Victoria  
+# 🎓 University of Victoria — Computer Science Coursework
 
-![School Work](https://img.shields.io/badge/SCHOOL%20WORK-008080?style=for-the-badge&logo=google-classroom&logoColor=white)
+![School Work](https://img.shields.io/badge/School%20Work-008080?style=for-the-badge&logo=google-classroom&logoColor=white)
+![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
+![C++](https://img.shields.io/badge/C%2B%2B-004482?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 
-Academic coursework in Computer Science — C and C++
+Academic coursework completed at the **University of Victoria**, focused on **systems-level programming, algorithms, and software design** using **C and C++**.
 
-![Highlighted Item](https://img.shields.io/badge/HIGHLIGHTED%20ITEM-FFD700?style=for-the-badge&logo=starship&logoColor=black)
+---
 
-#[CSC116 EXAM STUDY WEBSITE](https://chaotic-mess.github.io/My-Code-/UniversityOfVictoria/CSC116/ExamStudy)
+## Highlighted Project
 
+![Highlighted Item](https://img.shields.io/badge/Highlighted-FFD700?style=for-the-badge&logo=starship&logoColor=black)
 
+### [CSC116 Exam Study Website](https://chaotic-mess.github.io/My-Code-/UniversityOfVictoria/CSC116/ExamStudy)
+
+An interactive study resource consolidating key concepts, examples, and explanations for CSC116.
 
 ---
 
 ## Courses
 
-### CSC111 – Fundamentals of Programming with Engineering Applications I
+### 🧩 CSC111 — Fundamentals of Programming with Engineering Applications I  
+**Grade:** 🟢 **80%**
 
-**Description**  
-C projects and exercises exploring fundamental programming concepts.
+**Overview**  
+An introduction to programming using **C**, emphasizing problem-solving, structured design, and low-level concepts.
 
-**Topics Covered**
-- The development lifecycle
-- Development environments
-- Control flow
-- Iterative design and refinement
-- Debugging techniques
-- Algorithms
-- Data representation and data structures (sequences, arrays and lists)
-- The C development and build process
-- Variables and types
-- Loops, if-statements and functions
-- Sequences and arrays
-- Structure types
-- File I/O
-- Pointers and memory management
-- Linked lists
-  
+**Key Topics**
+- Software development lifecycle  
+- Development environments and toolchains  
+- Control flow and iteration  
+- Debugging and testing techniques  
+- Algorithms and problem decomposition  
+- Data representation and memory layout  
+- Variables, types, and functions  
+- Arrays, sequences, and structures  
+- File I/O  
+- Pointers and dynamic memory  
+- Linked lists  
+
 **Course Materials**
-- [Assignments](./CSC111/Assignments/)
-- [Labs](./CSC111/Labs/)
+- 📂 [Assignments](./CSC111/Assignments/)
+- 🧪 [Labs](./CSC111/Labs/)
 
 ---
 
-### CSC116 – Fundamentals of Programming with Engineering Applications II
+### CSC116 — Fundamentals of Programming with Engineering Applications II  
+**Grade:** 🟢 **90%**
 
-**Description**  
- 
+**Overview**  
+A continuation of CSC111 using **modern C++ (C++20)**, focusing on abstraction, data structures, and robust program design.
 
-**Topics Covered**
-- Design and implement programs observing modern C++ best practices (this offering will use the 2020 C++ Standard)
-- Apply C++ standard collections, such as Strings, Vectors, Lists, Sets and Maps, to programming tasks.
-- Choose practical algorithms and data structures based on the constraints of a programming task.
-- Evaluate C++ expressions and types.
-- Use exception semantics instead of implicit preconditions to develop more robust code.
-- Analyze the run-time behavior of C++ programs, including programs whose control flow is affected by exception handling.
-- Apply functional programming techniques (such as anonymous functions) to modularize code.
-- Implement abstract data types (such as general-purpose collections, or application-specific interfaces) using classes and object oriented programming.
-- Apply access control mechanisms to produce effectively encapsulated objects.
-- Implement dynamic data structures such as lists or trees
-- Produce abstracted and modular code using templates and generic programming.
-- Understand and distinguish between the concepts of overloading and overriding functions.
-- Implement, test, and debug recursive functions and procedures.
+**Key Topics**
+- Modern C++ best practices (C++20 standard)  
+- Standard library containers (String, Vector, List, Set, Map)  
+- Algorithm and data structure selection  
+- Expression evaluation and type systems  
+- Exception handling and runtime analysis  
+- Functional programming (lambdas, higher-order functions)  
+- Object-oriented design and abstraction  
+- Encapsulation and access control  
+- Dynamic data structures (lists, trees)  
+- Templates and generic programming  
+- Function overloading vs overriding  
+- Recursion: implementation, testing, and debugging  
 
 **Course Materials**
-- [Assignments](./CSC116/Assignments/)
-- [Labs](./CSC116/Labs/)
+- 📂 [Assignments](./CSC116/Assignments/)
+- 🧪 [Labs](./CSC116/Labs/)
 
 ---
 
 ## Tech Stack
 
+- **Languages:** C, C++ (C++20)
+- **Concepts:** Algorithms, Data Structures, OOP, Memory Management
+- **Tools:** GCC, Make, Debuggers, Git
 
 ---
 
-**[← Back to Main Portfolio](../README.md)**
-
-
+⬅️ **[Back to Main Portfolio](../README.md)**
