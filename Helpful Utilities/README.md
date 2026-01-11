@@ -20,7 +20,6 @@ Reusable code snippets, templates, and mini-tools for quick reference and integr
 | **Brightspace Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Brightspace_Scraper) | ![Brightspace](https://img.shields.io/badge/Brightspace-F36C21?style=for-the-badge) |
 | **Moodle Scraper** | Download all course materials at once | [Launch Tool](https://chaotic-mess.github.io/My-Code-/Helpful%20Utilities/Moodle_Scraper) | ![Moodle](https://img.shields.io/badge/Moodle-F36C21?style=for-the-badge) |
 | **Storage Scanner** | Analyze disk usage and find space hogs | [Download Tool](https://github.com/Chaotic-Mess/My-Code-/tree/main/Helpful%20Utilities/ComputerStorageScanner)  | ![Storage](https://img.shields.io/badge/Storage-10B981?style=for-the-badge) |
-
 | **Snippits** | Reusable code snippets and mini-tools | [Browse Snippits](https://github.com/Chaotic-Mess/My-Code-/tree/main/Snippits) | ![Snippits](https://img.shields.io/badge/Snippits-6C63FF?style=for-the-badge) |
 
 ---
