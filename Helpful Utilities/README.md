@@ -5,12 +5,6 @@
 
 ---
 
-# Snippits
-
-Reusable code snippets, templates, and mini-tools for quick reference and integration. This folder contains small, focused code examples and utilities for various programming tasks.
-
----
-
 ## Quick Access
 
 | Tool | Description | Link |     |
